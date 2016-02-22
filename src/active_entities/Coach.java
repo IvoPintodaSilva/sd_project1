@@ -1,3 +1,5 @@
+package active_entities;
+
 /**
  * Created by ivosilva on 22/02/16.
  */
