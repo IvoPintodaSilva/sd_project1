@@ -12,7 +12,7 @@ public class ContestantsBench {
     public synchronized void seatDown()
     {
         Contestant c = (Contestant) Thread.currentThread();
-        System.out.println("Contestant " + c.getContestantId() + "of team " + c.getTeam_id() + "is asleep");
+        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep");
 
         while (true){
             try {

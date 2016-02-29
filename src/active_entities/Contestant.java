@@ -29,7 +29,9 @@ public class Contestant extends Thread {
     }
 
     public void run() {
-
+        while(true) {
+            contestants_bench.seatDown();
+        }
     }
 
     public int getContestantId() {
