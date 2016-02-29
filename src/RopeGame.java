@@ -15,6 +15,10 @@ public class RopeGame {
         Coach coach_team1 = new Coach(1, 1, playground, refereeSite, bench);
         Coach coach_team2 = new Coach(2, 2, playground, refereeSite, bench);
 
+        Referee ref = new Referee(playground, refereeSite, bench);
+        ref.start();
+
+
         Contestant[] contestants_team1 = new Contestant[5];
         for(int i = 0; i < 5; i++){
             contestants_team1[i] = new Contestant(i, 1, 5, playground, refereeSite, bench);
@@ -40,6 +44,12 @@ public class RopeGame {
 
         try {
             coach_team2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ref.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package shared_mem;
 
 import active_entities.Coach;
+import active_entities.Referee;
 
 public class RefereeSite {
     private int n_trials;
@@ -10,26 +11,36 @@ public class RefereeSite {
     private int team0_wins;
     private int team1_wins;
 
+    private boolean new_game_announced = false;
+
 
     public synchronized void waitForNewGame() {
         //TODO-wait new game at referee, blocking mode
         Coach c = (Coach) Thread.currentThread();
-        while (true) {
+        while (!this.new_game_announced) {
             try {
                 System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " WAIT at waitForNewGame");
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                System.out.println("RefereeSite.waitForNewGame-wait ERR");
             }
-
         }
+
+        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " woke up");
+
     }
 
     public synchronized void announceNewGame() {
         //TODO-announce new game at referee, blocking mode
-        //newGame=true;
-        //notifyAll();
+        Referee ref = (Referee) Thread.currentThread();
+
+        ref.START_OF_THE_MATCH = false;
+        ref.END_OF_A_GAME = false;
+        ref.START_OF_A_GAME = true;
+
+        this.new_game_announced = true;
+
+        notifyAll();
     }
 
 
