@@ -16,7 +16,7 @@ public class RopeGame {
         Coach coach_team2 = new Coach(2, 2, playground, refereeSite, bench);
 
         Referee ref = new Referee(playground, refereeSite, bench);
-        ref.start();
+
 
 
         Contestant[] contestants_team1 = new Contestant[5];
@@ -33,6 +33,7 @@ public class RopeGame {
 
         coach_team1.start();
         coach_team2.start();
+        ref.start();
 
         /*  threads join  */
 
