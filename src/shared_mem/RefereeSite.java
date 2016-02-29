@@ -1,8 +1,5 @@
 package shared_mem;
 
-/**
- * Created by ivosilva on 22/02/16.
- */
 public class RefereeSite {
     private int n_trials;
     private int n_trials_played;
@@ -12,47 +9,49 @@ public class RefereeSite {
     private int team1_wins;
 
 
-    public synchronized void waitForNewGame()
-    {
+    public synchronized void waitForNewGame() {
         //TODO-wait new game at referee, blocking mode
+        while (true) {
+            try {
+                System.out.println("RefereeSite.waitForNewGame-wait");
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.out.println("RefereeSite.waitForNewGame-wait ERR");
+            }
+
+        }
     }
 
-    public synchronized void announceNewGame()
-    {
+    public synchronized void announceNewGame() {
         //TODO-announce new game at referee, blocking mode
         //newGame=true;
         //notifyAll();
     }
 
 
-    public synchronized void informReferee()
-    {
+    public synchronized void informReferee() {
         //TODO-inform referee at coach, blocking mode
     }
 
-    public synchronized void callTrial()
-    {
+    public synchronized void callTrial() {
         //TODO-announce trial at referee, blocking mode
     }
 
-    public synchronized void assertTrialDecision()
-    {
+    public synchronized void assertTrialDecision() {
         //TODO-announce new game at referee
     }
 
 
-    public synchronized void reviewNotes()
-    {
+    public synchronized void reviewNotes() {
         //TODO-review notes at coach, blocking mode
     }
 
-    public synchronized void declareGameWinner()
-    {
+    public synchronized void declareGameWinner() {
         //TODO-announce game  winner at referee
     }
 
-    public synchronized void declareMatchWinner()
-    {
+    public synchronized void declareMatchWinner() {
         //TODO-announce match winner at referee
     }
 

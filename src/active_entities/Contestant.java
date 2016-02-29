@@ -43,4 +43,16 @@ public class Contestant extends Thread {
     public int getStrength() {
         return strength;
     }
+
+    public int getContestantId() {
+        return id;
+    }
+
+    public int getTeam_id() {
+        return team_id;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
 }
