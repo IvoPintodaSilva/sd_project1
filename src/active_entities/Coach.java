@@ -1,17 +1,21 @@
 package active_entities;
 
-/**
- * Created by ivosilva on 22/02/16.
- */
 public class Coach extends Thread {
-    private int id;
-    private int team_id;
+//IDENTIFIERS
+    private int ID;
+    private int TEAM_ID;
+//STATES
+    private boolean WAIT_FOR_REFEREE_COMMAND;
+    private boolean ASSEMBLE_TEAM;
+    private boolean WATCH_TRIAL;
 
     public Coach(int id, int team_id){
-        this.id = id;
-        this.team_id = id;
+        this.ID = id;
+        this.TEAM_ID = team_id;
     }
 
     public void run(){
     }
+
+
 }

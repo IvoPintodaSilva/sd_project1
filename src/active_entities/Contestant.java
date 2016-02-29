@@ -1,19 +1,23 @@
 package active_entities;
 
-/**
- * Created by ivosilva on 22/02/16.
- */
+
 public class Contestant extends Thread {
-    private int id;
-    private int team_id;
-    private int strength;
+    //IDENTIFIERS
+    private int ID;
+    private int TEAM_ID;
+    private int STRENGTH;
+    //STATES
+    private boolean SEAT_AT_THE_BENCH;
+    private boolean STAND_IN_POSITION;
+    private boolean DO_YOUR_BEST;
 
     public Contestant(int id, int team_id, int strength){
-        this.id = id;
-        this.team_id = id;
-        this.strength = strength;
+        this.ID = id;
+        this.TEAM_ID = id;
+        this.STRENGTH = strength;
     }
 
     public void run(){
+
     }
 }
