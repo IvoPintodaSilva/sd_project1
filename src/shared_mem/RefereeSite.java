@@ -1,5 +1,7 @@
 package shared_mem;
 
+import active_entities.Coach;
+
 public class RefereeSite {
     private int n_trials;
     private int n_trials_played;
@@ -11,9 +13,10 @@ public class RefereeSite {
 
     public synchronized void waitForNewGame() {
         //TODO-wait new game at referee, blocking mode
+        Coach c = (Coach) Thread.currentThread();
         while (true) {
             try {
-                System.out.println("RefereeSite.waitForNewGame-wait");
+                System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " WAIT at waitForNewGame");
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();

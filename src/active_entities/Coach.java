@@ -27,7 +27,7 @@ public class Coach extends Thread {
     }
 
     public void run() {
-        System.out.println("coach");
+        this.referee_site.waitForNewGame();
     }
 
     public int getCoachId() {
