@@ -9,21 +9,21 @@ public class RopeGame {
     public static void main(String[] args) {
 
         RefereeSite refereeSite = new RefereeSite();
-        Playground playground =new Playground();
+        Playground playground = new Playground();
         ContestantsBench bench = new ContestantsBench();
 
-        Coach coach_team1 = new Coach(1, 1);
-        Coach coach_team2 = new Coach(2, 2);
+        Coach coach_team1 = new Coach(1, 1, playground, refereeSite, bench);
+        Coach coach_team2 = new Coach(2, 2, playground, refereeSite, bench);
 
         Contestant[] contestants_team1 = new Contestant[5];
         for(int i = 0; i < 5; i++){
-            contestants_team1[i] = new Contestant(i, 1, 5);
+            contestants_team1[i] = new Contestant(i, 1, 5, playground, refereeSite, bench);
             contestants_team1[i].start();
         }
 
         Contestant[] contestants_team2 = new Contestant[5];
         for(int i = 0; i < 5; i++){
-            contestants_team2[i] = new Contestant(i, 2, 5);
+            contestants_team2[i] = new Contestant(i, 2, 5, playground, refereeSite, bench);
             contestants_team2[i].start();
         }
 
