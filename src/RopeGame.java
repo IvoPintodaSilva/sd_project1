@@ -1,8 +1,13 @@
 import active_entities.Coach;
 import active_entities.Contestant;
+import active_entities.Referee;
+import shared_mem.ContestantsBench;
+import shared_mem.Playground;
+import shared_mem.RefereeSite;
 
 public class RopeGame {
     public static void main(String[] args) {
+
 
         Coach coach_team1 = new Coach(1, 1);
         Coach coach_team2 = new Coach(2, 2);
