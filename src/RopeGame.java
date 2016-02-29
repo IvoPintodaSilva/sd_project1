@@ -1,8 +1,15 @@
 import active_entities.Coach;
 import active_entities.Contestant;
+import shared_mem.ContestantsBench;
+import shared_mem.Playground;
+import shared_mem.RefereeSite;
 
 public class RopeGame {
     public static void main(String[] args) {
+
+        RefereeSite refereeSite = new RefereeSite();
+        Playground playground =new Playground();
+        ContestantsBench bench = new ContestantsBench();
 
         Coach coach_team1 = new Coach(1, 1);
         Coach coach_team2 = new Coach(2, 2);
