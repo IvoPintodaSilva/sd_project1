@@ -26,9 +26,13 @@ public class Referee extends Thread {
     public void run() {
         this.START_OF_THE_MATCH = true;
 
-        //while (true) {
         this.referee_site.announceNewGame();
-        //}
+        this.START_OF_THE_MATCH = false;
+        this.START_OF_A_GAME = true;
+
+        this.playground.callTrial();
+        this.START_OF_A_GAME = false;
+        this.TEAMS_READY = true;
 
 
         System.out.println("Referee finished execution");
