@@ -12,6 +12,7 @@ public class RefereeSite {
     private int team1_wins;
 
     private boolean new_game_announced = false;
+    private int n_coaches_informed_referee = 0;
 
     /**
      * Function that put the coaches at sleep until a new game is announced by the referee.
@@ -19,7 +20,9 @@ public class RefereeSite {
     public synchronized void waitForNewGame() {
 
         Coach c = (Coach) Thread.currentThread();
-        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " WAIT at waitForNewGame");
+        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at waitForNewGame");
+
+        /*  wait until game is announced  */
         while (!this.new_game_announced) {
             try {
                 wait();
@@ -46,10 +49,12 @@ public class RefereeSite {
         this.new_game_announced = true;
         System.out.println("New game announced");
 
+        /*  wake up coaches  */
         notifyAll();
 
+        /*  wait to be informed by coaches  */
         System.out.println("Referee is sleeping at announceNewGame");
-        while (true){
+        while (this.n_coaches_informed_referee < 2){
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -64,8 +69,13 @@ public class RefereeSite {
     public synchronized void informReferee() {
 
         Coach c = (Coach) Thread.currentThread();
+        this.n_coaches_informed_referee += 1;
 
-        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " WAIT at informReferee");
+        /*  wake up referee  */
+        notifyAll();
+
+        /*  wait for trial decision  */
+        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at informReferee");
         while (true){
             try {
                 wait();
