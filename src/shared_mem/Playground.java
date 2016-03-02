@@ -9,9 +9,12 @@ public class Playground {
     private boolean ref_teams_ready = false;
 
 
+    /**
+     * This function purpose is to put the contestants at sleep in playground until the referee call for the trial
+     */
     public synchronized void followCoachAdvice()
     {
-        //TODO-verify if coach already called contestants
+        //TODO-exit condition
         Contestant c = (Contestant) Thread.currentThread();
         System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on followCoachAdvice");
 
@@ -24,6 +27,7 @@ public class Playground {
         }
 
     }
+
 
     public synchronized void callTrial()
     {
