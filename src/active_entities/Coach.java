@@ -27,7 +27,6 @@ public class Coach extends Thread {
     }
 
     public void run() {
-
         this.referee_site.waitForNewGame();
         this.WAIT_FOR_REFEREE_COMMAND = true;
 
