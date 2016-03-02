@@ -39,6 +39,7 @@ public class RefereeSite {
         ref.START_OF_A_GAME = true;
 
         this.new_game_announced = true;
+        System.out.println("New game announced");
 
         notifyAll();
     }
