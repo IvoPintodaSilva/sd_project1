@@ -14,7 +14,6 @@ public class Playground {
      */
     public synchronized void followCoachAdvice()
     {
-        //TODO-exit condition
         Contestant c = (Contestant) Thread.currentThread();
         System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on followCoachAdvice");
 
@@ -28,10 +27,11 @@ public class Playground {
 
     }
 
-
+    /**
+     * This function purpose is to wake up the contestants and put the referee to sleep
+     */
     public synchronized void callTrial()
     {
-        //TODO-
         Referee c = (Referee) Thread.currentThread();
         System.out.println("Referee is asleep on callTrial");
 
@@ -51,6 +51,9 @@ public class Playground {
 
     }
 
+    /**
+     * This function purpose is to put the contestants at sleep in the playground
+     */
     public synchronized void getReady()
     {
         //TODO-
