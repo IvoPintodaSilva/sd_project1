@@ -15,15 +15,6 @@ public class Contestant extends Thread {
     private Playground playground;
     //STATES
     private boolean SEAT_AT_THE_BENCH;
-
-    public void setSTAND_IN_POSITION(boolean STAND_IN_POSITION) {
-        this.STAND_IN_POSITION = STAND_IN_POSITION;
-    }
-
-    public void setSEAT_AT_THE_BENCH(boolean SEAT_AT_THE_BENCH) {
-        this.SEAT_AT_THE_BENCH = SEAT_AT_THE_BENCH;
-    }
-
     private boolean STAND_IN_POSITION;
     private boolean DO_YOUR_BEST;
 
@@ -39,11 +30,13 @@ public class Contestant extends Thread {
 
     public void run() {
         contestants_bench.seatDown();
-        SEAT_AT_THE_BENCH=true;
+        this.SEAT_AT_THE_BENCH = true;
 
         playground.followCoachAdvice();
-        SEAT_AT_THE_BENCH=false;
-        STAND_IN_POSITION=true;
+        this.SEAT_AT_THE_BENCH = false;
+        this.SEAT_AT_THE_BENCH = true;
+
+        System.out.println("Contestant " + this.id + " finished execution");
 
     }
 
