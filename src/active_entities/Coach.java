@@ -28,6 +28,7 @@ public class Coach extends Thread {
 
     public void run() {
         this.referee_site.waitForNewGame();
+
     }
 
     public int getCoachId() {
