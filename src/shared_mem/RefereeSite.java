@@ -13,9 +13,11 @@ public class RefereeSite {
 
     private boolean new_game_announced = false;
 
-
+    /**
+     * Function that put the coaches at sleep until a new game is announced by the referee.
+     */
     public synchronized void waitForNewGame() {
-        //TODO-wait new game at referee, blocking mode
+
         Coach c = (Coach) Thread.currentThread();
         System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " WAIT at waitForNewGame");
         while (!this.new_game_announced) {
@@ -30,8 +32,11 @@ public class RefereeSite {
 
     }
 
+    /**
+     * The referee announce a new game and all the threads are notified of that occurence.
+     */
     public synchronized void announceNewGame() {
-        //TODO-announce new game at referee, blocking mode
+
         Referee ref = (Referee) Thread.currentThread();
 
         ref.START_OF_THE_MATCH = false;
@@ -53,9 +58,11 @@ public class RefereeSite {
         }
     }
 
-
+    /**
+     * This function purpose is to coach inform the referree that the contestants are ready to play and put the coach to sleep
+     */
     public synchronized void informReferee() {
-        //TODO-inform referee at coach, blocking mode
+
         Coach c = (Coach) Thread.currentThread();
 
         System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " WAIT at informReferee");
