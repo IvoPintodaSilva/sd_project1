@@ -40,6 +40,15 @@ public class Contestant extends Thread {
         this.STAND_IN_POSITION = false;
         this.DO_YOUR_BEST = true;
 
+        /*  this can't be done with a for loop, needs further analysis  */
+        for(int i = 0; i < 6; i++){
+            playground.pullTheRope();
+        }
+
+        playground.iAmDone();
+        this.DO_YOUR_BEST = false;
+        this.SEAT_AT_THE_BENCH = true;
+
         System.out.println("Contestant " + this.id + " finished execution");
 
     }

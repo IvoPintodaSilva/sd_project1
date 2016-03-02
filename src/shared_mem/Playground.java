@@ -7,6 +7,8 @@ import active_entities.Referee;
 public class Playground {
 
     private boolean ref_teams_ready = false;
+    private int n_contestants_ready = 0;
+    private boolean trial_started = false;
 
 
     /**
@@ -41,7 +43,7 @@ public class Playground {
         notifyAll();
 
         /*  wait for contestants to get ready  */
-        while (true){
+        while (this.n_contestants_ready < 10){
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -56,11 +58,16 @@ public class Playground {
      */
     public synchronized void getReady()
     {
-        //TODO-
         Contestant c = (Contestant) Thread.currentThread();
         System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on getReady");
 
-        while (true){
+        n_contestants_ready += 1;
+
+        /*  wake up referee  */
+        notifyAll();
+
+        /*  wait for referee to start trial  */
+        while (!this.trial_started){
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -71,17 +78,56 @@ public class Playground {
 
     public synchronized void startTrial()
     {
-        //TODO-
+        Referee c = (Referee) Thread.currentThread();
+        System.out.println("Referee is asleep on startTrial");
+
+        this.trial_started = true;
+
+        /*  wake up contestants in playground  */
+        notifyAll();
+
+        /*  wait for contestants to get be done pulling the rope  */
+        while (true){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public synchronized void pullTheRope()
     {
-        //TODO-
+        Contestant c = (Contestant) Thread.currentThread();
+        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on pullTheRope");
+
+        /*  wake up referee  */
+        //notifyAll();
+
+//        while (true){
+//            try {
+//                wait();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     public synchronized void iAmDone()
     {
-        //TODO-
+        Contestant c = (Contestant) Thread.currentThread();
+        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on iAmDone");
+
+        /*  wake up referee  */
+        //notifyAll();
+
+        while (true){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
