@@ -42,6 +42,15 @@ public class RefereeSite {
         System.out.println("New game announced");
 
         notifyAll();
+
+        System.out.println("Referee is sleeping at announceNewGame");
+        while (true){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
