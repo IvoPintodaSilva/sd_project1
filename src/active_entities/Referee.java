@@ -29,5 +29,9 @@ public class Referee extends Thread {
         //while (true) {
         this.referee_site.announceNewGame();
         //}
+
+
+        System.out.println("Referee finished execution");
+
     }
 }

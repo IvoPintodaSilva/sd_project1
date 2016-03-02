@@ -17,9 +17,9 @@ public class RefereeSite {
     public synchronized void waitForNewGame() {
         //TODO-wait new game at referee, blocking mode
         Coach c = (Coach) Thread.currentThread();
+        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " WAIT at waitForNewGame");
         while (!this.new_game_announced) {
             try {
-                System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " WAIT at waitForNewGame");
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -46,6 +46,16 @@ public class RefereeSite {
 
     public synchronized void informReferee() {
         //TODO-inform referee at coach, blocking mode
+        Coach c = (Coach) Thread.currentThread();
+
+        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " WAIT at informReferee");
+        while (true){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public synchronized void callTrial() {

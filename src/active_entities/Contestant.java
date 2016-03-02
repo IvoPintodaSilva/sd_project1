@@ -30,6 +30,13 @@ public class Contestant extends Thread {
 
     public void run() {
         contestants_bench.seatDown();
+        this.SEAT_AT_THE_BENCH = true;
+
+        playground.followCoachAdvice();
+        this.SEAT_AT_THE_BENCH = false;
+        this.SEAT_AT_THE_BENCH = true;
+
+        System.out.println("Contestant " + this.id + " finished execution");
 
     }
 
