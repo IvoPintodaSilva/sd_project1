@@ -34,7 +34,11 @@ public class Contestant extends Thread {
 
         playground.followCoachAdvice();
         this.SEAT_AT_THE_BENCH = false;
-        this.SEAT_AT_THE_BENCH = true;
+        this.STAND_IN_POSITION = true;
+
+        playground.getReady();
+        this.STAND_IN_POSITION = false;
+        this.DO_YOUR_BEST = true;
 
         System.out.println("Contestant " + this.id + " finished execution");
 
