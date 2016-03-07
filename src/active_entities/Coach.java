@@ -33,15 +33,15 @@ public class Coach extends Thread {
         while (true){
             switch (state){
                 case WAIT_FOR_REFEREE_COMMAND:
-                    this.referee_site.waitForNewGame();
+                    this.contestants_bench.callContestants();
                     state = State.ASSEMBLE_TEAM;
                     break;
                 case ASSEMBLE_TEAM:
-                    this.contestants_bench.callContestants();
+                    this.referee_site.informReferee();
                     state = State.WATCH_TRIAL;
                     break;
                 case WATCH_TRIAL:
-                    this.referee_site.informReferee();
+                    this.referee_site.reviewNotes();
                     state = State.WAIT_FOR_REFEREE_COMMAND;
             }
         }

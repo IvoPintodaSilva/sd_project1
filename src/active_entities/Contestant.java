@@ -38,7 +38,7 @@ public class Contestant extends Thread {
             switch (state){
 
                 case SEAT_AT_THE_BENCH:
-                    playground.followCoachAdvice();
+                    contestants_bench.followCoachAdvice();
                     state = State.STAND_IN_POSITION;
                     break;
                 case STAND_IN_POSITION:

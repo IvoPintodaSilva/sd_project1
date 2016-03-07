@@ -17,26 +17,6 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
     private boolean new_game_announced = false;
     private int n_coaches_informed_referee = 0;
 
-    /**
-     * Function that put the coaches at sleep until a new game is announced by the referee.
-     */
-    public synchronized void waitForNewGame() {
-
-        Coach c = (Coach) Thread.currentThread();
-        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at waitForNewGame");
-
-        /*  wait until game is announced  */
-        while (!this.new_game_announced) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " woke up");
-
-    }
 
     /**
      * The referee announce a new game and all the threads are notified of that occurence.

@@ -5,11 +5,9 @@ package interfaces;
  */
 public interface IPlaygroundContestant {
 
-    public void followCoachAdvice();
+    void getReady();
 
-    public void getReady();
+    void pullTheRope();
 
-    public void pullTheRope();
-
-    public void iAmDone();
+    void iAmDone();
 }

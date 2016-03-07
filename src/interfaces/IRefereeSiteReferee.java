@@ -4,11 +4,11 @@ package interfaces;
  * Created by ivosilva on 07/03/16.
  */
 public interface IRefereeSiteReferee {
-    public void announceNewGame();
+    void announceNewGame();
 
-    public void assertTrialDecision();
+    void assertTrialDecision();
 
-    public  void declareGameWinner();
+    void declareGameWinner();
 
-    public void declareMatchWinner();
+    void declareMatchWinner();
 }

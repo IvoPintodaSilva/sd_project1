@@ -9,28 +9,12 @@ import interfaces.IPlaygroundReferee;
 
 public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, IPlaygroundCoach {
 
-    private boolean ref_teams_ready = false;
     private int n_contestants_ready = 0;
+    private boolean all_contestants_ready = false;
     private boolean trial_started = false;
 
 
-    /**
-     * This function purpose is to put the contestants at sleep in playground until the referee call for the trial
-     */
-    public synchronized void followCoachAdvice()
-    {
-        Contestant c = (Contestant) Thread.currentThread();
-        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on followCoachAdvice");
 
-        while (!this.ref_teams_ready){
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
 
     /**
      * This function purpose is to wake up the contestants and put the referee to sleep
@@ -40,13 +24,8 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
         Referee c = (Referee) Thread.currentThread();
         System.out.println("Referee is asleep on callTrial");
 
-        this.ref_teams_ready = true;
-
-        /*  wake up contestants in playground  */
-        notifyAll();
-
         /*  wait for contestants to get ready  */
-        while (this.n_contestants_ready < 10){
+        while (!this.all_contestants_ready){
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -65,9 +44,12 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
         System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on getReady");
 
         n_contestants_ready += 1;
+        if(this.n_contestants_ready >= 10){
+            this.all_contestants_ready = true;
 
-        /*  wake up referee  */
-        notifyAll();
+            /*  wake up referee  */
+            notifyAll();
+        }
 
         /*  wait for referee to start trial  */
         while (!this.trial_started){
