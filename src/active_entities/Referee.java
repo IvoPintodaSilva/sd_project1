@@ -4,9 +4,7 @@ package active_entities;
 import interfaces.IContestantsBenchReferee;
 import interfaces.IPlaygroundReferee;
 import interfaces.IRefereeSiteReferee;
-import shared_mem.MContestantsBench;
-import shared_mem.MPlayground;
-import shared_mem.MRefereeSite;
+
 
 public class Referee extends Thread {
     private IContestantsBenchReferee contestants_bench;
@@ -47,19 +45,6 @@ public class Referee extends Thread {
             }
         }
 
-/*        this.START_OF_THE_MATCH = true;
-
-        this.referee_site.announceNewGame();
-        this.START_OF_THE_MATCH = false;
-        this.START_OF_A_GAME = true;
-
-        this.playground.callTrial();
-        this.START_OF_A_GAME = false;
-        this.TEAMS_READY = true;
-
-
-        this.TEAMS_READY = false;
-        this.WAIT_FOR_TRIAL_CONCLUSION = true;*/
 
         //System.out.println("Referee finished execution");
 

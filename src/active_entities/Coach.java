@@ -1,12 +1,8 @@
 package active_entities;
 
-import interfaces.*;
-import shared_mem.MContestantsBench;
-import shared_mem.MPlayground;
-import shared_mem.MRefereeSite;
-
-
-
+import interfaces.IPlaygroundCoach;
+import interfaces.IContestantsBenchCoach;
+import interfaces.IRefereeSiteCoach;
 
 public class Coach extends Thread {
 

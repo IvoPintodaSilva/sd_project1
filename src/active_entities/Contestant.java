@@ -4,9 +4,6 @@ package active_entities;
 import interfaces.IContestantsBenchContestant;
 import interfaces.IPlaygroundContestant;
 import interfaces.IRefereeSiteContestant;
-import shared_mem.MContestantsBench;
-import shared_mem.MPlayground;
-import shared_mem.MRefereeSite;
 
 public class Contestant extends Thread {
     //IDENTIFIERS
