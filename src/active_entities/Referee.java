@@ -1,14 +1,17 @@
 package active_entities;
 
 
-import shared_mem.ContestantsBench;
-import shared_mem.Playground;
-import shared_mem.RefereeSite;
+import interfaces.IContestantsBenchReferee;
+import interfaces.IPlaygroundReferee;
+import interfaces.IRefereeSiteReferee;
+import shared_mem.MContestantsBench;
+import shared_mem.MPlayground;
+import shared_mem.MRefereeSite;
 
 public class Referee extends Thread {
-    private ContestantsBench contestants_bench;
-    private RefereeSite referee_site;
-    private Playground playground;
+    private IContestantsBenchReferee contestants_bench;
+    private IRefereeSiteReferee referee_site;
+    private IPlaygroundReferee playground;
     //STATES
     public boolean START_OF_THE_MATCH;
     public boolean START_OF_A_GAME;
@@ -17,7 +20,9 @@ public class Referee extends Thread {
     public boolean END_OF_A_GAME;
     public boolean END_OF_A_MATCH;
 
-    public Referee(Playground playground, RefereeSite referee_site, ContestantsBench contestants_bench) {
+    public Referee(IPlaygroundReferee playground,
+                   IRefereeSiteReferee referee_site,
+                   IContestantsBenchReferee contestants_bench) {
         this.playground = playground;
         this.referee_site = referee_site;
         this.contestants_bench = contestants_bench;

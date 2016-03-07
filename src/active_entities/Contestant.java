@@ -1,25 +1,30 @@
 package active_entities;
 
 
-import shared_mem.ContestantsBench;
-import shared_mem.Playground;
-import shared_mem.RefereeSite;
+import interfaces.IContestantsBenchContestant;
+import interfaces.IPlaygroundContestant;
+import interfaces.IRefereeSiteContestant;
+import shared_mem.MContestantsBench;
+import shared_mem.MPlayground;
+import shared_mem.MRefereeSite;
 
 public class Contestant extends Thread {
     //IDENTIFIERS
     private int id;
     private int team_id;
     private int strength;
-    private ContestantsBench contestants_bench;
-    private RefereeSite referee_site;
-    private Playground playground;
+    private IContestantsBenchContestant contestants_bench;
+    private IRefereeSiteContestant referee_site;
+    private IPlaygroundContestant playground;
     //STATES
     private boolean SEAT_AT_THE_BENCH;
     private boolean STAND_IN_POSITION;
     private boolean DO_YOUR_BEST;
 
     public Contestant(int id, int team_id, int strength,
-                      Playground playground, RefereeSite referee_site, ContestantsBench contestants_bench){
+                      IPlaygroundContestant playground,
+                      IRefereeSiteContestant referee_site,
+                      IContestantsBenchContestant contestants_bench){
         this.id = id;
         this.team_id = team_id;
         this.strength = strength;

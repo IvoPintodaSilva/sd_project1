@@ -2,8 +2,11 @@ package shared_mem;
 
 import active_entities.Coach;
 import active_entities.Contestant;
+import interfaces.IContestantsBenchCoach;
+import interfaces.IContestantsBenchContestant;
+import interfaces.IContestantsBenchReferee;
 
-public class ContestantsBench {
+public class MContestantsBench implements IContestantsBenchContestant, IContestantsBenchCoach, IContestantsBenchReferee {
     private int team_id;
     private int[] contestants_seated;
     private int[] contestants_played;

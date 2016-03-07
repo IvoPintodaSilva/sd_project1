@@ -2,8 +2,11 @@ package shared_mem;
 
 import active_entities.Coach;
 import active_entities.Referee;
+import interfaces.IRefereeSiteCoach;
+import interfaces.IRefereeSiteContestant;
+import interfaces.IRefereeSiteReferee;
 
-public class RefereeSite {
+public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRefereeSiteContestant{
     private int n_trials;
     private int n_trials_played;
     private int n_games;
@@ -85,9 +88,6 @@ public class RefereeSite {
         }
     }
 
-    public synchronized void callTrial() {
-        //TODO-announce trial at referee, blocking mode
-    }
 
     public synchronized void assertTrialDecision() {
         //TODO-announce new game at referee

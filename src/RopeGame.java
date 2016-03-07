@@ -1,33 +1,49 @@
 import active_entities.Coach;
 import active_entities.Contestant;
 import active_entities.Referee;
-import shared_mem.ContestantsBench;
-import shared_mem.Playground;
-import shared_mem.RefereeSite;
+import interfaces.*;
+import shared_mem.MContestantsBench;
+import shared_mem.MPlayground;
+import shared_mem.MRefereeSite;
 
 public class RopeGame {
     public static void main(String[] args) {
 
-        RefereeSite refereeSite = new RefereeSite();
-        Playground playground = new Playground();
-        ContestantsBench bench = new ContestantsBench();
+        MRefereeSite refereeSite = new MRefereeSite();
+        MPlayground playground = new MPlayground();
+        MContestantsBench bench = new MContestantsBench();
 
-        Coach coach_team1 = new Coach(1, 1, playground, refereeSite, bench);
-        Coach coach_team2 = new Coach(2, 2, playground, refereeSite, bench);
+        Coach coach_team1 = new Coach(1, 1,
+                (IPlaygroundCoach) playground,
+                (IRefereeSiteCoach) refereeSite,
+                (IContestantsBenchCoach) bench);
+        Coach coach_team2 = new Coach(2, 2,
+                (IPlaygroundCoach) playground,
+                (IRefereeSiteCoach) refereeSite,
+                (IContestantsBenchCoach) bench);
 
-        Referee ref = new Referee(playground, refereeSite, bench);
+        Referee ref = new Referee(
+                (IPlaygroundReferee) playground,
+                (IRefereeSiteReferee) refereeSite,
+                (IContestantsBenchReferee) bench);
 
 
 
         Contestant[] contestants_team1 = new Contestant[5];
         for(int i = 0; i < 5; i++){
-            contestants_team1[i] = new Contestant(i, 1, 5, playground, refereeSite, bench);
+            contestants_team1[i] = new Contestant(i, 1, 5,
+                    (IPlaygroundContestant) playground,
+                    (IRefereeSiteContestant) refereeSite,
+                    (IContestantsBenchContestant) bench);
             contestants_team1[i].start();
         }
 
         Contestant[] contestants_team2 = new Contestant[5];
         for(int i = 0; i < 5; i++){
-            contestants_team2[i] = new Contestant(i, 2, 5, playground, refereeSite, bench);
+            contestants_team2[i] = new Contestant(i, 2, 5,
+                    (IPlaygroundContestant) playground,
+                    (IRefereeSiteContestant) refereeSite,
+                    (IContestantsBenchContestant) bench);
             contestants_team2[i].start();
         }
 

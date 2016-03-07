@@ -3,8 +3,11 @@ package shared_mem;
 
 import active_entities.Contestant;
 import active_entities.Referee;
+import interfaces.IPlaygroundCoach;
+import interfaces.IPlaygroundContestant;
+import interfaces.IPlaygroundReferee;
 
-public class Playground {
+public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, IPlaygroundCoach {
 
     private boolean ref_teams_ready = false;
     private int n_contestants_ready = 0;
