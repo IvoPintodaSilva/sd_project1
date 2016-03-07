@@ -16,10 +16,10 @@ public class Contestant extends Thread {
     private IContestantsBenchContestant contestants_bench;
     private IRefereeSiteContestant referee_site;
     private IPlaygroundContestant playground;
-    //STATES
-    private boolean SEAT_AT_THE_BENCH;
-    private boolean STAND_IN_POSITION;
-    private boolean DO_YOUR_BEST;
+
+    private enum State {
+        SEAT_AT_THE_BENCH, STAND_IN_POSITION, DO_YOUR_BEST
+    }
 
     public Contestant(int id, int team_id, int strength,
                       IPlaygroundContestant playground,
@@ -34,27 +34,32 @@ public class Contestant extends Thread {
     }
 
     public void run() {
+
+        State state = State.SEAT_AT_THE_BENCH;
         contestants_bench.seatDown();
-        this.SEAT_AT_THE_BENCH = true;
+        while (true){
+            switch (state){
 
-        playground.followCoachAdvice();
-        this.SEAT_AT_THE_BENCH = false;
-        this.STAND_IN_POSITION = true;
-
-        playground.getReady();
-        this.STAND_IN_POSITION = false;
-        this.DO_YOUR_BEST = true;
-
-        /*  this can't be done with a for loop, needs further analysis  */
-        for(int i = 0; i < 6; i++){
-            playground.pullTheRope();
+                case SEAT_AT_THE_BENCH:
+                    playground.followCoachAdvice();
+                    state = State.STAND_IN_POSITION;
+                    break;
+                case STAND_IN_POSITION:
+                    playground.getReady();
+                    state = State.DO_YOUR_BEST;
+                    break;
+                case DO_YOUR_BEST:
+                    /*  this can't be done with a for loop, needs further analysis  */
+                    for(int i = 0; i < 6; i++){
+                        playground.pullTheRope();
+                    }
+                    playground.iAmDone();
+                    state = State.SEAT_AT_THE_BENCH;
+                    break;
+            }
         }
 
-        playground.iAmDone();
-        this.DO_YOUR_BEST = false;
-        this.SEAT_AT_THE_BENCH = true;
-
-        System.out.println("Contestant " + this.id + " finished execution");
+        //System.out.println("Contestant " + this.id + " finished execution");
 
     }
 

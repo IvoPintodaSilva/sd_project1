@@ -12,13 +12,10 @@ public class Referee extends Thread {
     private IContestantsBenchReferee contestants_bench;
     private IRefereeSiteReferee referee_site;
     private IPlaygroundReferee playground;
-    //STATES
-    public boolean START_OF_THE_MATCH;
-    public boolean START_OF_A_GAME;
-    public boolean TEAMS_READY;
-    public boolean WAIT_FOR_TRIAL_CONCLUSION;
-    public boolean END_OF_A_GAME;
-    public boolean END_OF_A_MATCH;
+
+    private enum State {
+        START_OF_THE_MATCH, START_OF_A_GAME, TEAMS_READY, WAIT_FOR_TRIAL_CONCLUSION, END_OF_A_GAME, END_OF_A_MATCH
+    }
 
     public Referee(IPlaygroundReferee playground,
                    IRefereeSiteReferee referee_site,
@@ -29,7 +26,28 @@ public class Referee extends Thread {
     }
 
     public void run() {
-        this.START_OF_THE_MATCH = true;
+
+        State state = State.START_OF_THE_MATCH;
+
+        while (true){
+            switch (state){
+                case START_OF_THE_MATCH:
+                    this.referee_site.announceNewGame();
+                    state = State.START_OF_A_GAME;
+                    break;
+                case START_OF_A_GAME:
+                    this.playground.callTrial();
+                    state = State.TEAMS_READY;
+                    break;
+                case TEAMS_READY:
+                    this.playground.startTrial();
+                    state = State.WAIT_FOR_TRIAL_CONCLUSION;
+                    break;
+
+            }
+        }
+
+/*        this.START_OF_THE_MATCH = true;
 
         this.referee_site.announceNewGame();
         this.START_OF_THE_MATCH = false;
@@ -39,11 +57,11 @@ public class Referee extends Thread {
         this.START_OF_A_GAME = false;
         this.TEAMS_READY = true;
 
-        this.playground.startTrial();
-        this.TEAMS_READY = false;
-        this.WAIT_FOR_TRIAL_CONCLUSION = true;
 
-        System.out.println("Referee finished execution");
+        this.TEAMS_READY = false;
+        this.WAIT_FOR_TRIAL_CONCLUSION = true;*/
+
+        //System.out.println("Referee finished execution");
 
     }
 }
