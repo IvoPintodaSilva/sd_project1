@@ -26,20 +26,31 @@ public class Referee extends Thread {
     public void run() {
 
         State state = State.START_OF_THE_MATCH;
+        Boolean flag = true;
 
-        while (true){
+        while (flag){
             switch (state){
                 case START_OF_THE_MATCH:
                     this.referee_site.announceNewGame();
                     state = State.START_OF_A_GAME;
                     break;
                 case START_OF_A_GAME:
-                    this.playground.callTrial();
+                    this.contestants_bench.callTrial();
                     state = State.TEAMS_READY;
                     break;
                 case TEAMS_READY:
-                    this.playground.startTrial();
+                    this.contestants_bench.startTrial();
                     state = State.WAIT_FOR_TRIAL_CONCLUSION;
+                    break;
+                case WAIT_FOR_TRIAL_CONCLUSION:
+                    flag = this.contestants_bench.assertTrialDecision();
+                    break;
+                case END_OF_A_GAME:
+                    break;
+                case END_OF_A_MATCH:
+                    break;
+                default:
+                    state=State.START_OF_THE_MATCH;
                     break;
 
             }

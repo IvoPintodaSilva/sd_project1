@@ -15,7 +15,7 @@ public class Contestant extends Thread {
     private IPlaygroundContestant playground;
 
     private enum State {
-        SEAT_AT_THE_BENCH, STAND_IN_POSITION, DO_YOUR_BEST
+        SEAT_AT_THE_BENCH, STAND_IN_POSITION, DO_YOUR_BEST, START
     }
 
     public Contestant(int id, int team_id, int strength,
@@ -32,8 +32,7 @@ public class Contestant extends Thread {
 
     public void run() {
 
-        State state = State.SEAT_AT_THE_BENCH;
-        contestants_bench.seatDown();
+        State state= State.START;
         while (true){
             switch (state){
 
@@ -50,8 +49,12 @@ public class Contestant extends Thread {
                     for(int i = 0; i < 6; i++){
                         playground.pullTheRope();
                     }
-                    playground.iAmDone();
+                    contestants_bench.iAmDone();
+                    state = State.START;
+                    break;
+                default:
                     state = State.SEAT_AT_THE_BENCH;
+                    contestants_bench.seatDown();
                     break;
             }
         }
