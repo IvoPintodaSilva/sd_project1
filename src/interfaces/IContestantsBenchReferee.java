@@ -5,4 +5,9 @@ package interfaces;
  */
 public interface IContestantsBenchReferee {
 
+    void callTrial();
+
+    void startTrial();
+
+    void assertTrialDecision();
 }

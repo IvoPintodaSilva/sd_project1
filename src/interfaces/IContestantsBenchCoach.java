@@ -5,4 +5,8 @@ package interfaces;
  */
 public interface IContestantsBenchCoach {
     void callContestants();
+
+    void informReferee();
+
+    void reviewNotes();
 }

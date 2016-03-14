@@ -6,8 +6,6 @@ package interfaces;
 public interface IRefereeSiteReferee {
     void announceNewGame();
 
-    void assertTrialDecision();
-
     void declareGameWinner();
 
     void declareMatchWinner();

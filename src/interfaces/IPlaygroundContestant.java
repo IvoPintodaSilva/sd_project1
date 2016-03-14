@@ -9,5 +9,4 @@ public interface IPlaygroundContestant {
 
     void pullTheRope();
 
-    void iAmDone();
 }

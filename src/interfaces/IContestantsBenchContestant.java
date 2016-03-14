@@ -7,4 +7,8 @@ public interface IContestantsBenchContestant {
     void seatDown();
 
     void followCoachAdvice();
+
+    void iAmDone();
+
+
 }
