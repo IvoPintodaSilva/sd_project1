@@ -57,7 +57,7 @@ public class Referee extends Thread {
         }
 
 
-        //System.out.println("Referee finished execution");
+        System.out.println("Referee finished execution");
 
     }
 }

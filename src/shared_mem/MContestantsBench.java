@@ -27,7 +27,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized void seatDown()
     {
         Contestant c = (Contestant) Thread.currentThread();
-        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep");
+        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on seatDown");
 
         while (!this.contestants_called){
             try {
@@ -74,6 +74,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         this.advice_followed += 1;
         if(this.advice_followed >= 10){
             this.contestant_in_position = true;
+            this.contestants_called = false; // the last contestant to get here, resets the seatDown flag
             notifyAll();
         }
 
