@@ -12,6 +12,8 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     private int[] contestants_seated;
     private int[] contestants_played;
 
+    private boolean trial_called = false;
+
     private int n_coaches_called_contestants = 0;
     private boolean contestants_called = false;
 
@@ -30,6 +32,9 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
     private int n_trials_on_game = 0;
 
+    private int n_contestants_done_awake = 0;
+
+    private int n_coaches_reviewed_notes = 0;
 
     /**
      * Have contestants sleeping in the bench until they're waken up by both coaches
@@ -48,6 +53,33 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         }
     }
 
+
+
+    /**
+     * Referee sleeps until the last coach wakes him up on informReferee
+     */
+    public synchronized void callTrial()
+    {
+        Referee c = (Referee) Thread.currentThread();
+        System.out.println("Referee is asleep on callTrial");
+
+        if(this.n_trials_on_game > 0){
+            this.trial_called = true;
+        }
+
+        /*  wait for coaches to inform referee  */
+        while (!this.coaches_informed){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+
     /**
      * Call contestants and sleep until they're waken up by the last contestant in position
      */
@@ -59,6 +91,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         this.n_coaches_called_contestants += 1;
 
         if(this.n_coaches_called_contestants >= 2){
+            this.n_coaches_called_contestants = 0;
             this.contestants_called = true;
         }
 
@@ -87,6 +120,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         this.advice_followed += 1;
         if(this.advice_followed >= 10){
             this.contestant_in_position = true;
+            this.advice_followed = 0;
             this.contestants_called = false; // the last contestant to get here, resets the seatDown flag
             notifyAll();
         }
@@ -99,28 +133,9 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             }
         }
 
-    }
 
-
-    /**
-     * Referee sleeps until the last coach wakes him up on informReferee
-     */
-    public synchronized void callTrial()
-    {
-        Referee c = (Referee) Thread.currentThread();
-        System.out.println("Referee is asleep on callTrial");
-
-        /*  wait for coaches to inform referee  */
-        while (!this.coaches_informed){
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
 
     }
-
 
 
     /**
@@ -170,6 +185,8 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                 e.printStackTrace();
             }
         }
+
+        this.contestants_are_done = false;
     }
 
     /**
@@ -182,6 +199,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
         /*  last contestant done wakes up referee  */
         if(this.n_contestants_done >= 10) {
+            this.n_contestants_done = 0;
             this.contestants_are_done = true;
             notifyAll();
         }
@@ -194,6 +212,16 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                 e.printStackTrace();
             }
         }
+
+        this.n_contestants_done_awake += 1;
+
+        if(this.n_contestants_done_awake >= 10){
+            /*  reset conditions for next trial  */
+            this.n_contestants_done_awake = 0;
+            this.trial_decided = false;
+        }
+
+
     }
 
     /**
@@ -206,7 +234,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         /*  increment the trials counter  */
         this.n_trials_on_game += 1;
 
-        System.out.printf("\n---------------- Trial #%i was played ----------------\n", this.n_trials_on_game);
+        System.out.printf("\n---------------- Trial #%d was played ----------------\n", this.n_trials_on_game);
 
         /*  flag to tell that there was a trial decision  */
         this.trial_decided = true;
@@ -231,16 +259,21 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized void reviewNotes() {
         Coach c = (Coach) Thread.currentThread();
 
-
-        /*  remove sleep statement  */
         System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at reviewNotes");
-        while (true){
+        while (!this.trial_called){
             try {
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+
+        if(this.n_coaches_reviewed_notes >= 2){
+            this.n_coaches_reviewed_notes = 0;
+            this.trial_called = false;
+        }
+
+
     }
 
 

@@ -2,7 +2,6 @@ package shared_mem;
 
 
 import active_entities.Contestant;
-import active_entities.Referee;
 import interfaces.IPlaygroundCoach;
 import interfaces.IPlaygroundContestant;
 import interfaces.IPlaygroundReferee;
@@ -13,9 +12,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     private boolean all_contestants_ready = false;
     private boolean trial_started = false;
 
-
-
-
+    private int n_ready_contestants_awake = 0;
 
 
     /**
@@ -28,6 +25,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
         n_contestants_ready += 1;
         if(this.n_contestants_ready >= 10){
+            this.n_contestants_ready = 0;
             this.all_contestants_ready = true;
             notifyAll();
         }
@@ -42,6 +40,16 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
                 e.printStackTrace();
             }
         }
+
+        this.n_ready_contestants_awake += 1;
+
+        if(this.n_ready_contestants_awake >= 10){
+            /*  restore contestants value for next trial  */
+            this.n_contestants_ready = 0;
+            this.n_ready_contestants_awake = 0;
+            this.all_contestants_ready = false;
+        }
+
     }
 
 
@@ -50,6 +58,8 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
      */
     public synchronized void pullTheRope()
     {
+
+
         Contestant c = (Contestant) Thread.currentThread();
         System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is pulling the rope");
 
