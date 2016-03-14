@@ -10,4 +10,5 @@ public interface IContestantsBenchReferee {
     void startTrial();
 
     boolean assertTrialDecision();
+
 }
