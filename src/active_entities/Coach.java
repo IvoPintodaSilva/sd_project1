@@ -43,6 +43,10 @@ public class Coach extends Thread {
                 case WATCH_TRIAL:
                     this.referee_site.reviewNotes();
                     state = State.WAIT_FOR_REFEREE_COMMAND;
+                    break;
+                default:
+                    state=State.WAIT_FOR_REFEREE_COMMAND;
+                    break;
             }
         }
 
