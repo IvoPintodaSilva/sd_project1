@@ -9,4 +9,8 @@ public interface IRefereeSiteReferee {
     void declareGameWinner();
 
     void declareMatchWinner();
+
+    int getN_games();
+
+    int getN_games_played();
 }

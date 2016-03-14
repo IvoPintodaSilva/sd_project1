@@ -28,8 +28,8 @@ public class Referee extends Thread {
         State state = State.START_OF_THE_MATCH;
         Boolean flag = true;
 
-        while (flag){
-            switch (state){
+        while (flag) {
+            switch (state) {
                 case START_OF_THE_MATCH:
                     this.referee_site.announceNewGame();
                     state = State.START_OF_A_GAME;
@@ -44,13 +44,25 @@ public class Referee extends Thread {
                     break;
                 case WAIT_FOR_TRIAL_CONCLUSION:
                     flag = this.contestants_bench.assertTrialDecision();
+                    if (flag) {
+                        state = State.END_OF_A_GAME;
+                        this.referee_site.declareGameWinner();
+                    }
                     break;
                 case END_OF_A_GAME:
+                    if(this.referee_site.getN_games() > this.referee_site.getN_games_played())
+                    {
+                    this.referee_site.announceNewGame();
+                    state = state.START_OF_A_GAME;
+                     break;
+                    }
+                    state = state.END_OF_A_MATCH;
+                    this.referee_site.declareMatchWinner();
                     break;
                 case END_OF_A_MATCH:
                     break;
                 default:
-                    state=State.START_OF_THE_MATCH;
+                    state = State.START_OF_THE_MATCH;
                     break;
 
             }

@@ -9,6 +9,15 @@ import interfaces.IRefereeSiteReferee;
 public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRefereeSiteContestant{
     private int n_trials;
     private int n_trials_played;
+
+    public int getN_games() {
+        return n_games;
+    }
+
+    public int getN_games_played() {
+        return n_games_played;
+    }
+
     private int n_games;
     private int n_games_played;
     private int team0_wins;
