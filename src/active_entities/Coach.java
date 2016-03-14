@@ -37,11 +37,11 @@ public class Coach extends Thread {
                     state = State.ASSEMBLE_TEAM;
                     break;
                 case ASSEMBLE_TEAM:
-                    this.referee_site.informReferee();
+                    this.contestants_bench.informReferee();
                     state = State.WATCH_TRIAL;
                     break;
                 case WATCH_TRIAL:
-                    this.referee_site.reviewNotes();
+                    this.contestants_bench.reviewNotes();
                     state = State.WAIT_FOR_REFEREE_COMMAND;
                     break;
                 default:
