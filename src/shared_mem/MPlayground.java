@@ -19,7 +19,8 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
 
     /**
-     * This function purpose is to put the contestants at sleep in the playground
+     * Contestants sleep in the playground and the last one to get there wakes them up so that they pull at the same
+     * time
      */
     public synchronized void getReady()
     {
@@ -44,22 +45,14 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     }
 
 
-
+    /**
+     * Contestants pull the rope
+     */
     public synchronized void pullTheRope()
     {
         Contestant c = (Contestant) Thread.currentThread();
         System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is pulling the rope");
 
-        /*  wake up referee  */
-        //notifyAll();
-
-//        while (true){
-//            try {
-//                wait();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
     }
 
 

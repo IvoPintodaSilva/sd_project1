@@ -24,6 +24,9 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     private int n_contestants_done = 0;
 
 
+    /**
+     * Have contestants sleeping in the bench until they're waken up by both coaches
+     */
     public synchronized void seatDown()
     {
         Contestant c = (Contestant) Thread.currentThread();
@@ -38,6 +41,9 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         }
     }
 
+    /**
+     * Call contestants and sleep until they're waken up by the last contestant in position
+     */
     public synchronized void callContestants()
     {
         Coach c = (Coach) Thread.currentThread();
@@ -63,7 +69,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     }
 
     /**
-     * This function purpose is to put the contestants at sleep in playground until the referee call for the trial
+     * Follow coach advice and sleep until referee wakes them up on start trial
      */
     public synchronized void followCoachAdvice()
     {
@@ -90,7 +96,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
     /**
-     * This function purpose is to wake up the contestants and put the referee to sleep
+     * Referee sleeps until the last coach wakes him up on informReferee
      */
     public synchronized void callTrial()
     {
@@ -111,7 +117,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
     /**
-     * This function purpose is to coach inform the referree that the contestants are ready to play and put the coach to sleep
+     * Last coach wakes up referee and sleeps until the referee wakes him up on assertTrialDecision
      */
     public synchronized void informReferee() {
 
@@ -136,6 +142,9 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     }
 
 
+    /**
+     * Wakes up contestants in followCoachAdvice and sleeps until contestants are done pulling the rope
+     */
     public synchronized void startTrial()
     {
         Referee r = (Referee) Thread.currentThread();
@@ -143,7 +152,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
         this.trial_started = true;
 
-        /*  wake up contestants in playground  */
+        /*  wake up contestants in the bench  */
         notifyAll();
 
         /*  wait for contestants to get be done pulling the rope  */
@@ -156,7 +165,9 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         }
     }
 
-
+    /**
+     * Last contestant to be done wakes up referee and sleeps until referee wakes them up in assertTrialDecision
+     */
     public synchronized void iAmDone()
     {
         Contestant c = (Contestant) Thread.currentThread();
@@ -178,6 +189,10 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         }
     }
 
+    /**
+     * Wakes up contestants in iAmDone and states if there is going to be a next trial or not
+     * @return has_next_trial
+     */
     public synchronized boolean assertTrialDecision() {
         Referee r = (Referee) Thread.currentThread();
 
@@ -190,9 +205,14 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         return false;
     }
 
+    /**
+     * Coach reviews notes and makes changes in the teams and doesn't sleep
+     */
     public synchronized void reviewNotes() {
         Coach c = (Coach) Thread.currentThread();
 
+
+        /*  remove sleep statement  */
         System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at reviewNotes");
         while (true){
             try {

@@ -30,10 +30,16 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
 
     }
 
+    /**
+     * Declare game winner
+     */
     public synchronized void declareGameWinner() {
         //TODO-announce game  winner at referee
     }
 
+    /**
+     * Announce new game
+     */
     public synchronized void declareMatchWinner() {
         //TODO-announce match winner at referee
     }
