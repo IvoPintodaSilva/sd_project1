@@ -12,6 +12,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     private int[] contestants_seated;
     private int[] contestants_played;
 
+    private int n_coaches_called_contestants = 0;
     private boolean contestants_called = false;
     private int advice_followed = 0;
     private boolean contestant_in_position = false;
@@ -42,7 +43,11 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         Coach c = (Coach) Thread.currentThread();
         System.out.println("Coach " + c.getCoachId() + " called contestants");
 
-        this.contestants_called = true;
+        this.n_coaches_called_contestants += 1;
+
+        if(this.n_coaches_called_contestants >= 2){
+            this.contestants_called = true;
+        }
 
         /*  wake up the contestants in bench  */
         notifyAll();
@@ -187,7 +192,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized void reviewNotes() {
         Coach c = (Coach) Thread.currentThread();
 
-        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at informReferee");
+        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at reviewNotes");
         while (true){
             try {
                 wait();

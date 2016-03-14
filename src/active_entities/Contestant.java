@@ -50,6 +50,7 @@ public class Contestant extends Thread {
                         playground.pullTheRope();
                     }
                     contestants_bench.iAmDone();
+                    System.exit(0);
                     state = State.START;
                     break;
                 default:

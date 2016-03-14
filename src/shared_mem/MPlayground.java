@@ -24,13 +24,14 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     public synchronized void getReady()
     {
         Contestant c = (Contestant) Thread.currentThread();
-        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on getReady");
 
         n_contestants_ready += 1;
         if(this.n_contestants_ready >= 10){
             this.all_contestants_ready = true;
+            notifyAll();
         }
 
+        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on getReady");
         /*  wait for every contestant to be ready  */
         /*  the last contestant to get ready wakes up everyone else  */
         while (!this.all_contestants_ready){

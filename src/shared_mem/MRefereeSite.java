@@ -28,18 +28,6 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
         this.new_game_announced = true;
         System.out.println("New game announced");
 
-        /*  wake up coaches  */
-        notifyAll();
-
-        /*  wait to be informed by coaches  */
-        System.out.println("Referee is sleeping at announceNewGame");
-        while (this.n_coaches_informed_referee < 2){
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public synchronized void declareGameWinner() {
