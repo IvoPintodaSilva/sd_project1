@@ -42,38 +42,6 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
         }
     }
 
-    /**
-     * This function purpose is to coach inform the referree that the contestants are ready to play and put the coach to sleep
-     */
-    public synchronized void informReferee() {
-
-        Coach c = (Coach) Thread.currentThread();
-        this.n_coaches_informed_referee += 1;
-
-        /*  wake up referee  */
-        notifyAll();
-
-        /*  wait for trial decision  */
-        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at informReferee");
-        while (true){
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    public synchronized void assertTrialDecision() {
-        //TODO-announce new game at referee
-    }
-
-
-    public synchronized void reviewNotes() {
-        //TODO-review notes at coach, blocking mode
-    }
-
     public synchronized void declareGameWinner() {
         //TODO-announce game  winner at referee
     }
