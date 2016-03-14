@@ -14,14 +14,21 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
     private int n_coaches_called_contestants = 0;
     private boolean contestants_called = false;
+
     private int advice_followed = 0;
     private boolean contestant_in_position = false;
+
     private boolean trial_started = false;
-    private boolean coaches_informed = false;
+
     private int n_coaches_informed_referee = 0;
+    private boolean coaches_informed = false;
+
     private boolean trial_decided = false;
-    private boolean contestants_are_done = false;
+
     private int n_contestants_done = 0;
+    private boolean contestants_are_done = false;
+
+    private int n_trials_on_game = 0;
 
 
     /**
@@ -196,13 +203,26 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized boolean assertTrialDecision() {
         Referee r = (Referee) Thread.currentThread();
 
+        /*  increment the trials counter  */
+        this.n_trials_on_game += 1;
+
+        System.out.printf("\n---------------- Trial #%i was played ----------------\n", this.n_trials_on_game);
+
+        /*  flag to tell that there was a trial decision  */
         this.trial_decided = true;
 
         /*  wake up contestants in iAmDone and coaches in informReferee  */
         notifyAll();
 
         /*  return has_next_trial  */
-        return false;
+        if(this.n_trials_on_game >= 6){
+            /*  set number of trials to 0 for next game  */
+            this.n_trials_on_game = 0;
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     /**
