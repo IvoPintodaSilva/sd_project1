@@ -25,7 +25,6 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
         n_contestants_ready += 1;
         if(this.n_contestants_ready >= 10){
-            this.n_contestants_ready = 0;
             this.all_contestants_ready = true;
             notifyAll();
         }

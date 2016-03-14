@@ -25,7 +25,9 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     private int n_coaches_informed_referee = 0;
     private boolean coaches_informed = false;
 
-    private boolean trial_decided = false;
+    private boolean trial_decided_coach = false;
+    private boolean trial_decided_contestants = false;
+
 
     private int n_contestants_done = 0;
     private boolean contestants_are_done = false;
@@ -35,6 +37,14 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     private int n_contestants_done_awake = 0;
 
     private int n_coaches_reviewed_notes = 0;
+
+    private int n_contestants_called = 0;
+
+    private int n_coaches_contestants_in_position = 0;
+
+    private int n_contestants_trial_started = 0;
+
+    private int n_coaches_trial_decided = 0;
 
     /**
      * Have contestants sleeping in the bench until they're waken up by both coaches
@@ -51,6 +61,13 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                 e.printStackTrace();
             }
         }
+
+        this.n_contestants_called += 1;
+        if (this.n_contestants_called >= 10){
+            this.contestants_called = false; // the last contestant to get here, resets the seatDown flag
+            this.n_contestants_called = 0;
+        }
+
     }
 
 
@@ -63,9 +80,9 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         Referee c = (Referee) Thread.currentThread();
         System.out.println("Referee is asleep on callTrial");
 
-        if(this.n_trials_on_game > 0){
-            this.trial_called = true;
-        }
+        /*  wake up coaches in reviewNotes  */
+        this.trial_called = true;
+        notifyAll();
 
         /*  wait for coaches to inform referee  */
         while (!this.coaches_informed){
@@ -98,12 +115,18 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         /*  wake up the contestants in bench  */
         notifyAll();
 
-        while(this.contestant_in_position){
+        while(!this.contestant_in_position){
             try {
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+
+        this.n_coaches_contestants_in_position += 1;
+        if (this.n_coaches_contestants_in_position >= 2) {
+            this.n_coaches_contestants_in_position = 0;
+            this.contestant_in_position = false;
         }
 
     }
@@ -121,7 +144,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         if(this.advice_followed >= 10){
             this.contestant_in_position = true;
             this.advice_followed = 0;
-            this.contestants_called = false; // the last contestant to get here, resets the seatDown flag
             notifyAll();
         }
 
@@ -131,6 +153,12 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+
+        this.n_contestants_trial_started += 1;
+        if (this.n_contestants_trial_started >= 10) {
+            this.n_contestants_trial_started = 0;
+            this.trial_started = false;
         }
 
 
@@ -154,12 +182,18 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
         /*  wait for trial decision  */
         System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at informReferee");
-        while (!this.trial_decided){
+        while (!this.trial_decided_coach){
             try {
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+
+        this.n_coaches_trial_decided += 1;
+        if (this.n_coaches_trial_decided >= 2) {
+            this.n_coaches_trial_decided = 0;
+            this.trial_decided_coach = false;
         }
     }
 
@@ -205,7 +239,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         }
 
         System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on iAmDone");
-        while (!this.trial_decided){
+        while (!this.trial_decided_contestants){
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -214,11 +248,10 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         }
 
         this.n_contestants_done_awake += 1;
-
         if(this.n_contestants_done_awake >= 10){
             /*  reset conditions for next trial  */
             this.n_contestants_done_awake = 0;
-            this.trial_decided = false;
+            this.trial_decided_contestants = false;
         }
 
 
@@ -231,13 +264,16 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized boolean assertTrialDecision() {
         Referee r = (Referee) Thread.currentThread();
 
+        System.out.println("Referee is on assertTrialDecision");
+
         /*  increment the trials counter  */
         this.n_trials_on_game += 1;
 
         System.out.printf("\n---------------- Trial #%d was played ----------------\n", this.n_trials_on_game);
 
         /*  flag to tell that there was a trial decision  */
-        this.trial_decided = true;
+        this.trial_decided_contestants = true;
+        this.trial_decided_coach = true;
 
         /*  wake up contestants in iAmDone and coaches in informReferee  */
         notifyAll();
@@ -267,6 +303,8 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                 e.printStackTrace();
             }
         }
+
+        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is woke up at reviewNotes");
 
         if(this.n_coaches_reviewed_notes >= 2){
             this.n_coaches_reviewed_notes = 0;
