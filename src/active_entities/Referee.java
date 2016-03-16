@@ -26,9 +26,9 @@ public class Referee extends Thread {
     public void run() {
 
         State state = State.START_OF_THE_MATCH;
-        Boolean flag = true;
+        Boolean has_next_trial = true;
 
-        while (flag) {
+        while (has_next_trial) {
             switch (state) {
                 case START_OF_THE_MATCH:
                     this.referee_site.announceNewGame();
@@ -43,10 +43,16 @@ public class Referee extends Thread {
                     state = State.WAIT_FOR_TRIAL_CONCLUSION;
                     break;
                 case WAIT_FOR_TRIAL_CONCLUSION:
-                    flag = this.contestants_bench.assertTrialDecision();
-                    if (flag) {
-                        state = State.END_OF_A_GAME;
+                    has_next_trial = this.contestants_bench.assertTrialDecision();
+                    /*  if the trial decision says that there is a next trial, the referee has to call it  */
+                    if (has_next_trial == true) {
+                        this.contestants_bench.callTrial();
+                        state = State.TEAMS_READY;
+                    }
+                    /*  if not, the referee needs to declare a game winner  */
+                    else{
                         this.referee_site.declareGameWinner();
+                        state = State.END_OF_A_GAME;
                     }
                     break;
                 case END_OF_A_GAME:
