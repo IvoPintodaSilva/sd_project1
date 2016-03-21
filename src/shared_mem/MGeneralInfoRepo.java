@@ -44,12 +44,13 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
             team1_state[i]= contestantStates.NONE;
             team2_state[i]= contestantStates.NONE;
         }
+        Addheader(true);
     }
 
     private void Addheader(boolean first)
     {
         if(first)
-            System.out.printf( "                                Game of the Rope - Description of the internal state" +
+            System.out.printf( "                               Game of the Rope - Description of the internal state" +
                     "\n\n" +
                     "Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5     Trial    \n" +
                     "Sta  Stat Sta SG Sta SG Sta SG Sta SG Sta SG  Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS\n");
