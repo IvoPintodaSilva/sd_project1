@@ -88,6 +88,23 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     }
     @Override
     public void coachLog(int team_id, CoachState state) {
+        switch (state){
+            case WAIT_FOR_REFEREE_COMMAND:
+                this.coach_state[team_id - 1] = coachStates.WRC;
+                break;
+            case ASSEMBLE_TEAM:
+                this.coach_state[team_id - 1] = coachStates.AST;
+                break;
+            case WATCH_TRIAL:
+                this.coach_state[team_id - 1] = coachStates.WTR;
+        }
+
+        printStates();
+
+    }
+
+    @Override
+    public void refereeLog(RefState state) {
         //Todo-add code
     }
 
@@ -96,9 +113,12 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         //Todo-add code
     }
 
-    @Override
-    public void refereeLog(RefState state) {
-        //Todo-add code
+
+    public void printStates(){
+        // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
+        // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
+
+        System.out.printf("### %s ### ## ### ## ### ## ### ## ### ## %s ### ## ### ## ### ## ### ## ### ## - - - . - - - -- --\n", coach_state[0], coach_state[1]);
     }
 
 }

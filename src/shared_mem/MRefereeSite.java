@@ -35,7 +35,7 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
         Referee ref = (Referee) Thread.currentThread();
 
         this.new_game_announced = true;
-        System.out.println("New game announced");
+        //System.out.println("New game announced");
 
     }
 

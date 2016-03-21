@@ -29,7 +29,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             notifyAll();
         }
 
-        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on getReady");
+        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on getReady");
         /*  wait for every contestant to be ready  */
         /*  the last contestant to get ready wakes up everyone else  */
         while (!this.all_contestants_ready){
@@ -60,7 +60,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
 
         Contestant c = (Contestant) Thread.currentThread();
-        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is pulling the rope");
+        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is pulling the rope");
 
     }
 
