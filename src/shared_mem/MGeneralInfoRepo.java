@@ -18,13 +18,13 @@ import java.util.Locale;
 public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoReferee{
 
     public enum refStates{
-        SOM,SOG,TSR,WTC,EOM,EOG,NONE
+        SOM,SOG,TSR,WTC,EOM,EOG,NON
     };
     public enum  coachStates{
-        WRC,AST,WTR,NONE
+        WRC,AST,WTR,NON
     };
     public enum contestantStates{
-        SAB,SIP,DYB,NONE
+        SAB,SIP,DYB,NON
     };
 
     private static refStates referee_state;
@@ -52,17 +52,17 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         game_nr = 0;
         score_t1=0;
         score_t2=0;
-        referee_state = refStates.NONE;
+        referee_state = refStates.NON;
         coach_state = new coachStates[2];
         for (int i=0;i<coach_state.length;i++) {
-            coach_state[i]= coachStates.NONE;
+            coach_state[i]= coachStates.NON;
         }
 
         team1_state = new contestantStates[5];
         team2_state = new contestantStates[5];
         for (int i=0;i<team1_state.length;i++) {
-            team1_state[i]= contestantStates.NONE;
-            team2_state[i]= contestantStates.NONE;
+            team1_state[i]= contestantStates.NON;
+            team2_state[i]= contestantStates.NON;
         }
         Addheader(true);
     }
@@ -186,7 +186,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
-        TO_WRITE += String.format("%s %s ### ## ### ## ### ## ### ## ### ## %s ### ## ### ## ### ## ### ## ### ## - - - . - - - -- --\n",
+        TO_WRITE += String.format("%s   %s ### ## ### ## ### ## ### ## ### ##   %s ### ## ### ## ### ## ### ## ### ## - - - . - - - -- --\n",
                 referee_state,
                 coach_state[0],
                 coach_state[1]);
