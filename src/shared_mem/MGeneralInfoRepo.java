@@ -7,6 +7,9 @@ import interfaces.IRepoCoach;
 import interfaces.IRepoContestant;
 import interfaces.IRepoReferee;
 
+import java.io.*;
+import java.nio.file.*;
+
 /**
  * Created by ivosilva on 22/02/16.
  */
@@ -22,13 +25,31 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         SAB,SIP,DYB,NONE
     };
 
-    private refStates referee_state;
-    private coachStates[] coach_state;
-    private contestantStates[] team1_state;
-    private contestantStates[] team2_state;
+    private static refStates referee_state;
+    private static coachStates[] coach_state;
+    private static contestantStates[] team1_state;
+    private static contestantStates[] team2_state;
+    private static int game_nr;
+    private static int score_t1;
+    private static int score_t2;
+    private static File OUTPUT_FILE;
+    private String TO_WRITE="";
+    private static String LOG_LOCATION;
+    private static Writer output=null;
+
 
     public MGeneralInfoRepo()
     {
+        LOG_LOCATION = "RopeGame.txt";
+        TO_WRITE="";
+        OUTPUT_FILE = new File(LOG_LOCATION);
+        if(OUTPUT_FILE.exists())
+        {
+            deleteFile();
+        }
+        game_nr = 0;
+        score_t1=0;
+        score_t2=0;
         referee_state = refStates.NONE;
         coach_state = new coachStates[2];
         for (int i=0;i<coach_state.length;i++) {
@@ -41,14 +62,27 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
             team1_state[i]= contestantStates.NONE;
             team2_state[i]= contestantStates.NONE;
         }
+        Addheader(true);
     }
 
-    private synchronized String Addheader(boolean first)
+    private synchronized void Addheader(boolean first)
     {
-        if(first)
-            return "";
-        else
-            return "";
+        String temp="";//temporary string
+        if(first) {
+            temp="                               Game of the Rope - Description of the internal state" +
+                    "\n\n" +
+                    "Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5     Trial    \n" +
+                    "Sta  Stat Sta SG Sta SG Sta SG Sta SG Sta SG  Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS\n";
+            System.out.printf(temp);
+            TO_WRITE += temp;
+        }
+        else {
+            temp = "Game " + this.game_nr +
+                    " \nRef Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5     Trial    \n" +
+                    "Sta  Stat Sta SG Sta SG Sta SG Sta SG Sta SG  Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS\n";
+            System.out.printf(temp);
+            TO_WRITE += temp;
+        }
     }
     @Override
     public synchronized void coachLog(int team_id, CoachState state) {
@@ -66,6 +100,43 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
 
         printStates();
 
+    }
+
+    /**
+     * imprime resultado do jogo ou da partida, ou de ambos
+     * @param id
+     * @param team_id
+     * @param wonType knock out, draw or points
+     * @param nr_trials
+     */
+    private void printResult(int id, int team_id, String wonType, int nr_trials)
+    {
+        switch (id){
+            case 0://game
+                if(wonType.equalsIgnoreCase("knock out"))
+                {
+                    System.out.printf("Game %i was won by team %i by %d in %i trials.",this.game_nr,team_id,wonType,nr_trials);
+                }
+                else if(wonType.equalsIgnoreCase("draw"))
+                {
+                    System.out.printf("Game %i was a draw",this.game_nr);
+                }
+                else if(wonType.equalsIgnoreCase("points"))
+                {
+                    System.out.printf("Game %i was won by team %i by %d",this.game_nr,team_id,wonType);
+                }
+                break;
+            case 1://match
+                if(wonType.equalsIgnoreCase("draw"))
+                    System.out.printf("Match was draw");
+                else if(wonType.equalsIgnoreCase("won"))
+                    System.out.printf("Match was won by team %i (%i-%i).",team_id, this.score_t1,this.score_t2);
+                break;
+
+            default:
+                System.out.println("Invalid id must be between 0 and 1");
+                break;
+        }
     }
 
     @Override
@@ -93,6 +164,10 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         }
 
         printStates();
+        writeToFile();
+//        if(state== RefState.END_OF_A_GAME){
+//            writeToFile(true);
+//        }
     }
 
     @Override
@@ -107,5 +182,37 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
 
         System.out.printf("%s %s ### ## ### ## ### ## ### ## ### ## %s ### ## ### ## ### ## ### ## ### ## - - - . - - - -- --\n", referee_state, coach_state[0], coach_state[1]);
     }
+
+    public synchronized void writeToFile(){
+        //use buffering
+
+        try {
+                output = new BufferedWriter(new FileWriter(OUTPUT_FILE,true));
+            //FileWriter always assumes default encoding is OK!
+            output.write(TO_WRITE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (output != null) try {
+                output.close();
+                TO_WRITE="";
+            } catch (IOException ignore) {}
+        }
+    }
+
+    public void deleteFile()
+    {
+        try {
+            Files.delete(OUTPUT_FILE.toPath());
+        } catch (NoSuchFileException x) {
+            System.err.format("%s: no such" + " file or directory%n", OUTPUT_FILE.toPath());
+        } catch (DirectoryNotEmptyException x) {
+            System.err.format("%s not empty%n", OUTPUT_FILE.toPath());
+        } catch (IOException x) {
+            // File permission problems are caught here.
+            System.err.println(x);
+        }
+    }
+
 
 }
