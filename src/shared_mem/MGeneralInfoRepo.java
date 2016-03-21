@@ -210,7 +210,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
-        TO_WRITE += String.format("%s %s %s ## %s ## %s ## %s ## %s ## %s %s ## %s ## %s ## %s ## %s ## - - - . - - - -- --\n",
+        TO_WRITE += String.format("%s   %s %s ## %s ## %s ## %s ## %s ##   %s %s ## %s ## %s ## %s ## %s ## - - - . - - - -- --\n",
                 referee_state,
                 coach_state[0],
                 team1_state[0],
