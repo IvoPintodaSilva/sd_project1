@@ -61,6 +61,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                 break;
             case WATCH_TRIAL:
                 this.coach_state[team_id - 1] = coachStates.WTR;
+                break;
         }
 
         printStates();
@@ -69,7 +70,29 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
 
     @Override
     public void refereeLog(RefState state) {
-        //Todo-add code
+        // START_OF_THE_MATCH, START_OF_A_GAME, TEAMS_READY, WAIT_FOR_TRIAL_CONCLUSION, END_OF_A_GAME, END_OF_A_MATCH
+        switch (state){
+            case START_OF_THE_MATCH:
+                this.referee_state = refStates.SOM;
+                break;
+            case START_OF_A_GAME:
+                this.referee_state = refStates.SOG;
+                break;
+            case TEAMS_READY:
+                this.referee_state = refStates.TSR;
+                break;
+            case WAIT_FOR_TRIAL_CONCLUSION:
+                this.referee_state = refStates.WTC;
+                break;
+            case END_OF_A_GAME:
+                this.referee_state = refStates.EOG;
+                break;
+            case END_OF_A_MATCH:
+                this.referee_state = refStates.EOM;
+                break;
+        }
+
+        printStates();
     }
 
     @Override
@@ -82,7 +105,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
-        System.out.printf("### %s ### ## ### ## ### ## ### ## ### ## %s ### ## ### ## ### ## ### ## ### ## - - - . - - - -- --\n", coach_state[0], coach_state[1]);
+        System.out.printf("%s %s ### ## ### ## ### ## ### ## ### ## %s ### ## ### ## ### ## ### ## ### ## - - - . - - - -- --\n", referee_state, coach_state[0], coach_state[1]);
     }
 
 }

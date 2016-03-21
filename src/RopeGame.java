@@ -29,7 +29,8 @@ public class RopeGame {
         Referee ref = new Referee(
                 (IPlaygroundReferee) playground,
                 (IRefereeSiteReferee) refereeSite,
-                (IContestantsBenchReferee) bench);
+                (IContestantsBenchReferee) bench,
+                (IRepoReferee) repo);
 
 
 
