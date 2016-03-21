@@ -43,6 +43,13 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         }
     }
 
+    private String Addheader(boolean first)
+    {
+        if(first)
+            return "";
+        else
+            return "";
+    }
     @Override
     public void coachLog(int team_id, CoachState state) {
         //Todo-add code
