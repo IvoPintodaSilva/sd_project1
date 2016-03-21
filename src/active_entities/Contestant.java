@@ -41,12 +41,12 @@ public class Contestant extends Thread {
                 case SEAT_AT_THE_BENCH:
                     contestants_bench.followCoachAdvice();
                     state = ContestantState.STAND_IN_POSITION;
-                    repo.contestantLog(this.id, this.team_id, state);
+                    repo.contestantLog(this.id, this.team_id, this.strength, state);
                     break;
                 case STAND_IN_POSITION:
                     playground.getReady();
                     state = ContestantState.DO_YOUR_BEST;
-                    repo.contestantLog(this.id, this.team_id, state);
+                    repo.contestantLog(this.id, this.team_id, this.strength, state);
                     break;
                 case DO_YOUR_BEST:
                     /*  this can't be done with a for loop, needs further analysis  */
@@ -60,7 +60,7 @@ public class Contestant extends Thread {
                 default:
                     state = ContestantState.SEAT_AT_THE_BENCH;
                     contestants_bench.seatDown();
-                    repo.contestantLog(this.id, this.team_id, state);
+                    repo.contestantLog(this.id, this.team_id, this.strength, state);
                     break;
             }
         }

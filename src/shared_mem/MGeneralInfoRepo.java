@@ -31,6 +31,8 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     private static coachStates[] coach_state;
     private static contestantStates[] team1_state;
     private static contestantStates[] team2_state;
+    private static int[] team1_strength;
+    private static int[] team2_strength;
     private static int game_nr;
     private static int score_t1;
     private static int score_t2;
@@ -64,6 +66,14 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
             team1_state[i]= contestantStates.NON;
             team2_state[i]= contestantStates.NON;
         }
+
+        team1_strength = new int[5];
+        team2_strength = new int[5];
+        for (int i=0;i<team1_strength.length;i++) {
+            team1_strength[i] = 0;
+            team2_strength[i] = 0;
+        }
+
         Addheader(true);
     }
 
@@ -176,28 +186,34 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     }
 
     @Override
-    public synchronized void contestantLog(int id, int team_id, ContestantState state) {
+    public synchronized void contestantLog(int id, int team_id, int strength, ContestantState state) {
         //    SEAT_AT_THE_BENCH, STAND_IN_POSITION, DO_YOUR_BEST, START
         switch (state){
             case SEAT_AT_THE_BENCH:
                 if(team_id == 1){
                     this.team1_state[id] = contestantStates.SAB;
+                    this.team1_strength[id] = strength;
                 }else if (team_id == 2){
                     this.team2_state[id] = contestantStates.SAB;
+                    this.team2_strength[id] = strength;
                 }
                 break;
             case STAND_IN_POSITION:
                 if(team_id == 1){
                     this.team1_state[id] = contestantStates.SIP;
+                    this.team1_strength[id] = strength;
                 }else if (team_id == 2){
                     this.team2_state[id] = contestantStates.SIP;
+                    this.team2_strength[id] = strength;
                 }
                 break;
             case DO_YOUR_BEST:
                 if(team_id == 1){
                     this.team1_state[id] = contestantStates.DYB;
+                    this.team1_strength[id] = strength;
                 }else if (team_id == 2){
                     this.team2_state[id] = contestantStates.DYB;
+                    this.team2_strength[id] = strength;
                 }
                 break;
         }
@@ -210,20 +226,30 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
-        TO_WRITE += String.format("%s   %s %s ## %s ## %s ## %s ## %s ##   %s %s ## %s ## %s ## %s ## %s ## - - - . - - - -- --\n",
+        TO_WRITE += String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d - - - . - - - -- --\n",
                 referee_state,
                 coach_state[0],
                 team1_state[0],
+                team1_strength[0],
                 team1_state[1],
+                team1_strength[1],
                 team1_state[2],
+                team1_strength[2],
                 team1_state[3],
+                team1_strength[3],
                 team1_state[4],
+                team1_strength[4],
                 coach_state[1],
                 team2_state[0],
+                team2_strength[0],
                 team2_state[1],
+                team2_strength[1],
                 team2_state[2],
+                team2_strength[2],
                 team2_state[3],
-                team2_state[4]);
+                team2_strength[3],
+                team2_state[4],
+                team2_strength[4]);
     }
 
     public synchronized void writeToFile(){

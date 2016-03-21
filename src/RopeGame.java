@@ -7,6 +7,8 @@ import shared_mem.MGeneralInfoRepo;
 import shared_mem.MPlayground;
 import shared_mem.MRefereeSite;
 
+import java.util.Random;
+
 public class RopeGame {
     public static void main(String[] args) {
 
@@ -33,10 +35,10 @@ public class RopeGame {
                 (IRepoReferee) repo);
 
 
-
+        Random rn = new Random();
         Contestant[] contestants_team1 = new Contestant[5];
         for(int i = 0; i < 5; i++){
-            contestants_team1[i] = new Contestant(i, 1, 5,
+            contestants_team1[i] = new Contestant(i, 1, rn.nextInt(20 - 10 + 1) + 10,
                     (IPlaygroundContestant) playground,
                     (IRefereeSiteContestant) refereeSite,
                     (IContestantsBenchContestant) bench,
@@ -46,7 +48,7 @@ public class RopeGame {
 
         Contestant[] contestants_team2 = new Contestant[5];
         for(int i = 0; i < 5; i++){
-            contestants_team2[i] = new Contestant(i, 2, 5,
+            contestants_team2[i] = new Contestant(i, 2, rn.nextInt(20 - 10 + 1) + 10,
                     (IPlaygroundContestant) playground,
                     (IRefereeSiteContestant) refereeSite,
                     (IContestantsBenchContestant) bench,
