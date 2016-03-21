@@ -40,7 +40,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
 
     public MGeneralInfoRepo()
     {
-        LOG_LOCATION = "RopeGame.txt";
+        LOG_LOCATION = "RopeGame.log";
         TO_WRITE="";
         OUTPUT_FILE = new File(LOG_LOCATION);
         if(OUTPUT_FILE.exists())
