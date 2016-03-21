@@ -29,6 +29,8 @@ public class Coach extends Thread {
     public void run() {
 
         CoachState state = CoachState.WAIT_FOR_REFEREE_COMMAND;
+        repo.coachLog(this.team_id, state);
+
 
         while (true){
             switch (state){

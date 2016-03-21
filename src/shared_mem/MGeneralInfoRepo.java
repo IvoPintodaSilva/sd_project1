@@ -43,7 +43,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         }
     }
 
-    private String Addheader(boolean first)
+    private synchronized String Addheader(boolean first)
     {
         if(first)
             return "";
@@ -51,7 +51,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
             return "";
     }
     @Override
-    public void coachLog(int team_id, CoachState state) {
+    public synchronized void coachLog(int team_id, CoachState state) {
         switch (state){
             case WAIT_FOR_REFEREE_COMMAND:
                 this.coach_state[team_id - 1] = coachStates.WRC;
@@ -69,7 +69,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     }
 
     @Override
-    public void refereeLog(RefState state) {
+    public synchronized void refereeLog(RefState state) {
         // START_OF_THE_MATCH, START_OF_A_GAME, TEAMS_READY, WAIT_FOR_TRIAL_CONCLUSION, END_OF_A_GAME, END_OF_A_MATCH
         switch (state){
             case START_OF_THE_MATCH:
@@ -96,12 +96,12 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     }
 
     @Override
-    public void contestantLog(int id, int team_id, ContestantState state) {
+    public synchronized void contestantLog(int id, int team_id, ContestantState state) {
         //Todo-add code
     }
 
 
-    public void printStates(){
+    public synchronized void printStates(){
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
