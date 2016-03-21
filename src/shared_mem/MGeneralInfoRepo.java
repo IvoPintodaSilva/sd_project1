@@ -1,6 +1,5 @@
 package shared_mem;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import enums.CoachState;
 import enums.ContestantState;
 import enums.RefState;
@@ -27,11 +26,9 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     private coachStates[] coach_state;
     private contestantStates[] team1_state;
     private contestantStates[] team2_state;
-    private static int game_nr;
 
     public MGeneralInfoRepo()
     {
-        this.game_nr=0;
         referee_state = refStates.NONE;
         coach_state = new coachStates[2];
         for (int i=0;i<coach_state.length;i++) {
@@ -44,51 +41,17 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
             team1_state[i]= contestantStates.NONE;
             team2_state[i]= contestantStates.NONE;
         }
-        Addheader(true);
     }
 
-    private void Addheader(boolean first)
+    private synchronized String Addheader(boolean first)
     {
         if(first)
-            System.out.printf( "                               Game of the Rope - Description of the internal state" +
-                    "\n\n" +
-                    "Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5     Trial    \n" +
-                    "Sta  Stat Sta SG Sta SG Sta SG Sta SG Sta SG  Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS\n");
+            return "";
         else
-            System.out.printf( "Game %i" +
-                    "\nRef Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5     Trial    \n" +
-            "Sta  Stat Sta SG Sta SG Sta SG Sta SG Sta SG  Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS\n",this.game_nr);
-    }
-
-    /**
-     * imprime resultado do jogo ou da partida, ou de ambos
-     * @param id
-     * @param wonType 0-knockout
-     */
-    private void printResult(int id, Integer wonType)
-    {
-        switch (id){
-            case 0://game
-                if(wonType != null)
-                {
-                    if(wonType==0)//knockout
-                    System.out.printf("");
-                }
-
-                break;
-            case 1://match
-                System.out.printf("");
-                break;
-            case 2://game AND match
-                System.out.printf("");
-                break;
-            default:
-                System.out.println("Invalid id must be between 0 and 2");
-                break;
-        }
+            return "";
     }
     @Override
-    public void coachLog(int team_id, CoachState state) {
+    public synchronized void coachLog(int team_id, CoachState state) {
         switch (state){
             case WAIT_FOR_REFEREE_COMMAND:
                 this.coach_state[team_id - 1] = coachStates.WRC;
@@ -106,7 +69,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     }
 
     @Override
-    public void refereeLog(RefState state) {
+    public synchronized void refereeLog(RefState state) {
         // START_OF_THE_MATCH, START_OF_A_GAME, TEAMS_READY, WAIT_FOR_TRIAL_CONCLUSION, END_OF_A_GAME, END_OF_A_MATCH
         switch (state){
             case START_OF_THE_MATCH:
@@ -133,12 +96,12 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     }
 
     @Override
-    public void contestantLog(int id, int team_id, ContestantState state) {
+    public synchronized void contestantLog(int id, int team_id, ContestantState state) {
         //Todo-add code
     }
 
 
-    public void printStates(){
+    public synchronized void printStates(){
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
