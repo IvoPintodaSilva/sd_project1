@@ -73,14 +73,14 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                     "\n\n" +
                     "Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5     Trial    \n" +
                     "Sta  Stat Sta SG Sta SG Sta SG Sta SG Sta SG  Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS\n";
-            System.out.printf(temp);
+            //System.out.printf(temp);
             TO_WRITE += temp;
         }
         else {
             temp = "Game " + this.game_nr +
                     " \nRef Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5     Trial    \n" +
                     "Sta  Stat Sta SG Sta SG Sta SG Sta SG Sta SG  Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS\n";
-            System.out.printf(temp);
+            //System.out.printf(temp);
             TO_WRITE += temp;
         }
     }
@@ -111,32 +111,35 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
      */
     private void printResult(int id, int team_id, String wonType, int nr_trials)
     {
+        String temp="";
         switch (id){
             case 0://game
                 if(wonType.equalsIgnoreCase("knock out"))
                 {
-                    System.out.printf("Game %i was won by team %i by %d in %i trials.",this.game_nr,team_id,wonType,nr_trials);
+                    temp = "Game "+ this.game_nr+" was won by team "+team_id +" by "+wonType+" in "+ nr_trials +" trials.";
                 }
                 else if(wonType.equalsIgnoreCase("draw"))
                 {
-                    System.out.printf("Game %i was a draw",this.game_nr);
+                    temp = "Game "+this.game_nr+" was a draw";
                 }
                 else if(wonType.equalsIgnoreCase("points"))
                 {
-                    System.out.printf("Game %i was won by team %i by %d",this.game_nr,team_id,wonType);
+                    temp = "Game "+this.game_nr+" was won by team "+team_id+" by "+wonType+".";
+
                 }
                 break;
             case 1://match
                 if(wonType.equalsIgnoreCase("draw"))
-                    System.out.printf("Match was draw");
+                    temp="Match was draw";
                 else if(wonType.equalsIgnoreCase("won"))
-                    System.out.printf("Match was won by team %i (%i-%i).",team_id, this.score_t1,this.score_t2);
+                    temp = "Match was won by team "+team_id+" ("+this.score_t1+"-"+this.score_t2+").";
                 break;
 
             default:
-                System.out.println("Invalid id must be between 0 and 1");
+                temp ="Invalid id must be between 0 and 1";
                 break;
         }
+        TO_WRITE += temp;
     }
 
     @Override
@@ -173,6 +176,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     @Override
     public synchronized void contestantLog(int id, int team_id, ContestantState state) {
         //Todo-add code
+        
     }
 
 
