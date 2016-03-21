@@ -1,6 +1,7 @@
 package active_entities;
 
 
+import enums.ContestantState;
 import interfaces.IContestantsBenchContestant;
 import interfaces.IPlaygroundContestant;
 import interfaces.IRefereeSiteContestant;
@@ -13,10 +14,6 @@ public class Contestant extends Thread {
     private IContestantsBenchContestant contestants_bench;
     private IRefereeSiteContestant referee_site;
     private IPlaygroundContestant playground;
-
-    private enum State {
-        SEAT_AT_THE_BENCH, STAND_IN_POSITION, DO_YOUR_BEST, START
-    }
 
     public Contestant(int id, int team_id, int strength,
                       IPlaygroundContestant playground,
@@ -32,17 +29,17 @@ public class Contestant extends Thread {
 
     public void run() {
 
-        State state= State.START;
+        ContestantState state= ContestantState.START;
         while (true){
             switch (state){
 
                 case SEAT_AT_THE_BENCH:
                     contestants_bench.followCoachAdvice();
-                    state = State.STAND_IN_POSITION;
+                    state = ContestantState.STAND_IN_POSITION;
                     break;
                 case STAND_IN_POSITION:
                     playground.getReady();
-                    state = State.DO_YOUR_BEST;
+                    state = ContestantState.DO_YOUR_BEST;
                     break;
                 case DO_YOUR_BEST:
                     /*  this can't be done with a for loop, needs further analysis  */
@@ -50,10 +47,10 @@ public class Contestant extends Thread {
                         playground.pullTheRope();
                     }
                     contestants_bench.iAmDone();
-                    state = State.START;
+                    state = ContestantState.START;
                     break;
                 default:
-                    state = State.SEAT_AT_THE_BENCH;
+                    state = ContestantState.SEAT_AT_THE_BENCH;
                     contestants_bench.seatDown();
                     break;
             }

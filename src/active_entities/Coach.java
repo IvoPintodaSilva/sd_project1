@@ -1,5 +1,6 @@
 package active_entities;
 
+import enums.CoachState;
 import interfaces.IPlaygroundCoach;
 import interfaces.IContestantsBenchCoach;
 import interfaces.IRefereeSiteCoach;
@@ -13,10 +14,6 @@ public class Coach extends Thread {
     private IRefereeSiteCoach referee_site;
     private IPlaygroundCoach playground;
 
-    private enum State {
-        WAIT_FOR_REFEREE_COMMAND, ASSEMBLE_TEAM, WATCH_TRIAL
-    }
-
     public Coach(int id, int team_id, IPlaygroundCoach playground, IRefereeSiteCoach referee_site,
                  IContestantsBenchCoach contestants_bench) {
         this.id = id;
@@ -28,24 +25,24 @@ public class Coach extends Thread {
 
     public void run() {
 
-        State state = State.WAIT_FOR_REFEREE_COMMAND;
+        CoachState state = CoachState.WAIT_FOR_REFEREE_COMMAND;
 
         while (true){
             switch (state){
                 case WAIT_FOR_REFEREE_COMMAND:
                     this.contestants_bench.callContestants();
-                    state = State.ASSEMBLE_TEAM;
+                    state = CoachState.ASSEMBLE_TEAM;
                     break;
                 case ASSEMBLE_TEAM:
                     this.contestants_bench.informReferee();
-                    state = State.WATCH_TRIAL;
+                    state = CoachState.WATCH_TRIAL;
                     break;
                 case WATCH_TRIAL:
                     this.contestants_bench.reviewNotes();
-                    state = State.WAIT_FOR_REFEREE_COMMAND;
+                    state = CoachState.WAIT_FOR_REFEREE_COMMAND;
                     break;
                 default:
-                    state=State.WAIT_FOR_REFEREE_COMMAND;
+                    state= CoachState.WAIT_FOR_REFEREE_COMMAND;
                     break;
             }
         }
