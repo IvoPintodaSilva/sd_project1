@@ -9,6 +9,8 @@ import interfaces.IRepoReferee;
 
 import java.io.*;
 import java.nio.file.*;
+import java.util.Formatter;
+import java.util.Locale;
 
 /**
  * Created by ivosilva on 22/02/16.
@@ -184,7 +186,10 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
-        System.out.printf("%s %s ### ## ### ## ### ## ### ## ### ## %s ### ## ### ## ### ## ### ## ### ## - - - . - - - -- --\n", referee_state, coach_state[0], coach_state[1]);
+        TO_WRITE += String.format("%s %s ### ## ### ## ### ## ### ## ### ## %s ### ## ### ## ### ## ### ## ### ## - - - . - - - -- --\n",
+                referee_state,
+                coach_state[0],
+                coach_state[1]);
     }
 
     public synchronized void writeToFile(){
