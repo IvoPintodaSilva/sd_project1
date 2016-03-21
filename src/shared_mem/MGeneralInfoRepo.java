@@ -174,7 +174,32 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
 
     @Override
     public synchronized void contestantLog(int id, int team_id, ContestantState state) {
-        //Todo-add code
+        //    SEAT_AT_THE_BENCH, STAND_IN_POSITION, DO_YOUR_BEST, START
+        switch (state){
+            case SEAT_AT_THE_BENCH:
+                if(team_id == 1){
+                    this.team1_state[id] = contestantStates.SAB;
+                }else if (team_id == 2){
+                    this.team2_state[id] = contestantStates.SAB;
+                }
+                break;
+            case STAND_IN_POSITION:
+                if(team_id == 1){
+                    this.team1_state[id] = contestantStates.SIP;
+                }else if (team_id == 2){
+                    this.team2_state[id] = contestantStates.SIP;
+                }
+                break;
+            case DO_YOUR_BEST:
+                if(team_id == 1){
+                    this.team1_state[id] = contestantStates.DYB;
+                }else if (team_id == 2){
+                    this.team2_state[id] = contestantStates.DYB;
+                }
+                break;
+        }
+        printStates();
+        writeToFile();
     }
 
 
@@ -182,17 +207,27 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
-        TO_WRITE += String.format("%s %s ### ## ### ## ### ## ### ## ### ## %s ### ## ### ## ### ## ### ## ### ## - - - . - - - -- --\n",
+        TO_WRITE += String.format("%s %s %s ## %s ## %s ## %s ## %s ## %s %s ## %s ## %s ## %s ## %s ## - - - . - - - -- --\n",
                 referee_state,
                 coach_state[0],
-                coach_state[1]);
+                team1_state[0],
+                team1_state[1],
+                team1_state[2],
+                team1_state[3],
+                team1_state[4],
+                coach_state[1],
+                team2_state[0],
+                team2_state[1],
+                team2_state[2],
+                team2_state[3],
+                team2_state[4]);
     }
 
     public synchronized void writeToFile(){
         //use buffering
 
         try {
-                output = new BufferedWriter(new FileWriter(OUTPUT_FILE,true));
+            output = new BufferedWriter(new FileWriter(OUTPUT_FILE,true));
             //FileWriter always assumes default encoding is OK!
             output.write(TO_WRITE);
         } catch (IOException e) {

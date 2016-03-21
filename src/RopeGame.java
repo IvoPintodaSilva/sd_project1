@@ -39,7 +39,8 @@ public class RopeGame {
             contestants_team1[i] = new Contestant(i, 1, 5,
                     (IPlaygroundContestant) playground,
                     (IRefereeSiteContestant) refereeSite,
-                    (IContestantsBenchContestant) bench);
+                    (IContestantsBenchContestant) bench,
+                    (IRepoContestant) repo);
             contestants_team1[i].start();
         }
 
@@ -48,7 +49,8 @@ public class RopeGame {
             contestants_team2[i] = new Contestant(i, 2, 5,
                     (IPlaygroundContestant) playground,
                     (IRefereeSiteContestant) refereeSite,
-                    (IContestantsBenchContestant) bench);
+                    (IContestantsBenchContestant) bench,
+                    (IRepoContestant) repo);
             contestants_team2[i].start();
         }
 
