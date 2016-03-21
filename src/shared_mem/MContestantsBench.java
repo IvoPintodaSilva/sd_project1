@@ -52,7 +52,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized void seatDown()
     {
         Contestant c = (Contestant) Thread.currentThread();
-        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on seatDown");
+        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on seatDown");
 
         while (!this.contestants_called){
             try {
@@ -78,7 +78,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized void callTrial()
     {
         Referee c = (Referee) Thread.currentThread();
-        System.out.println("Referee is asleep on callTrial");
+        //System.out.println("Referee is asleep on callTrial");
 
         /*  wake up coaches in reviewNotes  */
         this.trial_called = true;
@@ -103,7 +103,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized void callContestants()
     {
         Coach c = (Coach) Thread.currentThread();
-        System.out.println("Coach " + c.getCoachId() + " called contestants");
+        //System.out.println("Coach " + c.getCoachId() + " called contestants");
 
         this.n_coaches_called_contestants += 1;
 
@@ -137,7 +137,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized void followCoachAdvice()
     {
         Contestant c = (Contestant) Thread.currentThread();
-        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on followCoachAdvice");
+        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on followCoachAdvice");
 
         /*  when all the players have followed the advice, wake up coach  */
         this.advice_followed += 1;
@@ -181,7 +181,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         }
 
         /*  wait for trial decision  */
-        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at informReferee");
+        //System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at informReferee");
         while (!this.trial_decided_coach){
             try {
                 wait();
@@ -204,7 +204,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized void startTrial()
     {
         Referee r = (Referee) Thread.currentThread();
-        System.out.println("Referee is asleep on startTrial");
+        //System.out.println("Referee is asleep on startTrial");
 
         this.trial_started = true;
 
@@ -238,7 +238,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             notifyAll();
         }
 
-        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on iAmDone");
+        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on iAmDone");
         while (!this.trial_decided_contestants){
             try {
                 wait();
@@ -264,12 +264,12 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized boolean assertTrialDecision() {
         Referee r = (Referee) Thread.currentThread();
 
-        System.out.println("Referee is on assertTrialDecision");
+        //System.out.println("Referee is on assertTrialDecision");
 
         /*  increment the trials counter  */
         this.n_trials_on_game += 1;
 
-        System.out.printf("\n---------------- Trial #%d was played ----------------\n", this.n_trials_on_game);
+        //System.out.printf("\n---------------- Trial #%d was played ----------------\n", this.n_trials_on_game);
 
         /*  flag to tell that there was a trial decision  */
         this.trial_decided_contestants = true;
@@ -295,7 +295,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized void reviewNotes() {
         Coach c = (Coach) Thread.currentThread();
 
-        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at reviewNotes");
+        //System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at reviewNotes");
         while (!this.trial_called){
             try {
                 wait();
@@ -304,7 +304,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             }
         }
 
-        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is woke up at reviewNotes");
+        //System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is woke up at reviewNotes");
 
         if(this.n_coaches_reviewed_notes >= 2){
             this.n_coaches_reviewed_notes = 0;

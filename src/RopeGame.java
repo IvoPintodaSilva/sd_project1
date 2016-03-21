@@ -3,6 +3,7 @@ import active_entities.Contestant;
 import active_entities.Referee;
 import interfaces.*;
 import shared_mem.MContestantsBench;
+import shared_mem.MGeneralInfoRepo;
 import shared_mem.MPlayground;
 import shared_mem.MRefereeSite;
 
@@ -12,15 +13,18 @@ public class RopeGame {
         MRefereeSite refereeSite = new MRefereeSite();
         MPlayground playground = new MPlayground();
         MContestantsBench bench = new MContestantsBench();
+        MGeneralInfoRepo repo = new MGeneralInfoRepo();
 
         Coach coach_team1 = new Coach(1, 1,
                 (IPlaygroundCoach) playground,
                 (IRefereeSiteCoach) refereeSite,
-                (IContestantsBenchCoach) bench);
+                (IContestantsBenchCoach) bench,
+                (IRepoCoach) repo);
         Coach coach_team2 = new Coach(2, 2,
                 (IPlaygroundCoach) playground,
                 (IRefereeSiteCoach) refereeSite,
-                (IContestantsBenchCoach) bench);
+                (IContestantsBenchCoach) bench,
+                (IRepoCoach) repo);
 
         Referee ref = new Referee(
                 (IPlaygroundReferee) playground,
