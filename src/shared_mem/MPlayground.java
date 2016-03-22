@@ -18,7 +18,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     private int n_contestant_pulls_team2[] = {0,0,0,0,0};
     private int ready_to_push;
     private boolean push_at_all_force = false;
-    private int started_pushing;
+    private int finished_pushing;
 
 
     /**
@@ -28,24 +28,20 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
         Contestant c = (Contestant) Thread.currentThread();
 
         this.ready_to_push += 1;
-        if (this.ready_to_push >= 6){
+
+        /*  sleep only if the 6 players have not yet arrived and the push flag is not true  */
+        /*  the flag is only set to false by the last player to finish pushing  */
+        if (this.ready_to_push >= 6 && !this.push_at_all_force){
             this.ready_to_push = 0;
             this.push_at_all_force = true;
             notifyAll();
         }
-
         while (!this.push_at_all_force){
             try {
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
-
-        this.started_pushing += 1;
-        if(this.started_pushing >= 6){
-            this.started_pushing = 0;
-            this.push_at_all_force = false;
         }
 
         c.decrementStrength();
@@ -56,6 +52,13 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             if (this.n_contestant_pulls_team1[c.getContestantId()] >= 6){
                 /*  reset push number  */
                 this.n_contestant_pulls_team1[c.getContestantId()] = 0;
+                /*  the last player to finish pushing in the trial, resets the push_at_all_force flag  */
+                this.finished_pushing += 1;
+                if(this.finished_pushing >= 6){
+                    this.finished_pushing = 0;
+                    this.push_at_all_force = false;
+                }
+
                 return false;
             }
             return true;
@@ -65,6 +68,12 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             if (this.n_contestant_pulls_team2[c.getContestantId()] >= 6){
                 /*  reset push number  */
                 this.n_contestant_pulls_team2[c.getContestantId()] = 0;
+                /*  the last player to finish pushing in the trial, resets the push_at_all_force flag  */
+                this.finished_pushing += 1;
+                if(this.finished_pushing >= 6){
+                    this.finished_pushing = 0;
+                    this.push_at_all_force = false;
+                }
                 return false;
             }
             return true;
