@@ -6,7 +6,7 @@ package interfaces;
 public interface IContestantsBenchContestant {
     void seatDown();
 
-    void followCoachAdvice();
+    boolean followCoachAdvice();
 
     void iAmDone();
 

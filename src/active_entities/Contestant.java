@@ -39,8 +39,13 @@ public class Contestant extends Thread {
             switch (state){
 
                 case SEAT_AT_THE_BENCH:
-                    contestants_bench.followCoachAdvice();
-                    state = ContestantState.STAND_IN_POSITION;
+                    boolean chosen = contestants_bench.followCoachAdvice();
+                    if(chosen){
+                        state = ContestantState.STAND_IN_POSITION;
+                    }
+                    else{
+                        state = ContestantState.SEAT_AT_THE_BENCH;
+                    }
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
                     break;
                 case STAND_IN_POSITION:

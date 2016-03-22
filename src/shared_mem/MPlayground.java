@@ -24,7 +24,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
         Contestant c = (Contestant) Thread.currentThread();
 
         n_contestants_ready += 1;
-        if(this.n_contestants_ready >= 10){
+        if(this.n_contestants_ready >= 6){
             this.all_contestants_ready = true;
             notifyAll();
         }
@@ -42,7 +42,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
         this.n_ready_contestants_awake += 1;
 
-        if(this.n_ready_contestants_awake >= 10){
+        if(this.n_ready_contestants_awake >= 6){
             /*  restore contestants value for next trial  */
             this.n_contestants_ready = 0;
             this.n_ready_contestants_awake = 0;
