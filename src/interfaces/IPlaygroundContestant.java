@@ -7,6 +7,6 @@ public interface IPlaygroundContestant {
 
     void getReady();
 
-    void pullTheRope();
+    boolean pullTheRope();
 
 }

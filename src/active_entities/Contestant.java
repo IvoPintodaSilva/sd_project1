@@ -33,7 +33,7 @@ public class Contestant extends Thread {
 
     public void run() {
 
-        ContestantState state= ContestantState.START;
+        ContestantState state = ContestantState.START;
         //repo.contestantLog(this.id, this.team_id, state);
         while (true){
             switch (state){
@@ -44,7 +44,7 @@ public class Contestant extends Thread {
                         state = ContestantState.STAND_IN_POSITION;
                     }
                     else{
-                        state = ContestantState.SEAT_AT_THE_BENCH;
+                        state = ContestantState.START;
                     }
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
                     break;
@@ -54,10 +54,11 @@ public class Contestant extends Thread {
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
                     break;
                 case DO_YOUR_BEST:
-                    /*  this can't be done with a for loop, needs further analysis  */
-                    for(int i = 0; i < 6; i++){
-                        playground.pullTheRope();
-                    }
+                    boolean has_next_push;
+                    do{
+                        has_next_push = playground.pullTheRope();
+                        repo.contestantLog(this.id, this.team_id, this.strength, state);
+                    }while(has_next_push);
                     contestants_bench.iAmDone();
                     state = ContestantState.START;
                     //repo.contestantLog(this.id, this.team_id, state);

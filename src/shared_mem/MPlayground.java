@@ -14,6 +14,9 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
     private int n_ready_contestants_awake = 0;
 
+    private int n_contestant_pulls_team1[] = {0,0,0,0,0};
+    private int n_contestant_pulls_team2[] = {0,0,0,0,0};
+
 
     /**
      * Contestants sleep in the playground and the last one to get there wakes them up so that they pull at the same
@@ -55,13 +58,29 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     /**
      * Contestants pull the rope
      */
-    public synchronized void pullTheRope()
+    public synchronized boolean pullTheRope()
     {
-
-
         Contestant c = (Contestant) Thread.currentThread();
         //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is pulling the rope");
-
+        if(c.getTeam_id() == 1){
+            this.n_contestant_pulls_team1[c.getContestantId()] += 1;
+            if (this.n_contestant_pulls_team1[c.getContestantId()] >= 6){
+                /*  reset push number  */
+                this.n_contestant_pulls_team1[c.getContestantId()] = 0;
+                return false;
+            }
+            return true;
+        }
+        else if (c.getTeam_id() == 2){
+            this.n_contestant_pulls_team2[c.getContestantId()] += 1;
+            if (this.n_contestant_pulls_team2[c.getContestantId()] >= 6){
+                /*  reset push number  */
+                this.n_contestant_pulls_team2[c.getContestantId()] = 0;
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
 
