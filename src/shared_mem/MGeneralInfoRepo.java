@@ -217,6 +217,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                 }
                 break;
         }
+
         printStates();
         writeToFile();
     }

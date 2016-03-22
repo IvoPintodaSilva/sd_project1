@@ -26,7 +26,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     {
         Contestant c = (Contestant) Thread.currentThread();
 
-        n_contestants_ready += 1;
+        this.n_contestants_ready += 1;
         if(this.n_contestants_ready >= 6){
             this.all_contestants_ready = true;
             notifyAll();
@@ -45,6 +45,8 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
         this.n_ready_contestants_awake += 1;
 
+        System.out.println(this.n_ready_contestants_awake);
+
         if(this.n_ready_contestants_awake >= 6){
             /*  restore contestants value for next trial  */
             this.n_contestants_ready = 0;
@@ -61,6 +63,9 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     public synchronized boolean pullTheRope()
     {
         Contestant c = (Contestant) Thread.currentThread();
+
+        c.decrementStrength();
+
         //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is pulling the rope");
         if(c.getTeam_id() == 1){
             this.n_contestant_pulls_team1[c.getContestantId()] += 1;
