@@ -16,17 +16,37 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
     private int n_contestant_pulls_team1[] = {0,0,0,0,0};
     private int n_contestant_pulls_team2[] = {0,0,0,0,0};
-
-
-
+    private int ready_to_push;
+    private boolean push_at_all_force = false;
+    private int started_pushing;
 
 
     /**
      * Contestants pull the rope
      */
-    public synchronized boolean pullTheRope()
-    {
+    public synchronized boolean pullTheRope() {
         Contestant c = (Contestant) Thread.currentThread();
+
+        this.ready_to_push += 1;
+        if (this.ready_to_push >= 6){
+            this.ready_to_push = 0;
+            this.push_at_all_force = true;
+            notifyAll();
+        }
+
+        while (!this.push_at_all_force){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.started_pushing += 1;
+        if(this.started_pushing >= 6){
+            this.started_pushing = 0;
+            this.push_at_all_force = false;
+        }
 
         c.decrementStrength();
 
