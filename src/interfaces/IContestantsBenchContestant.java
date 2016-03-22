@@ -10,5 +10,7 @@ public interface IContestantsBenchContestant {
 
     void iAmDone();
 
+    void getReady();
+
 
 }

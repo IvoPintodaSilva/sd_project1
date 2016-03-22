@@ -18,43 +18,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     private int n_contestant_pulls_team2[] = {0,0,0,0,0};
 
 
-    /**
-     * Contestants sleep in the playground and the last one to get there wakes them up so that they pull at the same
-     * time
-     */
-    public synchronized void getReady()
-    {
-        Contestant c = (Contestant) Thread.currentThread();
 
-        this.n_contestants_ready += 1;
-        if(this.n_contestants_ready >= 6){
-            this.n_contestants_ready = 0;
-            this.all_contestants_ready = true;
-            notifyAll();
-        }
-
-        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on getReady");
-        /*  wait for every contestant to be ready  */
-        /*  the last contestant to get ready wakes up everyone else  */
-        while (!this.all_contestants_ready){
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        this.n_ready_contestants_awake += 1;
-
-        System.out.println(this.n_ready_contestants_awake);
-
-        if(this.n_ready_contestants_awake >= 6){
-            /*  restore contestants value for next trial  */
-            this.n_ready_contestants_awake = 0;
-            this.all_contestants_ready = false;
-        }
-
-    }
 
 
     /**

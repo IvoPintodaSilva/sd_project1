@@ -5,8 +5,6 @@ package interfaces;
  */
 public interface IPlaygroundContestant {
 
-    void getReady();
-
     boolean pullTheRope();
 
 }

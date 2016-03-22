@@ -49,7 +49,7 @@ public class Contestant extends Thread {
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
                     break;
                 case STAND_IN_POSITION:
-                    playground.getReady();
+                    contestants_bench.getReady();
                     state = ContestantState.DO_YOUR_BEST;
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
                     break;
