@@ -137,8 +137,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             this.trial_called = false;
         }
 
-        
-
 //        this.n_coaches_contestants_in_position += 1;
 //        if (this.n_coaches_contestants_in_position >= 2) {
 //            this.n_coaches_contestants_in_position = 0;

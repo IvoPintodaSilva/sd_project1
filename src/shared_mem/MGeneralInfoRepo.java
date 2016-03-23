@@ -40,6 +40,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     private String TO_WRITE="";
     private static String LOG_LOCATION;
     private static Writer output=null;
+    private static String LOG_LINE="";
 
 
     public MGeneralInfoRepo()
@@ -86,14 +87,20 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                     "Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5     Trial    \n" +
                     "Sta  Stat Sta SG Sta SG Sta SG Sta SG Sta SG  Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS\n";
             //System.out.printf(temp);
-            TO_WRITE += temp;
+            if(!compareToPreviousLine(temp)){
+                TO_WRITE += temp;
+                LOG_LINE = temp;
+            }
         }
         else {
             temp = "Game " + this.game_nr +
                     " \nRef Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5     Trial    \n" +
                     "Sta  Stat Sta SG Sta SG Sta SG Sta SG Sta SG  Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS\n";
             //System.out.printf(temp);
-            TO_WRITE += temp;
+            if(!compareToPreviousLine(temp)){
+                TO_WRITE += temp;
+                LOG_LINE = temp;
+            }
         }
     }
     @Override
@@ -151,7 +158,11 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                 temp ="Invalid id must be between 0 and 1";
                 break;
         }
-        TO_WRITE += temp;
+
+        if(!compareToPreviousLine(temp)){
+            TO_WRITE += temp;
+            LOG_LINE = temp;
+        }
     }
 
     @Override
@@ -227,7 +238,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
-        TO_WRITE += String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d - - - . - - - -- --\n",
+        String temp = String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d - - - . - - - -- --\n",
                 referee_state,
                 coach_state[0],
                 team1_state[0],
@@ -251,6 +262,10 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                 team2_strength[3],
                 team2_state[4],
                 team2_strength[4]);
+        if(!compareToPreviousLine(temp)){
+            TO_WRITE += temp;
+            LOG_LINE = temp;
+        }
     }
 
     public synchronized void writeToFile(){
@@ -282,6 +297,12 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
             // File permission problems are caught here.
             System.err.println(x);
         }
+    }
+
+
+    public boolean compareToPreviousLine(String line)
+    {
+        return line.equalsIgnoreCase(this.LOG_LINE);
     }
 
 
