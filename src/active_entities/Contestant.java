@@ -57,8 +57,8 @@ public class Contestant extends Thread {
                     boolean has_next_push;
                     do{
                         has_next_push = playground.pullTheRope();
-                        repo.contestantLog(this.id, this.team_id, this.strength, state);
                     }while(has_next_push);
+                    repo.contestantLog(this.id, this.team_id, this.strength, state);
                     contestants_bench.iAmDone();
                     state = ContestantState.START;
                     //repo.contestantLog(this.id, this.team_id, state);
