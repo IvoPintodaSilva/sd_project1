@@ -42,7 +42,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
     private int n_contestants_called = 0;
 
-    private int n_coaches_contestants_in_position = 0;
+    //private int n_coaches_contestants_in_position = 0;
 
     private static int n_contestants_trial_started = 0;
 
@@ -134,18 +134,16 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             notifyAll();
             this.n_coaches_called_contestants = 0;
             this.contestants_called = true;
-        }
-
-
-
-
-
-
-        this.n_coaches_contestants_in_position += 1;
-        if (this.n_coaches_contestants_in_position >= 2) {
-            this.n_coaches_contestants_in_position = 0;
             this.trial_called = false;
         }
+
+        
+
+//        this.n_coaches_contestants_in_position += 1;
+//        if (this.n_coaches_contestants_in_position >= 2) {
+//            this.n_coaches_contestants_in_position = 0;
+////            this.trial_called = false;
+//        }
 
     }
 
