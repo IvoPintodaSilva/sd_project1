@@ -58,7 +58,6 @@ public class Contestant extends Thread {
                     do{
                         has_next_push = playground.pullTheRope();
                         repo.contestantLog(this.id, this.team_id, this.strength, state);
-                        System.out.println("push");
                     }while(has_next_push);
                     contestants_bench.iAmDone();
                     state = ContestantState.START;
@@ -89,6 +88,12 @@ public class Contestant extends Thread {
     }
 
     public void decrementStrength() {
-        this.strength--;
+        if (this.strength > 0){
+            this.strength--;
+        }
+    }
+
+    public void incrementStrength() {
+        this.strength++;
     }
 }

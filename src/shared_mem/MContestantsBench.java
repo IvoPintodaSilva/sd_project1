@@ -7,6 +7,8 @@ import interfaces.IContestantsBenchCoach;
 import interfaces.IContestantsBenchContestant;
 import interfaces.IContestantsBenchReferee;
 
+import java.util.Arrays;
+
 public class MContestantsBench implements IContestantsBenchContestant, IContestantsBenchCoach, IContestantsBenchReferee {
     private int team_id;
     private int[] contestants_seated;
@@ -52,6 +54,8 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     private int n_ready_contestants_awake;
     private int n_ready_contestants_started;
     private boolean followed_coach_advice;
+    private int[] team1_strength = {0, 0, 0, 0, 0};
+    private int[] team2_strength = {0, 0, 0, 0, 0};
 
     /**
      * Have contestants sleeping in the bench until they're waken up by both coaches
@@ -76,6 +80,16 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 //            this.contestants_called = false; // the last contestant to get here, resets the seatDown flag
 //            this.n_contestants_called = 0;
 //        }
+
+        if(c.getTeam_id() == 1){
+            this.team1_strength[c.getContestantId()] = c.getStrength();
+        }
+        else if(c.getTeam_id() == 2){
+            this.team2_strength[c.getContestantId()] = c.getStrength();
+        }
+
+        //System.out.println(Arrays.toString(this.team1_strength));
+        //System.out.println(Arrays.toString(this.team2_strength));
 
     }
 
@@ -150,6 +164,8 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                 e.printStackTrace();
             }
         }
+        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is awake on followCoachAdvice");
+
 
         this.n_contestants_called += 1;
         if (this.n_contestants_called >= 6){
@@ -215,7 +231,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         Coach c = (Coach) Thread.currentThread();
         this.n_coaches_informed_referee += 1;
 
-        System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at informReferee");
+        //System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at informReferee");
 
         /*  wake up referee when both coaches have informed them  */
         if(this.n_coaches_informed_referee >= 2){
@@ -226,7 +242,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
         /*  wait for trial decision  */
         //System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at informReferee");
-        System.out.println(this.followed_coach_advice);
+        //System.out.println(this.followed_coach_advice);
         while (!this.followed_coach_advice){
             try {
                 wait();
@@ -252,9 +268,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     public synchronized void startTrial()
     {
         Referee r = (Referee) Thread.currentThread();
-        System.out.println("Referee is asleep on startTrial");
-
-
+        //System.out.println("Referee is asleep on startTrial");
 
         /*  wait for coaches to inform referee  */
         while (!this.coaches_informed){
@@ -265,7 +279,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             }
         }
         this.coaches_informed = false;
-        System.out.println("Referee is awake on startTrial");
+        //System.out.println("Referee is awake on startTrial");
 
         this.trial_started = true;
         /*  wake up contestants in the bench  */
@@ -292,7 +306,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             }
         }
 
-        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on getReady");
+        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on getReady");
         
         this.n_ready_contestants_started += 1;
         if(this.n_ready_contestants_started >= 6){
@@ -315,7 +329,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         if(this.n_contestants_done >= 6) {
             this.n_contestants_done = 0;
             this.contestants_are_done = true;
-            System.out.println("contestants are done");
+            //System.out.println("contestants are done");
             notifyAll();
         }
 
@@ -399,6 +413,51 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             }
         }
 
+        /*  substitutions implemented  */
+
+        /*  only one player is substituted from each team at each trial  */
+        if(this.team1_selected_contestants[0] == 0){
+            this.team1_selected_contestants[0] = 4;
+        }
+        else{
+            this.team1_selected_contestants[0] -= 1;
+        }
+        if(this.team1_selected_contestants[1] == 0){
+            this.team1_selected_contestants[1] = 4;
+        }
+        else{
+            this.team1_selected_contestants[1] -= 1;
+        }
+        if(this.team1_selected_contestants[2] == 0){
+            this.team1_selected_contestants[2] = 4;
+        }
+        else{
+            this.team1_selected_contestants[2] -= 1;
+        }
+
+
+        if(this.team2_selected_contestants[0] == 0){
+            this.team2_selected_contestants[0] = 4;
+        }
+        else{
+            this.team2_selected_contestants[0] -= 1;
+        }
+        if(this.team2_selected_contestants[1] == 0){
+            this.team2_selected_contestants[1] = 4;
+        }
+        else{
+            this.team2_selected_contestants[1] -= 1;
+        }
+        if(this.team2_selected_contestants[2] == 0){
+            this.team2_selected_contestants[2] = 4;
+        }
+        else{
+            this.team2_selected_contestants[2] -= 1;
+        }
+
+
+        System.out.println(Arrays.toString(team1_selected_contestants));
+        System.out.println(Arrays.toString(team2_selected_contestants));
         //System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is woke up at reviewNotes");
 
         if(this.n_coaches_reviewed_notes >= 2){

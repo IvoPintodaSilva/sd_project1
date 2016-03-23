@@ -44,8 +44,6 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             }
         }
 
-        c.decrementStrength();
-
         //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is pulling the rope");
         if(c.getTeam_id() == 1){
             this.n_contestant_pulls_team1[c.getContestantId()] += 1;
@@ -58,7 +56,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
                     this.finished_pushing = 0;
                     this.push_at_all_force = false;
                 }
-
+                c.decrementStrength();
                 return false;
             }
             return true;
@@ -74,6 +72,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
                     this.finished_pushing = 0;
                     this.push_at_all_force = false;
                 }
+                c.decrementStrength();
                 return false;
             }
             return true;
