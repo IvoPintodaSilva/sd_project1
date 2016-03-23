@@ -103,8 +103,8 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         Referee c = (Referee) Thread.currentThread();
         //System.out.println("Referee is asleep on callTrial");
 
-        /*  wake up coaches in reviewNotes  */
-        this.trial_called = true;
+
+        this.trial_called = true;/*  wake up coaches in reviewNotes  */
         notifyAll();
 
     }
@@ -119,6 +119,14 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         Coach c = (Coach) Thread.currentThread();
         //System.out.println("Coach " + c.getCoachId() + " called contestants");
 
+        while(!this.trial_called){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         this.n_coaches_called_contestants += 1;
 
         if(this.n_coaches_called_contestants >= 2){
@@ -129,13 +137,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         /*  wake up the contestants in bench  */
         notifyAll();
 
-        while(!this.trial_called){
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+
 
 
         this.n_coaches_contestants_in_position += 1;
@@ -264,7 +266,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
     /**
      * Wakes up contestants in followCoachAdvice and sleeps until contestants are done pulling the rope
-     */
+    */
     public synchronized void startTrial()
     {
         Referee r = (Referee) Thread.currentThread();
