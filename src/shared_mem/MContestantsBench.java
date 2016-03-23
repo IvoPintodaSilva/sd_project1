@@ -131,10 +131,10 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
         if(this.n_coaches_called_contestants >= 2){
                     /*  wake up the contestants in bench  */
-            notifyAll();
-            this.n_coaches_called_contestants = 0;
             this.contestants_called = true;
             this.trial_called = false;
+            notifyAll();
+            this.n_coaches_called_contestants = 0;
         }
 
 //        this.n_coaches_contestants_in_position += 1;
