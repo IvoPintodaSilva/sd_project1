@@ -7,4 +7,5 @@ import enums.RefState;
  */
 public interface IRepoReferee {
     void refereeLog(RefState state);
+    void Addheader(boolean first);
 }

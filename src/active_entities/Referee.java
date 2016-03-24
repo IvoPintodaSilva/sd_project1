@@ -36,9 +36,16 @@ public class Referee extends Thread {
                 case START_OF_THE_MATCH:
                     this.referee_site.announceNewGame();
                     state = RefState.START_OF_A_GAME;
+                    repo.Addheader(false);
                     repo.refereeLog(state);
                     break;
                 case START_OF_A_GAME:
+                    System.out.println("-----------------"+ this.referee_site.getN_games_played());
+                    if(this.referee_site.getN_games_played()>=1)
+                    {
+                        repo.Addheader(false);
+                    }
+
                     this.contestants_bench.callTrial();
                     state = RefState.TEAMS_READY;
                     repo.refereeLog(state);
@@ -64,7 +71,6 @@ public class Referee extends Thread {
                     repo.refereeLog(state);
                     break;
                 case END_OF_A_GAME:
-
                     if(this.referee_site.getN_games() > this.referee_site.getN_games_played()){
                         System.out.println("N games"+this.referee_site.getN_games() );
                         System.out.println("N games played"+this.referee_site.getN_games_played() );

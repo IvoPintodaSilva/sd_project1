@@ -77,9 +77,10 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         Addheader(true);
     }
 
-    private synchronized void Addheader(boolean first)
+    public synchronized void Addheader(boolean first)
     {
         String temp="";//temporary string
+
         if(first) {
             temp="                               Game of the Rope - Description of the internal state" +
                     "\n\n" +
@@ -89,6 +90,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
             TO_WRITE += temp;
         }
         else {
+            game_nr +=1;
             temp = "Game " + this.game_nr +
                     " \nRef Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5     Trial    \n" +
                     "Sta  Stat Sta SG Sta SG Sta SG Sta SG Sta SG  Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS\n";
