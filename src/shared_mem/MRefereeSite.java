@@ -18,10 +18,10 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
         return n_games_played;
     }
 
-    private int n_games;
-    private int n_games_played;
-    private int team0_wins;
-    private int team1_wins;
+    private static int n_games=3;
+    private static int n_games_played=0;
+    private static int team0_wins=0;
+    private static int team1_wins=0;
 
     private boolean new_game_announced = false;
     private int n_coaches_informed_referee = 0;
@@ -35,15 +35,17 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
         Referee ref = (Referee) Thread.currentThread();
 
         this.new_game_announced = true;
+
         //System.out.println("New game announced");
 
     }
 
     /**
-     * Declare game winner
+     * The number of played games is increased
      */
     public synchronized void declareGameWinner() {
         //TODO-announce game  winner at referee
+        n_games_played +=1;//increase number of games played
     }
 
     /**

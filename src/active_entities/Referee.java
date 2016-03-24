@@ -30,10 +30,10 @@ public class Referee extends Thread {
         int trial_number = 1;
         RefState state = RefState.START_OF_THE_MATCH;
         Boolean has_next_trial = true;
+        Boolean MATCH_ENDED = false;
         repo.refereeLog(state, trial_number);
 
-
-        while (has_next_trial) {
+        while (!MATCH_ENDED) {
             switch (state) {
                 case START_OF_THE_MATCH:
                     this.referee_site.announceNewGame();
@@ -81,6 +81,7 @@ public class Referee extends Thread {
                     this.referee_site.declareMatchWinner();
                     break;
                 case END_OF_A_MATCH:
+                    MATCH_ENDED=true;
                     break;
                 default:
                     state = RefState.START_OF_THE_MATCH;
