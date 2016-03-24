@@ -18,7 +18,7 @@ import java.util.Locale;
  */
 public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoReferee{
 
-    private int referee_trial_number;
+    private int referee_trial_number = 0;
 
     public enum refStates{
         SOM,SOG,TSR,WTC,EOM,EOG,NON
@@ -191,7 +191,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         switch (state){
             case START_OF_THE_MATCH:
                 this.referee_state = refStates.SOM;
-                this.referee_trial_number = trial_number;
+                this.referee_trial_number = 0;
                 break;
             case START_OF_A_GAME:
                 this.referee_state = refStates.SOG;
@@ -301,7 +301,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
-        TO_WRITE += String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d %s %s %s . %s %s %s %02d --\n",
+        TO_WRITE += String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d %s %s %s . %s %s %s %s --\n",
                 referee_state,
                 coach_state[0],
                 team1_state[0],
@@ -331,10 +331,10 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                 (contestants_team2[0] != -1) ? String.format("%01d", contestants_team2[0]+1) : "-",
                 (contestants_team2[1] != -1) ? String.format("%01d", contestants_team2[1]+1) : "-",
                 (contestants_team2[2] != -1) ? String.format("%01d", contestants_team2[2]+1) : "-",
-                referee_trial_number);
+                (referee_trial_number != 0) ? String.format("%02d", referee_trial_number) : "--");
 
 
-        System.out.println(String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d %s %s %s . %s %s %s %02d --",
+        System.out.println(String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d %s %s %s . %s %s %s %s --",
                 referee_state,
                 coach_state[0],
                 team1_state[0],
@@ -364,7 +364,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                 (contestants_team2[0] != -1) ? String.format("%01d", contestants_team2[0]+1) : "-",
                 (contestants_team2[1] != -1) ? String.format("%01d", contestants_team2[1]+1) : "-",
                 (contestants_team2[2] != -1) ? String.format("%01d", contestants_team2[2]+1) : "-",
-                referee_trial_number));
+                (referee_trial_number != 0) ? String.format("%02d", referee_trial_number) : "--"));
     }
 
     public synchronized void writeToFile(){

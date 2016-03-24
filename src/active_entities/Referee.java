@@ -71,11 +71,14 @@ public class Referee extends Thread {
                     repo.refereeLog(state, trial_number);
                     break;
                 case END_OF_A_GAME:
+                    this.repo.printResult(1,"knock out",3);
 
                     if(this.referee_site.getN_games() > this.referee_site.getN_games_played()){
-                        this.repo.Addheader(false);
+                        System.out.println("N games"+this.referee_site.getN_games() );
+                        System.out.println("N games played"+this.referee_site.getN_games_played() );
                         this.referee_site.announceNewGame();
                         state = state.START_OF_A_GAME;
+                        trial_number = 0;
                         repo.refereeLog(state, trial_number);
                         break;
                     }
@@ -84,7 +87,6 @@ public class Referee extends Thread {
                     this.referee_site.declareMatchWinner();
                     break;
                 case END_OF_A_MATCH:
-                    this.repo.printMatchResult();
                     MATCH_ENDED=true;
                     break;
                 default:
