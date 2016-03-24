@@ -82,9 +82,10 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         Addheader(true);
     }
 
-    private synchronized void Addheader(boolean first)
+    public synchronized void Addheader(boolean first)
     {
         String temp="";//temporary string
+
         if(first) {
             temp="                               Game of the Rope - Description of the internal state" +
                     "\n\n" +
@@ -94,6 +95,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
             TO_WRITE += temp;
         }
         else {
+            game_nr +=1;
             temp = "Game " + this.game_nr +
                     " \nRef Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5     Trial    \n" +
                     "Sta  Stat Sta SG Sta SG Sta SG Sta SG Sta SG  Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS\n";
@@ -119,44 +121,68 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
 
     }
 
+    private synchronized  void gameWinnerLog(int teamId)
+    {
+        if(teamId == 1)
+            this.score_t1 +=1;
+        else if(teamId == 2)
+            this.score_t2 +=1;
+        else
+        {
+            this.score_t2 +=1;
+            this.score_t1 +=1;}
+    }
+
+
+
     /**
      * imprime resultado do jogo ou da partida, ou de ambos
-     * @param id
      * @param team_id
      * @param wonType knock out, draw or points
      * @param nr_trials
      */
-    private void printResult(int id, int team_id, String wonType, int nr_trials)
+    public synchronized void printResult(int team_id, String wonType, int nr_trials)
     {
         String temp="";
-        switch (id){
-            case 0://game
+
                 if(wonType.equalsIgnoreCase("knock out"))
                 {
-                    temp = "Game "+ this.game_nr+" was won by team "+team_id +" by "+wonType+" in "+ nr_trials +" trials.";
+                    gameWinnerLog(team_id);
+                    temp = "Game "+ this.game_nr+" was won by team "+team_id +" by "+wonType+" in "+ nr_trials +" trials.\n";
                 }
                 else if(wonType.equalsIgnoreCase("draw"))
                 {
-                    temp = "Game "+this.game_nr+" was a draw";
+                    gameWinnerLog(3);
+                    temp = "Game "+this.game_nr+" was a draw.\n";
                 }
                 else if(wonType.equalsIgnoreCase("points"))
                 {
-                    temp = "Game "+this.game_nr+" was won by team "+team_id+" by "+wonType+".";
+                    gameWinnerLog(team_id);
+                    temp = "Game "+this.game_nr+" was won by team "+team_id+" by "+wonType+".\n";
 
                 }
-                break;
-            case 1://match
-                if(wonType.equalsIgnoreCase("draw"))
-                    temp="Match was draw";
-                else if(wonType.equalsIgnoreCase("won"))
-                    temp = "Match was won by team "+team_id+" ("+this.score_t1+"-"+this.score_t2+").";
-                break;
 
-            default:
-                temp ="Invalid id must be between 0 and 1";
-                break;
+        TO_WRITE += temp;
+        writeToFile();
+    }
+
+    public synchronized void printMatchResult()
+    {
+        String temp="";
+        if(this.score_t1 > this.score_t2)
+        {
+            temp = "Match was won by team 1 ("+this.score_t1+"-"+this.score_t2+").\n";
+        }
+        else if(this.score_t1 < this.score_t2)
+        {
+            temp = "Match was won by team 2 ("+this.score_t1+"-"+this.score_t2+").\n";
+        }
+        else
+        {
+            temp="Match was draw.\n";
         }
         TO_WRITE += temp;
+        writeToFile();
     }
 
     @Override
