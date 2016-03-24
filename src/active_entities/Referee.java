@@ -44,10 +44,6 @@ public class Referee extends Thread {
                 case START_OF_A_GAME:
                     /*  At the start of a game, the trial number is always 0  */
                     trial_number = 1;
-                    if(this.referee_site.getN_games_played()>=1)
-                    {
-                        repo.Addheader(false);
-                    }
                     this.contestants_bench.callTrial();
                     state = RefState.TEAMS_READY;
                     repo.refereeLog(state, trial_number);
@@ -76,6 +72,7 @@ public class Referee extends Thread {
                     break;
                 case END_OF_A_GAME:
                     if(this.referee_site.getN_games() > this.referee_site.getN_games_played()){
+                        repo.Addheader(false);
                         this.referee_site.announceNewGame();
                         state = state.START_OF_A_GAME;
                         repo.refereeLog(state, trial_number);
