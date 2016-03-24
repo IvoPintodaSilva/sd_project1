@@ -26,10 +26,12 @@ public class Referee extends Thread {
 
     public void run() {
 
+        /*  to know which trial is it  */
+        int trial_number = 1;
         RefState state = RefState.START_OF_THE_MATCH;
         Boolean has_next_trial = true;
         Boolean MATCH_ENDED = false;
-        repo.refereeLog(state);
+        repo.refereeLog(state, trial_number);
 
         while (!MATCH_ENDED) {
             switch (state) {
@@ -37,30 +39,32 @@ public class Referee extends Thread {
                     this.referee_site.announceNewGame();
                     state = RefState.START_OF_A_GAME;
                     repo.Addheader(false);
-                    repo.refereeLog(state);
+                    repo.refereeLog(state, trial_number);
                     break;
                 case START_OF_A_GAME:
-                    System.out.println("-----------------"+ this.referee_site.getN_games_played());
+                    /*  At the start of a game, the trial number is always 0  */
+                    trial_number = 1;
                     if(this.referee_site.getN_games_played()>=1)
                     {
                         repo.Addheader(false);
                     }
-
                     this.contestants_bench.callTrial();
                     state = RefState.TEAMS_READY;
-                    repo.refereeLog(state);
+                    repo.refereeLog(state, trial_number);
                     break;
                 case TEAMS_READY:
                     this.contestants_bench.startTrial();
                     state = RefState.WAIT_FOR_TRIAL_CONCLUSION;
-                    repo.refereeLog(state);
+                    repo.refereeLog(state, trial_number);
                     break;
                 case WAIT_FOR_TRIAL_CONCLUSION:
                     has_next_trial = this.contestants_bench.assertTrialDecision();
-                    repo.refereeLog(state);
+                    repo.refereeLog(state, trial_number);
                     /*  if the trial decision says that there is a next trial, the referee has to call it  */
                     if (has_next_trial == true) {
                         this.contestants_bench.callTrial();
+                        /*  when new trial is called, increment trial number  */
+                        trial_number += 1;
                         state = RefState.TEAMS_READY;
                     }
                     /*  if not, the referee needs to declare a game winner  */
@@ -68,19 +72,17 @@ public class Referee extends Thread {
                         this.referee_site.declareGameWinner();
                         state = RefState.END_OF_A_GAME;
                     }
-                    repo.refereeLog(state);
+                    repo.refereeLog(state, trial_number);
                     break;
                 case END_OF_A_GAME:
                     if(this.referee_site.getN_games() > this.referee_site.getN_games_played()){
-                        System.out.println("N games"+this.referee_site.getN_games() );
-                        System.out.println("N games played"+this.referee_site.getN_games_played() );
                         this.referee_site.announceNewGame();
                         state = state.START_OF_A_GAME;
-                        repo.refereeLog(state);
+                        repo.refereeLog(state, trial_number);
                         break;
                     }
                     state = state.END_OF_A_MATCH;
-                    repo.refereeLog(state);
+                    repo.refereeLog(state, trial_number);
                     this.referee_site.declareMatchWinner();
                     break;
                 case END_OF_A_MATCH:
@@ -88,7 +90,7 @@ public class Referee extends Thread {
                     break;
                 default:
                     state = RefState.START_OF_THE_MATCH;
-                    repo.refereeLog(state);
+                    repo.refereeLog(state, trial_number);
                     break;
 
             }

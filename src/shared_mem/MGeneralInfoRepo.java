@@ -17,6 +17,8 @@ import java.util.Locale;
  */
 public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoReferee{
 
+    private int referee_trial_number;
+
     public enum refStates{
         SOM,SOG,TSR,WTC,EOM,EOG,NON
     };
@@ -157,26 +159,32 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     }
 
     @Override
-    public synchronized void refereeLog(RefState state) {
+    public synchronized void refereeLog(RefState state, int trial_number) {
         // START_OF_THE_MATCH, START_OF_A_GAME, TEAMS_READY, WAIT_FOR_TRIAL_CONCLUSION, END_OF_A_GAME, END_OF_A_MATCH
         switch (state){
             case START_OF_THE_MATCH:
                 this.referee_state = refStates.SOM;
+                this.referee_trial_number = trial_number;
                 break;
             case START_OF_A_GAME:
                 this.referee_state = refStates.SOG;
+                this.referee_trial_number = trial_number;
                 break;
             case TEAMS_READY:
                 this.referee_state = refStates.TSR;
+                this.referee_trial_number = trial_number;
                 break;
             case WAIT_FOR_TRIAL_CONCLUSION:
                 this.referee_state = refStates.WTC;
+                this.referee_trial_number = trial_number;
                 break;
             case END_OF_A_GAME:
                 this.referee_state = refStates.EOG;
+                this.referee_trial_number = trial_number;
                 break;
             case END_OF_A_MATCH:
                 this.referee_state = refStates.EOM;
+                this.referee_trial_number = trial_number;
                 break;
         }
 
@@ -229,7 +237,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
-        TO_WRITE += String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d - - - . - - - -- --\n",
+        TO_WRITE += String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d - - - . - - - %02d --\n",
                 referee_state,
                 coach_state[0],
                 team1_state[0],
@@ -252,7 +260,8 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                 team2_state[3],
                 team2_strength[3],
                 team2_state[4],
-                team2_strength[4]);
+                team2_strength[4],
+                this.referee_trial_number);
     }
 
     public synchronized void writeToFile(){
