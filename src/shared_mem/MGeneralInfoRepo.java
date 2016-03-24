@@ -96,8 +96,8 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
             TO_WRITE += temp;
         }
         else {
-            game_nr +=1;
-            temp = "Game " + this.game_nr +
+           // game_nr +=1;
+            temp = "Game " + game_nr +
                     " \nRef Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5     Trial    \n" +
                     "Sta  Stat Sta SG Sta SG Sta SG Sta SG Sta SG  Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS\n";
             //System.out.printf(temp);
@@ -134,6 +134,11 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
             this.score_t1 +=1;}
     }
 
+    public synchronized void updGame_nr()
+    {
+        game_nr +=1;
+    }
+
 
 
     /**
@@ -149,17 +154,17 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                 if(wonType.equalsIgnoreCase("knock out"))
                 {
                     gameWinnerLog(team_id);
-                    temp = "Game "+ this.game_nr+" was won by team "+team_id +" by "+wonType+" in "+ nr_trials +" trials.\n";
+                    temp = "Game "+ game_nr+" was won by team "+team_id +" by "+wonType+" in "+ nr_trials +" trials.\n";
                 }
                 else if(wonType.equalsIgnoreCase("draw"))
                 {
                     gameWinnerLog(3);
-                    temp = "Game "+this.game_nr+" was a draw.\n";
+                    temp = "Game "+game_nr+" was a draw.\n";
                 }
                 else if(wonType.equalsIgnoreCase("points"))
                 {
                     gameWinnerLog(team_id);
-                    temp = "Game "+this.game_nr+" was won by team "+team_id+" by "+wonType+".\n";
+                    temp = "Game "+game_nr+" was won by team "+team_id+" by "+wonType+".\n";
 
                 }
 
