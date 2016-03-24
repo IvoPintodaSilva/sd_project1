@@ -19,6 +19,7 @@ import java.util.Locale;
 public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoReferee{
 
     private int referee_trial_number = 0;
+    private static int PS_center = Integer.MAX_VALUE;//position of the center of rope
 
     public enum refStates{
         SOM,SOG,TSR,WTC,EOM,EOG,NON
@@ -301,7 +302,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
-        TO_WRITE += String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d %s %s %s . %s %s %s %s --\n",
+        TO_WRITE += String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d %s %s %s . %s %s %s %s %s\n",
                 referee_state,
                 coach_state[0],
                 team1_state[0],
@@ -331,10 +332,11 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                 (contestants_team2[0] != -1) ? String.format("%01d", contestants_team2[0]+1) : "-",
                 (contestants_team2[1] != -1) ? String.format("%01d", contestants_team2[1]+1) : "-",
                 (contestants_team2[2] != -1) ? String.format("%01d", contestants_team2[2]+1) : "-",
-                (referee_trial_number != 0) ? String.format("%02d", referee_trial_number) : "--");
+                (referee_trial_number != 0) ? String.format("%02d", referee_trial_number) : "--",
+                (PS_center != Integer.MAX_VALUE) ? String.format("%02d", PS_center) : "--");
 
 
-        System.out.println(String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d %s %s %s . %s %s %s %s --",
+        System.out.println(String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d %s %s %s . %s %s %s %s %s",
                 referee_state,
                 coach_state[0],
                 team1_state[0],
@@ -364,7 +366,19 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                 (contestants_team2[0] != -1) ? String.format("%01d", contestants_team2[0]+1) : "-",
                 (contestants_team2[1] != -1) ? String.format("%01d", contestants_team2[1]+1) : "-",
                 (contestants_team2[2] != -1) ? String.format("%01d", contestants_team2[2]+1) : "-",
-                (referee_trial_number != 0) ? String.format("%02d", referee_trial_number) : "--"));
+                (referee_trial_number != 0) ? String.format("%02d", referee_trial_number) : "--",
+                (PS_center != Integer.MAX_VALUE) ? String.format("%02d", PS_center) : "--"));
+    }
+
+
+    public synchronized void updtRopeCenter(int new_val)
+    {
+        if(PS_center == Integer.MAX_VALUE)
+        {
+            PS_center=0;
+        }
+        PS_center += new_val;
+
     }
 
     public synchronized void writeToFile(){
