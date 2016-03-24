@@ -56,7 +56,6 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
                     this.finished_pushing = 0;
                     this.push_at_all_force = false;
                 }
-                c.decrementStrength();
                 return false;
             }
             return true;
@@ -72,7 +71,6 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
                     this.finished_pushing = 0;
                     this.push_at_all_force = false;
                 }
-                c.decrementStrength();
                 return false;
             }
             return true;
