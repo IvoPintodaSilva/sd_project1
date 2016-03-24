@@ -19,13 +19,17 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     private int ready_to_push;
     private boolean push_at_all_force = false;
     private int finished_pushing;
+    private static int center_rope= 0;
 
 
     /**
      * Contestants pull the rope
      */
-    public synchronized boolean pullTheRope() {
+    public synchronized int[] pullTheRope() {
         Contestant c = (Contestant) Thread.currentThread();
+        int[] ret = new int[2];
+        ret[0]=0;//false
+        ret[1]=center_rope;// value of the deslocation of the rope
 
         this.ready_to_push += 1;
 
@@ -34,6 +38,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
         if (this.ready_to_push >= 6 && !this.push_at_all_force){
             this.ready_to_push = 0;
             this.push_at_all_force = true;
+            center_rope=0;//reset center of rope
             notifyAll();
         }
         while (!this.push_at_all_force){
@@ -44,8 +49,11 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             }
         }
 
-        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is pulling the rope");
+        System.out.println("+++++++++++Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is pulling the rope with strenght " + c.getStrength()+"++++++++++");
         if(c.getTeam_id() == 1){
+            System.out.println("->->->antes:> "+center_rope + "n: " + c.getContestantId());
+            center_rope -= c.getStrength();//subtract value for push to the left
+            System.out.println("-<-<-<-<depois:> "+ center_rope+ " n: " + c.getContestantId());
             this.n_contestant_pulls_team1[c.getContestantId()] += 1;
             if (this.n_contestant_pulls_team1[c.getContestantId()] >= 6){
                 /*  reset push number  */
@@ -56,11 +64,16 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
                     this.finished_pushing = 0;
                     this.push_at_all_force = false;
                 }
-                return false;
+                ret[0]=0;//false
+                ret[1]=center_rope;
+                return ret;
             }
-            return true;
+            ret[0]=1;//true
+            ret[1]=center_rope;
+            return ret;
         }
         else if (c.getTeam_id() == 2){
+            center_rope += c.getStrength();//positive value for push to the right
             this.n_contestant_pulls_team2[c.getContestantId()] += 1;
             if (this.n_contestant_pulls_team2[c.getContestantId()] >= 6){
                 /*  reset push number  */
@@ -71,11 +84,17 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
                     this.finished_pushing = 0;
                     this.push_at_all_force = false;
                 }
-                return false;
+                ret[0]=0;//false
+                ret[1]=center_rope;
+                return ret;
             }
-            return true;
+            ret[0]=1;//true
+            ret[1]=center_rope;
+            return ret;
         }
-        return false;
+        ret[0]=0;//false
+        ret[1]=center_rope;
+        return ret;
     }
 
 

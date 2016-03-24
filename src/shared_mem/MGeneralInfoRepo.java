@@ -373,11 +373,11 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
 
     public synchronized void updtRopeCenter(int new_val)
     {
-        if(PS_center == Integer.MAX_VALUE)
-        {
-            PS_center=0;
-        }
-        PS_center += new_val;
+//        if(PS_center == Integer.MAX_VALUE)
+//        {
+//            PS_center=0;
+//        }
+        PS_center = new_val;
 
     }
 

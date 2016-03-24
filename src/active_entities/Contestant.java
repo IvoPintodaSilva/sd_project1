@@ -39,6 +39,7 @@ public class Contestant extends Thread {
             switch (state){
 
                 case SEAT_AT_THE_BENCH:
+                    repo.updtRopeCenter(Integer.MAX_VALUE);
                     boolean chosen = contestants_bench.followCoachAdvice();
                     if(chosen){
                         state = ContestantState.STAND_IN_POSITION;
@@ -53,11 +54,13 @@ public class Contestant extends Thread {
                     state = ContestantState.DO_YOUR_BEST;
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
                     break;
-                case DO_YOUR_BEST:
-                    boolean has_next_push;
+                case DO_YOUR_BEST://Integer.Max_value stands for true, Integer.Min_value stands for false
+                    int[] unpack_val;
                     do{
-                        has_next_push = playground.pullTheRope();
-                    }while(has_next_push);
+                        unpack_val = playground.pullTheRope();
+                        System.out.println("rope---------------->" + unpack_val[1]);
+                        repo.updtRopeCenter(unpack_val[1]);
+                    }while(unpack_val[0] == 1);//while has next push
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
                     contestants_bench.iAmDone();
                     contestants_bench.seatDown();
@@ -85,7 +88,7 @@ public class Contestant extends Thread {
     }
 
     public int getStrength() {
-        return strength;
+        return this.strength;
     }
 
     public void decrementStrength() {
