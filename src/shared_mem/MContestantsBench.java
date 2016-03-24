@@ -85,6 +85,22 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 //            this.n_contestants_called = 0;
 //        }
 
+
+        while (!this.trial_decided_contestants){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.n_contestants_done_awake += 1;
+        if(this.n_contestants_done_awake >= 6){
+            /*  reset conditions for next trial  */
+            this.n_contestants_done_awake = 0;
+            this.trial_decided_contestants = false;
+        }
+
         if(c.getTeam_id() == 1){
             this.team1_strength[c.getContestantId()] = c.getStrength();
         }
@@ -430,20 +446,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             notifyAll();
         }
 
-        while (!this.trial_decided_contestants){
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        this.n_contestants_done_awake += 1;
-        if(this.n_contestants_done_awake >= 6){
-            /*  reset conditions for next trial  */
-            this.n_contestants_done_awake = 0;
-            this.trial_decided_contestants = false;
-        }
 
 
     }

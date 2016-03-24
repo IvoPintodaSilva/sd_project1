@@ -60,12 +60,13 @@ public class Contestant extends Thread {
                     }while(has_next_push);
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
                     contestants_bench.iAmDone();
+                    contestants_bench.seatDown();
                     state = ContestantState.START;
                     //repo.contestantLog(this.id, this.team_id, state);
                     break;
                 default:
                     state = ContestantState.SEAT_AT_THE_BENCH;
-                    contestants_bench.seatDown();
+                    //contestants_bench.seatDown();
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
                     break;
             }

@@ -9,6 +9,7 @@ import interfaces.IRepoReferee;
 
 import java.io.*;
 import java.nio.file.*;
+import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Locale;
 
@@ -43,6 +44,8 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     private static String LOG_LOCATION;
     private static Writer output=null;
 
+    private static int[] contestants_team1 = {-1, -1, -1};
+    private static int[] contestants_team2 = {-1, -1, -1};
 
     public MGeneralInfoRepo()
     {
@@ -201,27 +204,64 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                 if(team_id == 1){
                     this.team1_state[id] = contestantStates.SAB;
                     this.team1_strength[id] = strength;
+
+                    if(this.contestants_team1[0] == id){
+                        this.contestants_team1[0] = -1;
+                    }else if(this.contestants_team1[1] == id){
+                        this.contestants_team1[1] = -1;
+                    }else if(this.contestants_team1[2] == id){
+                        this.contestants_team1[2] = -1;
+                    }
                 }else if (team_id == 2){
                     this.team2_state[id] = contestantStates.SAB;
                     this.team2_strength[id] = strength;
+
+                    if(this.contestants_team2[0] == id){
+                        this.contestants_team2[0] = -1;
+                    }else if(this.contestants_team2[1] == id){
+                        this.contestants_team2[1] = -1;
+                    }else if(this.contestants_team2[2] == id){
+                        this.contestants_team2[2] = -1;
+                    }
                 }
+
                 break;
             case STAND_IN_POSITION:
                 if(team_id == 1){
                     this.team1_state[id] = contestantStates.SIP;
                     this.team1_strength[id] = strength;
+
+                    if(this.contestants_team1[0] == -1){
+                        this.contestants_team1[0] = id;
+                    }else if(this.contestants_team1[1] == -1){
+                        this.contestants_team1[1] = id;
+                    }else if(this.contestants_team1[2] == -1){
+                        this.contestants_team1[2] = id;
+                    }
                 }else if (team_id == 2){
                     this.team2_state[id] = contestantStates.SIP;
                     this.team2_strength[id] = strength;
+
+                    if(this.contestants_team2[0] == -1){
+                        this.contestants_team2[0] = id;
+                    }else if(this.contestants_team2[1] == -1){
+                        this.contestants_team2[1] = id;
+                    }else if(this.contestants_team2[2] == -1){
+                        this.contestants_team2[2] = id;
+                    }
                 }
                 break;
             case DO_YOUR_BEST:
                 if(team_id == 1){
                     this.team1_state[id] = contestantStates.DYB;
                     this.team1_strength[id] = strength;
+
+
                 }else if (team_id == 2){
                     this.team2_state[id] = contestantStates.DYB;
                     this.team2_strength[id] = strength;
+
+
                 }
                 break;
         }
@@ -235,7 +275,7 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         // Ref Coa 1 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Coa 2 Cont 1 Cont 2 Cont 3 Cont 4 Cont 5 Trial
         // Sta Stat Sta SG Sta SG Sta SG Sta SG Sta SG Stat Sta SG Sta SG Sta SG Sta SG Sta SG 3 2 1 . 1 2 3 NB PS
 
-        TO_WRITE += String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d - - - . - - - %02d --\n",
+        TO_WRITE += String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d %s %s %s . %s %s %s %02d --\n",
                 referee_state,
                 coach_state[0],
                 team1_state[0],
@@ -259,7 +299,46 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
                 team2_strength[3],
                 team2_state[4],
                 team2_strength[4],
-                this.referee_trial_number);
+                (contestants_team1[2] != -1) ? String.format("%01d", contestants_team1[2]+1) : "-",
+                (contestants_team1[1] != -1) ? String.format("%01d", contestants_team1[1]+1) : "-",
+                (contestants_team1[0] != -1) ? String.format("%01d", contestants_team1[0]+1) : "-",
+                (contestants_team2[0] != -1) ? String.format("%01d", contestants_team2[0]+1) : "-",
+                (contestants_team2[1] != -1) ? String.format("%01d", contestants_team2[1]+1) : "-",
+                (contestants_team2[2] != -1) ? String.format("%01d", contestants_team2[2]+1) : "-",
+                referee_trial_number);
+
+
+        System.out.println(String.format("%s   %s %s %02d %s %02d %s %02d %s %02d %s %02d   %s %s %02d %s %02d %s %02d %s %02d %s %02d %s %s %s . %s %s %s %02d --",
+                referee_state,
+                coach_state[0],
+                team1_state[0],
+                team1_strength[0],
+                team1_state[1],
+                team1_strength[1],
+                team1_state[2],
+                team1_strength[2],
+                team1_state[3],
+                team1_strength[3],
+                team1_state[4],
+                team1_strength[4],
+                coach_state[1],
+                team2_state[0],
+                team2_strength[0],
+                team2_state[1],
+                team2_strength[1],
+                team2_state[2],
+                team2_strength[2],
+                team2_state[3],
+                team2_strength[3],
+                team2_state[4],
+                team2_strength[4],
+                (contestants_team1[2] != -1) ? String.format("%01d", contestants_team1[2]+1) : "-",
+                (contestants_team1[1] != -1) ? String.format("%01d", contestants_team1[1]+1) : "-",
+                (contestants_team1[0] != -1) ? String.format("%01d", contestants_team1[0]+1) : "-",
+                (contestants_team2[0] != -1) ? String.format("%01d", contestants_team2[0]+1) : "-",
+                (contestants_team2[1] != -1) ? String.format("%01d", contestants_team2[1]+1) : "-",
+                (contestants_team2[2] != -1) ? String.format("%01d", contestants_team2[2]+1) : "-",
+                referee_trial_number));
     }
 
     public synchronized void writeToFile(){
