@@ -1,3 +1,5 @@
+package RopeGame;
+
 import active_entities.Coach;
 import active_entities.Contestant;
 import active_entities.Referee;
