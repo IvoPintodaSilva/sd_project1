@@ -134,8 +134,8 @@ public class Referee extends Thread {
                         break;
                     }
                     state = state.END_OF_A_MATCH;
+                    this.contestants_bench.declareMatchWinner();
                     repo.refereeLog(state, trial_number);
-                    this.referee_site.declareMatchWinner();
                     break;
                 case END_OF_A_MATCH:
                     MATCH_ENDED=true;

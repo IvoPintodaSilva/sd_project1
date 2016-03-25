@@ -1,5 +1,6 @@
 package shared_mem;
 
+import active_entities.Coach;
 import active_entities.Referee;
 import enums.WonType;
 import interfaces.IRefereeSiteCoach;
