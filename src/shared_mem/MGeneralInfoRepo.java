@@ -173,16 +173,12 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         writeToFile();
     }
 
-    public synchronized void printMatchResult()
+    public synchronized void printMatchResult(int winner,int score1, int score2)
     {
         String temp="";
-        if(this.score_t1 > this.score_t2)
+        if(score1 != score2)
         {
-            temp = "Match was won by team 1 ("+this.score_t1+"-"+this.score_t2+").\n";
-        }
-        else if(this.score_t1 < this.score_t2)
-        {
-            temp = "Match was won by team 2 ("+this.score_t1+"-"+this.score_t2+").\n";
+            temp = "Match was won by team"+ winner+" ("+score1+"-"+score2+").\n";
         }
         else
         {

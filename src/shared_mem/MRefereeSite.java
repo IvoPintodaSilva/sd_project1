@@ -77,17 +77,4 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
 
     }
 
-    /**
-     * Announce new game returns int with id of winner, if 0 its a draw
-     */
-    public synchronized int declareMatchWinner() {
-        //TODO-announce match winner at referee
-        if(team1_wins>team2_wins)
-            return 1;
-        else if(team2_wins>team1_wins)
-            return 2;
-        return 0;
-
-    }
-
 }

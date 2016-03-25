@@ -345,11 +345,21 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
     /**
-     * Announce new game
+     * Announce new game returns int with id of winner, if 0 its a draw
      */
-    public synchronized void declareMatchWinner() {
+
+    public synchronized int declareMatchWinner(int games1, int games2) {
+
         this.match_ended = true;
         notifyAll();
+        if(games1>games2)
+            return 1;
+        else if(games2>games1)
+            return 2;
+        return 0;
+
+
+
     }
 
 }

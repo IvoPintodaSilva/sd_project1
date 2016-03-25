@@ -33,6 +33,8 @@ public class Referee extends Thread {
         int score_T1= 0;
         int score_T2 = 0;
         int knock_out=-1;
+        int gamesWon_T1=0;
+        int gamesWon_T2=0;
 
         RefState state = RefState.START_OF_THE_MATCH;
         Boolean has_next_trial = true;
@@ -114,6 +116,15 @@ public class Referee extends Thread {
                     else{
 
                         GameStat game_result=this.referee_site.declareGameWinner(score_T1,score_T2,knock_out);
+                        if(game_result.getWinnerTeam() == 1)
+                        {
+                            gamesWon_T1 +=1;
+                        }
+                        else if(game_result.getWinnerTeam()==2)
+                        {
+                            gamesWon_T2 +=1;
+                        }
+
                         this.repo.setResult(game_result.getWinnerTeam(),game_result.getWonType(),trial_number);
                         state = RefState.END_OF_A_GAME;
 
@@ -134,7 +145,8 @@ public class Referee extends Thread {
                         break;
                     }
                     state = state.END_OF_A_MATCH;
-                    this.contestants_bench.declareMatchWinner();
+                    int match_winner = this.contestants_bench.declareMatchWinner(gamesWon_T1,gamesWon_T2);
+                    repo.printMatchResult(match_winner,gamesWon_T1,gamesWon_T2);
                     repo.refereeLog(state, trial_number);
                     break;
                 case END_OF_A_MATCH:

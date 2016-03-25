@@ -11,7 +11,6 @@ public interface IRefereeSiteReferee {
 
     GameStat declareGameWinner(int score_T1, int score_T2, int knock_out);
 
-    int declareMatchWinner();
 
     int getN_games();
 
