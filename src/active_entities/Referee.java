@@ -55,7 +55,7 @@ public class Referee extends Thread {
                     repo.refereeLog(state, trial_number);
                     break;
                 case WAIT_FOR_TRIAL_CONCLUSION:
-                    has_next_trial = this.contestants_bench.assertTrialDecision();
+                    has_next_trial = this.playground.assertTrialDecision();
                     repo.refereeLog(state, trial_number);
                     /*  if the trial decision says that there is a next trial, the referee has to call it  */
                     if (has_next_trial == true) {

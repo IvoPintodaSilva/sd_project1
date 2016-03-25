@@ -11,6 +11,7 @@ public class Coach extends Thread {
     //IDENTIFIERS
     private int id;
     private int team_id;
+    private int team_selected_contestants[] = {0, 1, 2};
     private IContestantsBenchCoach contestants_bench;
     private IRefereeSiteCoach referee_site;
     private IPlaygroundCoach playground;
@@ -45,7 +46,7 @@ public class Coach extends Thread {
                     repo.coachLog(this.team_id, state);
                     break;
                 case WATCH_TRIAL:
-                    this.contestants_bench.reviewNotes();
+                    this.team_selected_contestants = this.playground.reviewNotes(this.team_selected_contestants);
                     state = CoachState.WAIT_FOR_REFEREE_COMMAND;
                     repo.coachLog(this.team_id, state);
                     break;
@@ -65,6 +66,10 @@ public class Coach extends Thread {
 
     public int getTeam_id() {
         return team_id;
+    }
+
+    public int[] getSelectedContestants(){
+        return this.team_selected_contestants;
     }
 
 }

@@ -5,4 +5,6 @@ package interfaces;
  */
 public interface IPlaygroundReferee {
 
+    boolean assertTrialDecision();
+
 }

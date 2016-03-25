@@ -7,4 +7,7 @@ public interface IPlaygroundContestant {
 
     int[] pullTheRope();
 
+    void iAmDone();
+
+    void seatDown();
 }

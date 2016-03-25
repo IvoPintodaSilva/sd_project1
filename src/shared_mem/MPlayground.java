@@ -1,7 +1,9 @@
 package shared_mem;
 
 
+import active_entities.Coach;
 import active_entities.Contestant;
+import active_entities.Referee;
 import interfaces.IPlaygroundCoach;
 import interfaces.IPlaygroundContestant;
 import interfaces.IPlaygroundReferee;
@@ -22,6 +24,47 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     private boolean push_at_all_force = false;
     private int finished_pushing;
     private static int center_rope= 0;
+    private int n_trials_on_game = 0;
+
+    private int n_contestants_done_awake = 0;
+
+    private int n_coaches_reviewed_notes = 0;
+    private boolean trial_decided_coach = false;
+    private boolean trial_decided_contestants = false;
+    private boolean contestants_are_done = false;
+    private int n_contestants_done = 0;
+
+
+
+
+
+    /**
+     * Have contestants sleeping in the bench until they're waken up by both coaches
+     */
+    public synchronized void seatDown()
+    {
+        Contestant c = (Contestant) Thread.currentThread();
+        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on seatDown");
+
+        while (!this.trial_decided_contestants){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.n_contestants_done_awake += 1;
+        if(this.n_contestants_done_awake >= 6){
+            /*  reset conditions for next trial  */
+            this.n_contestants_done_awake = 0;
+            this.trial_decided_contestants = false;
+        }
+
+
+
+
+    }
 
 
     /**
@@ -114,6 +157,125 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
         return ret;
     }
 
+
+    /**
+     * Wakes up contestants in iAmDone and states if there is going to be a next trial or not
+     * @return has_next_trial
+     */
+    public synchronized boolean assertTrialDecision() {
+        Referee r = (Referee) Thread.currentThread();
+
+        //System.out.println("Referee is on assertTrialDecision");
+
+        /*  wait for contestants to get be done pulling the rope  */
+        while (!this.contestants_are_done){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //System.out.println("Referee is awake on startTrial");
+
+
+        this.contestants_are_done = false;
+
+
+        /*  increment the trials counter  */
+        this.n_trials_on_game += 1;
+
+        //System.out.printf("\n---------------- Trial #%d was played ----------------\n", this.n_trials_on_game);
+
+        /*  flag to tell that there was a trial decision  */
+        this.trial_decided_contestants = true;
+        this.trial_decided_coach = true;
+
+        /*  wake up contestants in iAmDone and coaches in informReferee  */
+        notifyAll();
+
+        /*  return has_next_trial  */
+        if(this.n_trials_on_game >= 6){
+            /*  set number of trials to 0 for next game  */
+            this.n_trials_on_game = 0;
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    /**
+     * Coach reviews notes and makes changes in the teams and doesn't sleep
+     */
+    public synchronized int[] reviewNotes(int[] selected_contestants) {
+        Coach c = (Coach) Thread.currentThread();
+
+        //System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at reviewNotes");
+        while (!this.trial_decided_coach){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /*  substitutions implemented  */
+        /*  only one player is substituted from each team at each trial  */
+            if(selected_contestants[0] == 0){
+                selected_contestants[0] = 4;
+            }
+            else{
+                selected_contestants[0] -= 1;
+            }
+            if(selected_contestants[1] == 0){
+                selected_contestants[1] = 4;
+            }
+            else{
+                selected_contestants[1] -= 1;
+            }
+            if(selected_contestants[2] == 0){
+                selected_contestants[2] = 4;
+            }
+            else{
+                selected_contestants[2] -= 1;
+            }
+            //System.out.println(Arrays.toString(team1_selected_contestants));
+
+
+
+        //System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is woke up at reviewNotes");
+
+        if(this.n_coaches_reviewed_notes >= 2){
+            this.n_coaches_reviewed_notes = 0;
+            this.trial_decided_coach = false;
+        }
+
+        return selected_contestants;
+    }
+
+
+    /**
+     * Last contestant to be done wakes up referee and sleeps until referee wakes them up in assertTrialDecision
+     */
+    public synchronized void iAmDone()
+    {
+        Contestant c = (Contestant) Thread.currentThread();
+        c.decrementStrength();
+        this.n_contestants_done += 1;
+        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on iAmDone");
+
+        /*  last contestant done wakes up referee  */
+        if(this.n_contestants_done >= 6) {
+            this.n_contestants_done = 0;
+            this.contestants_are_done = true;
+            //System.out.println("contestants are done");
+            notifyAll();
+        }
+
+
+
+    }
 
 
 }

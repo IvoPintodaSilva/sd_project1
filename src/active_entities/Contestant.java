@@ -62,8 +62,8 @@ public class Contestant extends Thread {
                         repo.updtRopeCenter(unpack_val[1]);
                     }while(unpack_val[0] == 1);//while has next push
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
-                    contestants_bench.iAmDone();
-                    contestants_bench.seatDown();
+                    playground.iAmDone();
+                    playground.seatDown();
                     state = ContestantState.START;
                     //repo.contestantLog(this.id, this.team_id, state);
                     break;
