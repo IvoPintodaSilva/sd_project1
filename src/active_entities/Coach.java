@@ -31,12 +31,13 @@ public class Coach extends Thread {
 
         CoachState state = CoachState.WAIT_FOR_REFEREE_COMMAND;
         repo.coachLog(this.team_id, state);
+        boolean match_not_over = true;
 
 
-        while (true){
+        while (match_not_over){
             switch (state){
                 case WAIT_FOR_REFEREE_COMMAND:
-                    this.contestants_bench.callContestants();
+                    match_not_over = this.contestants_bench.callContestants();
                     state = CoachState.ASSEMBLE_TEAM;
                     repo.coachLog(this.team_id, state);
                     break;
@@ -57,7 +58,7 @@ public class Coach extends Thread {
             }
         }
 
-        //System.out.println("Coach " + this.id + " finished execution");
+        System.out.println("Coach " + this.id + " finished execution");
     }
 
     public int getCoachId() {

@@ -9,4 +9,6 @@ public interface IContestantsBenchReferee {
 
     void startTrial();
 
+    void declareMatchWinner();
+
 }

@@ -4,7 +4,7 @@ package interfaces;
  * Created by ivosilva on 07/03/16.
  */
 public interface IContestantsBenchCoach {
-    void callContestants();
+    boolean callContestants();
 
     void informReferee();
 }

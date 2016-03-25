@@ -48,11 +48,5 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
         n_games_played +=1;//increase number of games played
     }
 
-    /**
-     * Announce new game
-     */
-    public synchronized void declareMatchWinner() {
-        //TODO-announce match winner at referee
-    }
 
 }

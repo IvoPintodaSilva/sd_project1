@@ -34,19 +34,18 @@ public class Contestant extends Thread {
     public void run() {
 
         ContestantState state = ContestantState.START;
+        boolean match_not_over = true;
         //repo.contestantLog(this.id, this.team_id, state);
-        while (true){
+        while (match_not_over){
             switch (state){
 
                 case SEAT_AT_THE_BENCH:
                     repo.updtRopeCenter(Integer.MAX_VALUE);
-                    boolean chosen = contestants_bench.followCoachAdvice();
-                    if(chosen){
-                        state = ContestantState.STAND_IN_POSITION;
+                    match_not_over = contestants_bench.followCoachAdvice();
+                    if(!match_not_over){
+                        break;
                     }
-                    else{
-                        state = ContestantState.START;
-                    }
+                    state = ContestantState.STAND_IN_POSITION;
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
                     break;
                 case STAND_IN_POSITION:
@@ -75,7 +74,7 @@ public class Contestant extends Thread {
             }
         }
 
-        //System.out.println("Contestant " + this.id + " finished execution");
+        System.out.println("Contestant " + this.id + " finished execution");
 
     }
 
