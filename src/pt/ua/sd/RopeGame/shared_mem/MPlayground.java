@@ -72,12 +72,8 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     /**
      * Contestants pull the rope
      */
-    public synchronized int[] pullTheRope() {
+    public synchronized void pullTheRope() {
         Contestant c = (Contestant) Thread.currentThread();
-        int[] ret = new int[2];
-        ret[0]=0;//false
-        ret[1]=center_rope;// value of the deslocation of the rope
-
         this.ready_to_push += 1;
 
         /*  sleep only if the 6 players have not yet arrived and the push flag is not true  */
@@ -88,8 +84,6 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             center_rope=0;//reset center of rope
             notifyAll();
         }
-
-        System.out.println("OIOIIOIOIOIOIOIOI");
 
         while (!this.push_at_all_force){
             try {
@@ -110,23 +104,15 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             }
             System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " pulled the rope. Center: " + center_rope);
             //System.out.println("-<-<-<-<depois:> "+ center_rope+ " n: " + c.getContestantId());
-            this.n_contestant_pulls_team1[c.getContestantId()] += 1;
-            if (this.n_contestant_pulls_team1[c.getContestantId()] >= 6){
-                /*  reset push number  */
-                this.n_contestant_pulls_team1[c.getContestantId()] = 0;
-                /*  the last player to finish pushing in the trial, resets the push_at_all_force flag  */
-                this.finished_pushing += 1;
-                if(this.finished_pushing >= 6){
-                    this.finished_pushing = 0;
-                    this.push_at_all_force = false;
-                }
-                ret[0]=0;//false
-                ret[1]=center_rope;
-                return ret;
+            /*  reset push number  */
+            this.n_contestant_pulls_team1[c.getContestantId()] = 0;
+            /*  the last player to finish pushing in the trial, resets the push_at_all_force flag  */
+            this.finished_pushing += 1;
+            if(this.finished_pushing >= 6){
+                this.finished_pushing = 0;
+                this.push_at_all_force = false;
             }
-            ret[0]=1;//true
-            ret[1]=center_rope;
-            return ret;
+            return;
         }
         else if (c.getTeam_id() == 2){
             center_rope += c.getStrength();//positive value for push to the right
@@ -136,27 +122,18 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
                 e.printStackTrace();
             }
             System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " pulled the rope. Center: " + center_rope);
-            this.n_contestant_pulls_team2[c.getContestantId()] += 1;
-            if (this.n_contestant_pulls_team2[c.getContestantId()] >= 6){
-                /*  reset push number  */
-                this.n_contestant_pulls_team2[c.getContestantId()] = 0;
-                /*  the last player to finish pushing in the trial, resets the push_at_all_force flag  */
-                this.finished_pushing += 1;
-                if(this.finished_pushing >= 6){
-                    this.finished_pushing = 0;
-                    this.push_at_all_force = false;
-                }
-                ret[0]=0;//false
-                ret[1]=center_rope;
-                return ret;
+            /*  reset push number  */
+            this.n_contestant_pulls_team2[c.getContestantId()] = 0;
+            /*  the last player to finish pushing in the trial, resets the push_at_all_force flag  */
+            this.finished_pushing += 1;
+            if(this.finished_pushing >= 6){
+                this.finished_pushing = 0;
+                this.push_at_all_force = false;
             }
-            ret[0]=1;//true
-            ret[1]=center_rope;
-            return ret;
+
+            return;
         }
-        ret[0]=0;//false
-        ret[1]=center_rope;
-        return ret;
+        return;
     }
 
 

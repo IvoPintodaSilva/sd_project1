@@ -5,7 +5,7 @@ package pt.ua.sd.RopeGame.interfaces;
  */
 public interface IPlaygroundContestant {
 
-    int[] pullTheRope();
+    void pullTheRope();
 
     void iAmDone();
 
