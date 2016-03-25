@@ -4,9 +4,11 @@ package shared_mem;
 import active_entities.Coach;
 import active_entities.Contestant;
 import active_entities.Referee;
+import enums.WonType;
 import interfaces.IPlaygroundCoach;
 import interfaces.IPlaygroundContestant;
 import interfaces.IPlaygroundReferee;
+import structures.TrialStat;
 
 import static java.lang.Thread.sleep;
 
@@ -162,8 +164,12 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
      * Wakes up contestants in iAmDone and states if there is going to be a next trial or not
      * @return has_next_trial
      */
-    public synchronized boolean assertTrialDecision() {
+    public synchronized TrialStat assertTrialDecision() {
         Referee r = (Referee) Thread.currentThread();
+
+        boolean decision=false;
+        WonType decision_type = WonType.NONE;
+        int winner = -1;
 
         //System.out.println("Referee is on assertTrialDecision");
 
@@ -187,6 +193,25 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
         //System.out.printf("\n---------------- Trial #%d was played ----------------\n", this.n_trials_on_game);
 
+        if(center_rope == 0)
+        {
+            decision_type = WonType.DRAW;//its a draw
+            winner = 0;//none winner
+
+        }
+        else if(center_rope> 4 || center_rope<-4)
+        {
+            decision_type = WonType.KNOCKOUT;
+        }
+        else {
+            decision_type = WonType.POINTS;
+        }
+
+        if(center_rope>0)
+        winner=2;
+        else if(center_rope<0)
+        winner=1;
+
         /*  flag to tell that there was a trial decision  */
         this.trial_decided_contestants = true;
         this.trial_decided_coach = true;
@@ -198,11 +223,13 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
         if(this.n_trials_on_game >= 6){
             /*  set number of trials to 0 for next game  */
             this.n_trials_on_game = 0;
-            return false;
+            decision = false;
         }
         else{
-            return true;
+            decision=true;
         }
+
+        return new TrialStat(decision,winner, decision_type, center_rope);
     }
 
     /**
@@ -279,3 +306,4 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
 
 }
+

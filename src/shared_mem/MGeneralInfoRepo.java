@@ -3,6 +3,7 @@ package shared_mem;
 import enums.CoachState;
 import enums.ContestantState;
 import enums.RefState;
+import enums.WonType;
 import interfaces.IRepoCoach;
 import interfaces.IRepoContestant;
 import interfaces.IRepoReferee;
@@ -147,24 +148,24 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
      * @param wonType knock out, draw or points
      * @param nr_trials
      */
-    public synchronized void printResult(int team_id, String wonType, int nr_trials)
+    public synchronized void setResult(int team_id, WonType wonType, int nr_trials)
     {
         String temp="";
 
-                if(wonType.equalsIgnoreCase("knock out"))
+                if(wonType == WonType.KNOCKOUT)
                 {
                     gameWinnerLog(team_id);
-                    temp = "Game "+ game_nr+" was won by team "+team_id +" by "+wonType+" in "+ nr_trials +" trials.\n";
+                    temp = "Game "+ game_nr+" was won by team "+team_id +" by knock out in "+ nr_trials +" trials.\n";
                 }
-                else if(wonType.equalsIgnoreCase("draw"))
+                else if(wonType == WonType.DRAW)
                 {
                     gameWinnerLog(3);
                     temp = "Game "+game_nr+" was a draw.\n";
                 }
-                else if(wonType.equalsIgnoreCase("points"))
+                else if(wonType == WonType.POINTS)
                 {
                     gameWinnerLog(team_id);
-                    temp = "Game "+game_nr+" was won by team "+team_id+" by "+wonType+".\n";
+                    temp = "Game "+game_nr+" was won by team "+team_id+" by points.\n";
 
                 }
 

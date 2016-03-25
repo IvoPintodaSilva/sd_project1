@@ -39,7 +39,7 @@ public class Contestant extends Thread {
             switch (state){
 
                 case SEAT_AT_THE_BENCH:
-                    repo.updtRopeCenter(Integer.MAX_VALUE);
+                    //repo.updtRopeCenter(Integer.MAX_VALUE);
                     boolean chosen = contestants_bench.followCoachAdvice();
                     if(chosen){
                         state = ContestantState.STAND_IN_POSITION;
@@ -59,7 +59,7 @@ public class Contestant extends Thread {
                     do{
                         unpack_val = playground.pullTheRope();
                         //System.out.println("rope---------------->" + unpack_val[1]);
-                        repo.updtRopeCenter(unpack_val[1]);
+                        //repo.updtRopeCenter(unpack_val[1]);
                     }while(unpack_val[0] == 1);//while has next push
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
                     playground.iAmDone();

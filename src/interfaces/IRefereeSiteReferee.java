@@ -1,14 +1,17 @@
 package interfaces;
 
+import structures.GameStat;
+import structures.TrialStat;
+
 /**
  * Created by ivosilva on 07/03/16.
  */
 public interface IRefereeSiteReferee {
     void announceNewGame();
 
-    void declareGameWinner();
+    GameStat declareGameWinner(int score_T1, int score_T2, int knock_out);
 
-    void declareMatchWinner();
+    int declareMatchWinner();
 
     int getN_games();
 
