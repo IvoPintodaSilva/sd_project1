@@ -10,4 +10,5 @@ public interface IRepoReferee {
     void Addheader(boolean first);
     void printResult(int team_id, String wonType, int nr_trials);
     void printMatchResult();
+    void updGame_nr();
 }

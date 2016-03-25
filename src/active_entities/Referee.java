@@ -37,6 +37,7 @@ public class Referee extends Thread {
             switch (state) {
                 case START_OF_THE_MATCH:
                     this.referee_site.announceNewGame();
+                    repo.updGame_nr();
                     state = RefState.START_OF_A_GAME;
                     repo.Addheader(false);
                     repo.refereeLog(state, trial_number);
@@ -77,6 +78,7 @@ public class Referee extends Thread {
                         System.out.println("N games"+this.referee_site.getN_games() );
                         System.out.println("N games played"+this.referee_site.getN_games_played() );
                         this.referee_site.announceNewGame();
+                        repo.updGame_nr();
                         state = state.START_OF_A_GAME;
                         trial_number = 0;
                         repo.refereeLog(state, trial_number);
