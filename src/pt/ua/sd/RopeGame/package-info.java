@@ -19,8 +19,12 @@
  In order to ensure rules compliance, there is a referee. She has full control of the procedure and
  decides when to start a new game or a trial within the game. She also decides when a game is over and
  declares who has won a game or the match.</font></center>
- *
+ *<br>
+ *<b><center><font size=6>Ivo Silva </font></center></b><br>
+ *     <b><center><font size=4>ivosilva@ua.pt</font></center></b><br>
+ *<b><center><font size=6>Tiago Magalhaes </font></center></b><br>
+ *     <b><center><font size=4>tiagoferreiramagalhaes@ua.pt</font></center></b><br>
  */
 
 
-package pt.ua.sd;
+package pt.ua.sd.RopeGame;
