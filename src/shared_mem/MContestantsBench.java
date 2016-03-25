@@ -193,7 +193,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                     if(((c.getContestantId() != team1_selected_contestants[0]) &&
                             (c.getContestantId() != team1_selected_contestants[1]) &&
                             (c.getContestantId() != team1_selected_contestants[2]))){
-                        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " " + this.team1_strength[c.getContestantId()] + " - > " + c.getStrength());
+                        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " " + this.team1_strength[c.getContestantId()] + " - > " + c.getStrength());
                         c.incrementStrength();
                     }
 
@@ -249,7 +249,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                     if(((c.getContestantId() != team2_selected_contestants[0]) &&
                             (c.getContestantId() != team2_selected_contestants[1]) &&
                             (c.getContestantId() != team2_selected_contestants[2]))){
-                        System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " " + this.team2_strength[c.getContestantId()] + " - > " + c.getStrength());
+                        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " " + this.team2_strength[c.getContestantId()] + " - > " + c.getStrength());
                         c.incrementStrength();
                     }
 

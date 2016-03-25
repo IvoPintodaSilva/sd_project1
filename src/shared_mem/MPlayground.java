@@ -6,6 +6,8 @@ import interfaces.IPlaygroundCoach;
 import interfaces.IPlaygroundContestant;
 import interfaces.IPlaygroundReferee;
 
+import static java.lang.Thread.sleep;
+
 public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, IPlaygroundCoach {
 
     private int n_contestants_ready = 0;
@@ -41,6 +43,9 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             center_rope=0;//reset center of rope
             notifyAll();
         }
+
+        System.out.println("OIOIIOIOIOIOIOIOI");
+
         while (!this.push_at_all_force){
             try {
                 wait();
@@ -49,11 +54,17 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             }
         }
 
-        System.out.println("+++++++++++Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is pulling the rope with strenght " + c.getStrength()+"++++++++++");
+        //System.out.println("+++++++++++Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is pulling the rope with strenght " + c.getStrength()+"++++++++++");
         if(c.getTeam_id() == 1){
-            System.out.println("->->->antes:> "+center_rope + "n: " + c.getContestantId());
+            //System.out.println("->->->antes:> "+center_rope + "n: " + c.getContestantId());
             center_rope -= c.getStrength();//subtract value for push to the left
-            System.out.println("-<-<-<-<depois:> "+ center_rope+ " n: " + c.getContestantId());
+            try {
+                Thread.sleep((long)(Math.random() * 100));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " pulled the rope. Center: " + center_rope);
+            //System.out.println("-<-<-<-<depois:> "+ center_rope+ " n: " + c.getContestantId());
             this.n_contestant_pulls_team1[c.getContestantId()] += 1;
             if (this.n_contestant_pulls_team1[c.getContestantId()] >= 6){
                 /*  reset push number  */
@@ -74,6 +85,12 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
         }
         else if (c.getTeam_id() == 2){
             center_rope += c.getStrength();//positive value for push to the right
+            try {
+                Thread.sleep((long)(Math.random() * 100));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " pulled the rope. Center: " + center_rope);
             this.n_contestant_pulls_team2[c.getContestantId()] += 1;
             if (this.n_contestant_pulls_team2[c.getContestantId()] >= 6){
                 /*  reset push number  */

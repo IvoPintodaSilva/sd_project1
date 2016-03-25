@@ -58,7 +58,7 @@ public class Contestant extends Thread {
                     int[] unpack_val;
                     do{
                         unpack_val = playground.pullTheRope();
-                        System.out.println("rope---------------->" + unpack_val[1]);
+                        //System.out.println("rope---------------->" + unpack_val[1]);
                         repo.updtRopeCenter(unpack_val[1]);
                     }while(unpack_val[0] == 1);//while has next push
                     repo.contestantLog(this.id, this.team_id, this.strength, state);
