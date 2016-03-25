@@ -139,6 +139,7 @@ public class Referee extends Thread {
                         this.referee_site.announceNewGame();
                         repo.updGame_nr();
                         state = state.START_OF_A_GAME;
+                        repo.Addheader(false);
                         trial_number = 0;
                         repo.refereeLog(state, trial_number);
                         break;
