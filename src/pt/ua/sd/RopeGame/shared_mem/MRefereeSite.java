@@ -7,64 +7,70 @@ import pt.ua.sd.RopeGame.interfaces.IRefereeSiteContestant;
 import pt.ua.sd.RopeGame.interfaces.IRefereeSiteReferee;
 import pt.ua.sd.RopeGame.structures.GameStat;
 
+/**
+ * Refereee Site shared memory<br>
+ *<b><center><font size=6>Refereee Site shared memory</font></center></b><br>
+ *     <font size=4>This class represents the monitor/shared memory of the referee site.</font>
+ *
+ *
+ */
 public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRefereeSiteContestant{
-    private int n_trials;
-    private int n_trials_played;
 
+    /**
+     *
+     * @return the number of games
+     */
     public int getN_games() {
         return n_games;
     }
 
+    /**
+     *
+     * @return  the number of games played
+     */
     public int getN_games_played() {
         return n_games_played;
     }
 
+    /**
+     * Internal Data
+     */
     private static int n_games=3;
     private static int n_games_played=0;
-    private static int team1_wins=0;
-    private static int team2_wins=0;
-
-    private boolean new_game_announced = false;
-    private int n_coaches_informed_referee = 0;
 
 
     /**
-     * The referee announce a new game and all the threads are notified of that occurence.
+     * The referee announce a new game
      */
     public synchronized void announceNewGame() {
 
         Referee ref = (Referee) Thread.currentThread();
 
-        this.new_game_announced = true;
-
-        //System.out.println("New game announced");
 
     }
 
     /**
-     * The number of played games is increased
-     * @return GameStat
+     * The number of played games is increased and the game winner is decided
+     * @return GameStat data with the info of the winner
      */
     public synchronized GameStat declareGameWinner(int score_T1, int score_T2, int knock_out) {
-        //TODO-announce game  winner at referee
         n_games_played +=1;//increase number of games played
 
         if(knock_out== 1 )
         {
-            team1_wins +=1;
             return new GameStat((n_games_played<n_games),knock_out, WonType.KNOCKOUT);
         }
         else if(knock_out == 2){
-            team2_wins +=1;
+
             return new GameStat((n_games_played<n_games),knock_out, WonType.KNOCKOUT);
         }
         else if(score_T1>score_T2)
         {
-            team1_wins +=1;
+
             return new GameStat((n_games_played<n_games),1,WonType.POINTS);
         }
         else if(score_T1<score_T2){
-            team2_wins +=1;
+
             return new GameStat((n_games_played<n_games),2,WonType.POINTS);
         }
 
