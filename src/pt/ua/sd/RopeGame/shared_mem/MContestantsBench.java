@@ -120,7 +120,8 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     }
 
     /**
-     * Follow coach advice and sleep until referee wakes them up on start trial\
+     * Follow coach advice and sleep until referee wakes them up on start trial. Only the contestants that
+     * are playing the trial are waken up. The other ones gain one strength point.
      * @return  true if player is playing and false if he's going to sit down
      */
     public synchronized boolean followCoachAdvice()
@@ -244,7 +245,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
     /**
-     * Last coach wakes up referee and sleeps until the referee wakes him up on followCoach advice
+     * Last coach wakes up referee and sleeps until all the contestants have followed their coache's advice
      */
     public synchronized void informReferee() {
 
@@ -301,8 +302,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
     /**
-     * Contestants sleep until trial is started and the last one to get wake when the trial is started
-     * resets the trial started flag and the number of contestants ready
+     * Contestants sleep until trial is started
      *
      */
     public synchronized void getReady()
