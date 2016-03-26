@@ -7,60 +7,57 @@ import pt.ua.sd.RopeGame.interfaces.IContestantsBenchCoach;
 import pt.ua.sd.RopeGame.interfaces.IContestantsBenchContestant;
 import pt.ua.sd.RopeGame.interfaces.IContestantsBenchReferee;
 
+
+/**
+ * Contestant Bench shared memory<br>
+ *<b><center><font size=6>Contestant Bench shared memory</font></center></b><br>
+ *     <font size=4>This class represents the monitor/shared memory of the contestant bench.</font>
+ *
+ *
+ */
 public class MContestantsBench implements IContestantsBenchContestant, IContestantsBenchCoach, IContestantsBenchReferee {
-    private int team_id;
-    private int[] contestants_seated;
-    private int[] contestants_played;
 
-    private boolean trial_called = false;
+    /**
+     * Internal Data
+     */
+    private boolean trial_called = false;//flag that identifies if the trial was called
 
-    private int n_coaches_called_contestants = 0;
-    private boolean contestants_called = false;
+    private int n_coaches_called_contestants = 0;//number of players that already called the contestants, max 2
+    private boolean contestants_called = false;//flag that identifies if the contestants were already called
 
-    private int advice_followed = 0;
-    private boolean contestant_in_position = false;
+    private int advice_followed = 0;//number of players that already follow the advice
 
-    private boolean trial_started = false;
+    private boolean trial_started = false;//flag true if trial has started yet
 
-    private int n_coaches_informed_referee = 0;
-    private boolean coaches_informed = false;
+    private int n_coaches_informed_referee = 0;//when a coach inform the referee this var is increased in 1 unit
+    private boolean coaches_informed = false;//flag if the coaches were or not informed yet
 
+    private int n_contestants_called = 0;//number of contestants called on callcontestants
 
+    private int n_coaches_trial_decided = 0;//nr of coaches that were already informed that trial was decided
 
-
-
-
-
-    private int n_contestants_called = 0;
-
-    //private int n_coaches_contestants_in_position = 0;
-
-    private static int n_contestants_trial_started = 0;
-
-    private int n_coaches_trial_decided = 0;
-
+    /*new selection of the playing team*/
     private boolean new_team1_selected[] = {true, true, true, true, true};
     private boolean new_team2_selected[] = {true, true, true, true, true};
 
-    // arrays of selected contestants to play the trial
+    /* arrays of selected contestants to play the trial*/
     private static int team1_selected_contestants[] = {0, 1, 2};
     private static int team2_selected_contestants[] = {0, 1, 2};
-    private int n_ready_contestants_awake;
-    private int n_ready_contestants_started;
-    private boolean followed_coach_advice;
+
+    private int n_ready_contestants_started;//nr of contestants that started trial and are ready
+    private boolean followed_coach_advice;//flag for follow coach advice, true when the advce is followed
+    /*team strenght*/
     private int[] team1_strength = {0, 0, 0, 0, 0};
     private int[] team2_strength = {0, 0, 0, 0, 0};
-    private int i = 0;
-    private boolean match_ended = false;
+
+    private boolean match_ended = false;//flag for match ended, true if ended
 
 
     /**
-     * Referee sleeps until the last coach wakes him up on informReferee
+     * Referee calls the trial
      */
     public synchronized void callTrial()
     {
-        Referee c = (Referee) Thread.currentThread();
-        //System.out.println("Referee is asleep on callTrial");
 
         /*  wake up coaches in reviewNotes  */
         this.trial_called = true;
@@ -73,7 +70,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
     /**
-     * Call contestants and sleep until they're waken up by the last contestant in position
+     * Coach call contestants and sleep until they're waken up by the last contestant in position
      */
     public synchronized boolean callContestants()
     {
