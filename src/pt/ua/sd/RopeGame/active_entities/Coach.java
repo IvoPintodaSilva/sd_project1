@@ -8,14 +8,13 @@ import pt.ua.sd.RopeGame.interfaces.IRepoCoach;
 
 /**
  * Coach thread<br>
- * Created by tiago and ivosilva on 25-03-2016.<br>
  *<b><center><font size=6>Coach thread</font></center></b><br>
  *     <font size=4>This class represents the thread of the coach, her life cycle ends when
  *     the internal flag match_not_over takes the false notation.</font>
  *     Notes:
  *     -> the access to the shared memories is limited by the interfaces present in the interfaces package.
  *     -> the default selected team to play is the first 3 contestants (id: 0,1 and 2).
- *
+ *     -> the default state is WAIT_FOR_REFEREE_COMMAND
  *
  *
  */
@@ -58,8 +57,8 @@ public class Coach extends Thread {
      */
     public void run() {
 
-        CoachState state = CoachState.WAIT_FOR_REFEREE_COMMAND;
-        repo.coachLog(this.team_id, state);
+        CoachState state = CoachState.WAIT_FOR_REFEREE_COMMAND;//initial state
+        repo.coachLog(this.team_id, state);//update repo
         boolean match_not_over = true;
 
 
