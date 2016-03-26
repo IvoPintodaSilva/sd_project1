@@ -41,7 +41,7 @@ public class TrialStat {
     }
 
     /**
-     * @return the {@link boolean } instance that tells if has(true) or not(false) one next trial in the current game
+     * @return the {@link Boolean } instance that tells if has(true) or not(false) one next trial in the current game
      */
     public boolean isHas_next_trial() {
         return has_next_trial;

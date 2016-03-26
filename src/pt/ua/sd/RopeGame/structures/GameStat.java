@@ -23,7 +23,7 @@ public class GameStat {
 
     /**
      *
-     * @return the {@link boolean } instance that tells if has(true) or not(false) one next game in the current match
+     * @return the {@link Boolean } instance that tells if has(true) or not(false) one next game in the current match
      */
     public boolean isHas_next_game() {
         return has_next_game;
@@ -31,7 +31,7 @@ public class GameStat {
 
     /**
      *
-     * @return the {@link int} team id
+     * @return the {@link Integer} team id
      */
     public int getWinnerTeam() {
         return team;
