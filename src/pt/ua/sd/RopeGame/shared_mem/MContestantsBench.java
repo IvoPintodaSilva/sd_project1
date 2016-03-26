@@ -70,12 +70,12 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
     /**
-     * Coach call contestants and sleep until they're waken up by the last contestant in position
+     * Coach sleeps while the trial was not called or the mach is not started yet and then
+     * calls the contestants to play
      */
     public synchronized boolean callContestants()
     {
         Coach c = (Coach) Thread.currentThread();
-        //System.out.println("Coach " + c.getCoachId() + " called contestants");
 
         /*  to know when to increment contestants strength  */
         for (int i = 0; i < 5; i++){
@@ -121,7 +121,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
     /**
      * Follow coach advice and sleep until referee wakes them up on start trial\
-     * Returns true if player is playing and false if he's going to sit down
+     * @return  true if player is playing and false if he's going to sit down
      */
     public synchronized boolean followCoachAdvice()
     {
@@ -196,7 +196,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                     if(((c.getContestantId() != team2_selected_contestants[0]) &&
                             (c.getContestantId() != team2_selected_contestants[1]) &&
                             (c.getContestantId() != team2_selected_contestants[2]))){
-                        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " " + this.team2_strength[c.getContestantId()] + " - > " + c.getStrength());
                         c.incrementStrength();
                     }
 
@@ -214,8 +213,8 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
 
-        if(c.getTeam_id() == 1){
-            if (this.new_team1_selected[c.getContestantId()]) {
+        if(c.getTeam_id() == 1){//if team 1
+            if (this.new_team1_selected[c.getContestantId()]) {//if the current contestant is selected
                 this.new_team1_selected[c.getContestantId()] = false;
             }
         }
@@ -245,14 +244,12 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
     /**
-     * Last coach wakes up referee and sleeps until the referee wakes him up on assertTrialDecision
+     * Last coach wakes up referee and sleeps until the referee wakes him up on followCoach advice
      */
     public synchronized void informReferee() {
 
         Coach c = (Coach) Thread.currentThread();
         this.n_coaches_informed_referee += 1;
-
-        //System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at informReferee");
 
         /*  wake up referee when both coaches have informed them  */
         if(this.n_coaches_informed_referee >= 2){
@@ -262,8 +259,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         }
 
         /*  wait for trial decision  */
-        //System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is asleep at informReferee");
-        //System.out.println(this.followed_coach_advice);
         while (!this.followed_coach_advice){
             try {
                 wait();
@@ -277,19 +272,15 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             this.n_coaches_trial_decided = 0;
             this.followed_coach_advice = false;
         }
-
-        //System.out.println("Coach " + c.getCoachId() + " from Team " + c.getTeam_id() + " is awake at informReferee");
-
     }
 
 
     /**
-     * Wakes up contestants in followCoachAdvice and sleeps until contestants are done pulling the rope
+     * Referee waits for coaches to inform the referee and then starts trial and wakes up the contestants in bench
     */
     public synchronized void startTrial()
     {
         Referee r = (Referee) Thread.currentThread();
-        //System.out.println("Referee is asleep on startTrial");
 
         /*  wait for coaches to inform referee  */
         while (!this.coaches_informed){
@@ -310,8 +301,9 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
     /**
-     * Contestants sleep in the playground and the last one to get there wakes them up so that they pull at the same
-     * time
+     * Contestants sleep until trial is started and the last one to get wake when the trial is started
+     * resets the trial started flag and the number of contestants ready
+     *
      */
     public synchronized void getReady()
     {
@@ -327,8 +319,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             }
         }
 
-        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " is asleep on getReady");
-        
         this.n_ready_contestants_started += 1;
         if(this.n_ready_contestants_started >= 6){
             /*  restore contestants value for next trial  */
@@ -338,11 +328,12 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     }
 
 
-
     /**
-     * Announce new game returns int with id of winner, if 0 its a draw
+     * Declares the winner of the match
+     * @param games1 number of games won by team 1
+     * @param games2 number of games won by team 2
+     * @return winner team id
      */
-
     public synchronized int declareMatchWinner(int games1, int games2) {
 
         this.match_ended = true;
