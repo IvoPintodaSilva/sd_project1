@@ -66,7 +66,7 @@ public class Contestant extends Thread {
         boolean match_not_over = true;
 
 
-        while (match_not_over){//this value can change when coach is in the begining of his cycle(WRC) by followCoachAdvice()
+        while (match_not_over){//this value can change when contestant is in the begining of his cycle(SAB) by followCoachAdvice()
             switch (state){
 
                 case SEAT_AT_THE_BENCH:
