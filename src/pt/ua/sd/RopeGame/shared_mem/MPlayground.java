@@ -12,6 +12,12 @@ import pt.ua.sd.RopeGame.structures.TrialStat;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * Playground - It is where contestants do the actual rope pulling. It is also where the referee
+ * comes to see where the rope center is and assert who won the trial and where the coaches review their
+ * notes to decide which contestants are playing in the next trial.
+ */
+
 public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, IPlaygroundCoach {
 
     private int n_contestants_ready = 0;
@@ -41,7 +47,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
 
     /**
-     * Have contestants sleeping in the bench until they're waken up by both coaches
+     * Have contestants wait for the trial decision to change their state into SEAT_AT_THE_BENCH
      */
     public synchronized void seatDown()
     {
@@ -70,7 +76,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
 
     /**
-     * Contestants pull the rope
+     * Contestants wait until they are all in position to pull the rope and, only then, will they start pulling
      */
     public synchronized void pullTheRope() {
         Contestant c = (Contestant) Thread.currentThread();
@@ -138,8 +144,8 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
 
     /**
-     * Wakes up contestants in iAmDone and states if there is going to be a next trial or not
-     * @return has_next_trial
+     * The referee waits until the contestants are done pulling the rope and the asserts the trial winner
+     * @return trial_stats
      */
     public synchronized TrialStat assertTrialDecision() {
         Referee r = (Referee) Thread.currentThread();
@@ -210,7 +216,10 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     }
 
     /**
-     * Coach reviews notes and makes changes in the teams and doesn't sleep
+     * Coaches wait for the trial to be decided and then proceed to chose the contestants for the next trial
+     *
+     * @param selected_contestants selected contestants in current trial
+     * @return selected_contestant_for_next_trial
      */
     public synchronized int[] reviewNotes(int[] selected_contestants) {
         Coach c = (Coach) Thread.currentThread();
@@ -260,7 +269,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
 
     /**
-     * Last contestant to be done wakes up referee and sleeps until referee wakes them up in assertTrialDecision
+     * Contestants are done pulling the rope
      */
     public synchronized void iAmDone()
     {
