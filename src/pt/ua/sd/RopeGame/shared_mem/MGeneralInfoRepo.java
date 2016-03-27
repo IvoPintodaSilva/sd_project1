@@ -236,9 +236,6 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
         printStates();//buffers the states
         writeToFile();//writes the buffer to file
 
-//        if(state== RefState.END_OF_A_GAME){
-//            writeToFile(true);
-//        }
     }
 
     /**
@@ -369,10 +366,6 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
      */
     public synchronized void updtRopeCenter(int new_val)
     {
-//        if(PS_center == Integer.MAX_VALUE)
-//        {
-//            PS_center=0;
-//        }
         PS_center = new_val;
 
     }

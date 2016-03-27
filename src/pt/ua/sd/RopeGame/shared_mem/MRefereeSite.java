@@ -46,7 +46,6 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
 
         Referee ref = (Referee) Thread.currentThread();
 
-
     }
 
     /**
@@ -74,7 +73,7 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
             return new GameStat((n_games_played<n_games),2,WonType.POINTS);
         }
 
-            return new GameStat((n_games_played<n_games),0,WonType.DRAW);
+        return new GameStat((n_games_played<n_games),0,WonType.DRAW);
 
 
 

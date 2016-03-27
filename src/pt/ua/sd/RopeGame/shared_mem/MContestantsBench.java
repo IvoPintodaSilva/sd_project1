@@ -161,7 +161,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                     if(((c.getContestantId() != team1_selected_contestants[0]) &&
                             (c.getContestantId() != team1_selected_contestants[1]) &&
                             (c.getContestantId() != team1_selected_contestants[2]))){
-                        //System.out.println("Contestant " + c.getContestantId() + " of team " + c.getTeam_id() + " " + this.team1_strength[c.getContestantId()] + " - > " + c.getStrength());
                         c.incrementStrength();
                     }
 
@@ -292,10 +291,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             }
         }
         this.coaches_informed = false;
-        //System.out.println("Referee is awake on startTrial");
-
         this.trial_started = true;
-        /*  wake up contestants in the bench  */
         notifyAll();
 
     }
@@ -338,13 +334,12 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
         this.match_ended = true;
         notifyAll();
-        if(games1>games2)
+        if (games1 > games2) {
             return 1;
-        else if(games2>games1)
+        } else if(games2 > games1){
             return 2;
+        }
         return 0;
-
-
 
     }
 
