@@ -95,6 +95,7 @@ public class Contestant extends Thread {
                     playground.pullTheRope(this.team_id,this.strength,this.id);
                     repo.contestantLog(this.id, this.team_id, this.strength, state);//update central info repository
                     playground.iAmDone();
+                    decrementStrength();//depois de am done decrementar a forca
                     playground.seatDown();
                     state = ContestantState.START;//change state
                     break;

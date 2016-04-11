@@ -129,7 +129,6 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
      * @return trial_stats
      */
     public synchronized TrialStat assertTrialDecision() {
-        Referee r = (Referee) Thread.currentThread();
 
         boolean decision = false;
         WonType decision_type = WonType.NONE;
@@ -195,7 +194,6 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
      * @return selected_contestant_for_next_trial
      */
     public synchronized int[] reviewNotes(int[] selected_contestants) {
-        Coach c = (Coach) Thread.currentThread();
 
         while (!this.trial_decided_coach){
             try {
@@ -239,8 +237,6 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
      * Contestants are done pulling the rope
      */
     public synchronized void iAmDone(){
-        Contestant c = (Contestant) Thread.currentThread();
-        c.decrementStrength();
         this.n_contestants_done += 1;
 
         /*  last contestant done wakes up referee  */
