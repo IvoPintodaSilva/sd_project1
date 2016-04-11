@@ -282,7 +282,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     */
     public synchronized void startTrial()
     {
-        Referee r = (Referee) Thread.currentThread();
 
         /*  wait for coaches to inform referee  */
         while (!this.coaches_informed){
@@ -305,7 +304,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
      */
     public synchronized void getReady()
     {
-        Contestant c = (Contestant) Thread.currentThread();
 
         /*  wait for every contestant to be ready  */
         /*  the last contestant to get ready wakes up everyone else  */

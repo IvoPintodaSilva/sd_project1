@@ -40,7 +40,6 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
      */
     public synchronized void seatDown()
     {
-        Contestant c = (Contestant) Thread.currentThread();
 
         while (!this.trial_decided_contestants){
             try {
@@ -66,8 +65,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     /**
      * Contestants wait until they are all in position to pull the rope and, only then, will they start pulling
      */
-    public synchronized void pullTheRope() {
-        Contestant c = (Contestant) Thread.currentThread();
+    public synchronized void pullTheRope(int team_id, int strenght, int contestant_id) {
         this.ready_to_push += 1;
 
         /*  sleep only if the 6 players have not yet arrived and the push flag is not true  */
@@ -87,15 +85,15 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             }
         }
 
-        if(c.getTeam_id() == 1){
-            center_rope -= c.getStrength();//subtract value for push to the left
+        if(team_id == 1){
+            center_rope -= strenght;//subtract value for push to the left
             try {
                 Thread.sleep((long)(Math.random() * 100));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             /*  reset push number  */
-            this.n_contestant_pulls_team1[c.getContestantId()] = 0;
+            this.n_contestant_pulls_team1[contestant_id] = 0;
             /*  the last player to finish pushing in the trial, resets the push_at_all_force flag  */
             this.finished_pushing += 1;
             if(this.finished_pushing >= 6){
@@ -104,15 +102,15 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             }
             return;
         }
-        else if (c.getTeam_id() == 2){
-            center_rope += c.getStrength();//positive value for push to the right
+        else if (team_id == 2){
+            center_rope += strenght;//positive value for push to the right
             try {
                 Thread.sleep((long)(Math.random() * 100));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             /*  reset push number  */
-            this.n_contestant_pulls_team2[c.getContestantId()] = 0;
+            this.n_contestant_pulls_team2[contestant_id] = 0;
             /*  the last player to finish pushing in the trial, resets the push_at_all_force flag  */
             this.finished_pushing += 1;
             if(this.finished_pushing >= 6){

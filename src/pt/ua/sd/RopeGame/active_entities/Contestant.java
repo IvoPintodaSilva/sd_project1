@@ -92,7 +92,7 @@ public class Contestant extends Thread {
                     repo.contestantLog(this.id, this.team_id, this.strength, state);//update central info repository
                     break;
                 case DO_YOUR_BEST:
-                    playground.pullTheRope();
+                    playground.pullTheRope(this.team_id,this.strength,this.id);
                     repo.contestantLog(this.id, this.team_id, this.strength, state);//update central info repository
                     playground.iAmDone();
                     playground.seatDown();
