@@ -65,7 +65,7 @@ public class Coach extends Thread {
         while (match_not_over){//this value can change when coach is in the begining of his cycle(WRC) by callContestants
             switch (state){
                 case WAIT_FOR_REFEREE_COMMAND:
-                    match_not_over = this.contestants_bench.callContestants();
+                    match_not_over = this.contestants_bench.callContestants(this.team_id,this.team_selected_contestants);
                     state = CoachState.ASSEMBLE_TEAM;//change state
                     repo.coachLog(this.team_id, state);//update central info repository
                     break;

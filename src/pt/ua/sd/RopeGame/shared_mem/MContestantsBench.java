@@ -73,15 +73,14 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
      * Coach sleeps while the trial was not called or the mach is not started yet and then
      * calls the contestants to play
      */
-    public synchronized boolean callContestants()
+    public synchronized boolean callContestants(int team_id,int[] selected_contestants)
     {
-        Coach c = (Coach) Thread.currentThread();
 
         /*  to know when to increment contestants strength  */
         for (int i = 0; i < 5; i++){
-            if(c.getTeam_id() == 1){
+            if(team_id == 1){
                 this.new_team1_selected[i] = true;
-            }else if(c.getTeam_id() == 2){
+            }else if(team_id == 2){
                 this.new_team2_selected[i] = true;
             }
         }
@@ -109,10 +108,10 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             this.trial_called = false;
         }
 
-        if(c.getTeam_id() == 1){
-            team1_selected_contestants = c.getSelectedContestants();
-        }else if(c.getTeam_id() == 2){
-            team2_selected_contestants = c.getSelectedContestants();
+        if(team_id == 1){
+            team1_selected_contestants =selected_contestants;
+        }else if(team_id == 2){
+            team2_selected_contestants = selected_contestants;
         }
 
         return true;
@@ -126,7 +125,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
      */
     public synchronized boolean[] followCoachAdvice(int contestant_id,int strength, int team_id)
     {
-        //Contestant c = (Contestant) Thread.currentThread();
         boolean[] ret =new boolean[2];
         ret[1]=false;//not increment by default
         ret[0]=false;//return false by default
@@ -164,7 +162,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                     if(((contestant_id != team1_selected_contestants[0]) &&
                             (contestant_id != team1_selected_contestants[1]) &&
                             (contestant_id != team1_selected_contestants[2]))){
-                        //c.incrementStrength();
                         ret[1]=true;//increment strenght
                     }
 
@@ -201,7 +198,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                     if(((contestant_id != team2_selected_contestants[0]) &&
                             (contestant_id != team2_selected_contestants[1]) &&
                             (contestant_id != team2_selected_contestants[2]))){
-                        //c.incrementStrength();
                         ret[1]=true;
                     }
 
