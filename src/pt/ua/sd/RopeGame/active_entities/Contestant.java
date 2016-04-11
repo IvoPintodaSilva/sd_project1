@@ -63,6 +63,9 @@ public class Contestant extends Thread {
     public void run() {
 
         ContestantState state = ContestantState.START;//initial state
+        boolean[] unpack = new boolean[2];//for receive return from follow coach advice
+        unpack[0]=false;//def
+        unpack[1]=false;//def
         boolean match_not_over = true;
 
 
@@ -71,7 +74,12 @@ public class Contestant extends Thread {
 
                 case SEAT_AT_THE_BENCH:
                     repo.updtRopeCenter(Integer.MAX_VALUE);//update central info repository the MAX_VALUE hides the log value
-                    match_not_over = contestants_bench.followCoachAdvice();
+                    unpack = contestants_bench.followCoachAdvice(this.id,this.strength,this.team_id);
+                    match_not_over = unpack[0];
+                    if(unpack[1])
+                    {
+                        incrementStrength();
+                    }
                     if(!match_not_over){
                         break;
                     }

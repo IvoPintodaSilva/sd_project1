@@ -124,25 +124,27 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
      * are playing the trial are waken up. The other ones gain one strength point.
      * @return  true if player is playing and false if he's going to sit down
      */
-    public synchronized boolean followCoachAdvice()
+    public synchronized boolean[] followCoachAdvice(int contestant_id,int strength, int team_id)
     {
-        Contestant c = (Contestant) Thread.currentThread();
+        //Contestant c = (Contestant) Thread.currentThread();
+        boolean[] ret =new boolean[2];
+        ret[1]=false;//not increment by default
+        ret[0]=false;//return false by default
 
-
-        if(c.getTeam_id() == 1){
-            this.team1_strength[c.getContestantId()] = c.getStrength();
+        if(team_id == 1){
+            this.team1_strength[contestant_id] = strength;
         }
-        else if(c.getTeam_id() == 2){
-            this.team2_strength[c.getContestantId()] = c.getStrength();
+        else if(team_id == 2){
+            this.team2_strength[contestant_id] = strength;
         }
 
-        if(c.getTeam_id() == 1){
+        if(team_id == 1){
 
             while (
                     ((!this.contestants_called) ||
-                    ((c.getContestantId() != team1_selected_contestants[0]) &&
-                            (c.getContestantId() != team1_selected_contestants[1]) &&
-                            (c.getContestantId() != team1_selected_contestants[2])))
+                    ((contestant_id != team1_selected_contestants[0]) &&
+                            (contestant_id != team1_selected_contestants[1]) &&
+                            (contestant_id != team1_selected_contestants[2])))
 
                     ||
 
@@ -152,16 +154,18 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
                 if(this.match_ended){
-                    return false;
+                    ret[0]=false;//return false
+                    return ret;
                 }
 
-                if( new_team1_selected[c.getContestantId()] ){
-                    new_team1_selected[c.getContestantId()] = false;
+                if( new_team1_selected[contestant_id] ){
+                    new_team1_selected[contestant_id] = false;
 
-                    if(((c.getContestantId() != team1_selected_contestants[0]) &&
-                            (c.getContestantId() != team1_selected_contestants[1]) &&
-                            (c.getContestantId() != team1_selected_contestants[2]))){
-                        c.incrementStrength();
+                    if(((contestant_id != team1_selected_contestants[0]) &&
+                            (contestant_id != team1_selected_contestants[1]) &&
+                            (contestant_id != team1_selected_contestants[2]))){
+                        //c.incrementStrength();
+                        ret[1]=true;//increment strenght
                     }
 
                 }
@@ -175,28 +179,30 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
             }
 
-        }else if(c.getTeam_id() == 2){
+        }else if(team_id == 2){
             while (
                     ((!this.contestants_called) ||
-                    ((c.getContestantId() != team2_selected_contestants[0]) &&
-                            (c.getContestantId() != team2_selected_contestants[1]) &&
-                            (c.getContestantId() != team2_selected_contestants[2])))
+                    ((contestant_id != team2_selected_contestants[0]) &&
+                            (contestant_id != team2_selected_contestants[1]) &&
+                            (contestant_id != team2_selected_contestants[2])))
                     ||
                             this.match_ended
                     ){
 
 
                 if(this.match_ended){
-                    return false;
+                    ret[1]=false;//not increment by default
+                    return ret;
                 }
 
-                if( new_team2_selected[c.getContestantId()] ){
-                    new_team2_selected[c.getContestantId()] = false;
+                if( new_team2_selected[contestant_id] ){
+                    new_team2_selected[contestant_id] = false;
 
-                    if(((c.getContestantId() != team2_selected_contestants[0]) &&
-                            (c.getContestantId() != team2_selected_contestants[1]) &&
-                            (c.getContestantId() != team2_selected_contestants[2]))){
-                        c.incrementStrength();
+                    if(((contestant_id != team2_selected_contestants[0]) &&
+                            (contestant_id != team2_selected_contestants[1]) &&
+                            (contestant_id != team2_selected_contestants[2]))){
+                        //c.incrementStrength();
+                        ret[1]=true;
                     }
 
                 }
@@ -213,14 +219,14 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
 
-        if(c.getTeam_id() == 1){//if team 1
-            if (this.new_team1_selected[c.getContestantId()]) {//if the current contestant is selected
-                this.new_team1_selected[c.getContestantId()] = false;
+        if(team_id == 1){//if team 1
+            if (this.new_team1_selected[contestant_id]) {//if the current contestant is selected
+                this.new_team1_selected[contestant_id] = false;
             }
         }
-        else if(c.getTeam_id() == 2){
-            if (this.new_team2_selected[c.getContestantId()]) {
-                this.new_team2_selected[c.getContestantId()] = false;
+        else if(team_id == 2){
+            if (this.new_team2_selected[contestant_id]) {
+                this.new_team2_selected[contestant_id] = false;
             }
         }
 
@@ -238,8 +244,8 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
             this.advice_followed = 0;
             notifyAll();
         }
-
-        return true;
+        ret[0]=true;
+        return ret;
     }
 
 

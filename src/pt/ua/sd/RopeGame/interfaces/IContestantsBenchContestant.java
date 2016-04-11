@@ -5,7 +5,7 @@ package pt.ua.sd.RopeGame.interfaces;
  */
 public interface IContestantsBenchContestant {
 
-    boolean followCoachAdvice();
+    boolean[] followCoachAdvice(int contestant_id,int strength, int team_id);
 
     void getReady();
 
