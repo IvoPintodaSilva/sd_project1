@@ -10,6 +10,9 @@ import pt.ua.sd.RopeGame.shared_mem.MGeneralInfoRepo;
 import pt.ua.sd.RopeGame.shared_mem.MPlayground;
 import pt.ua.sd.RopeGame.shared_mem.MRefereeSite;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.Random;
 /**
  * Main class of the project<br>
@@ -24,6 +27,27 @@ public class RopeGame {
         MPlayground playground = new MPlayground();
         MContestantsBench bench = new MContestantsBench();
         MGeneralInfoRepo repo = new MGeneralInfoRepo();
+
+        int players_team;
+        int players_pushing;
+        int n_trials;
+        int n_games;
+
+        try {
+            Properties p = new Properties();
+            System.out.println("Settings loaded from: " + System.getProperty("user.dir") + "/rg.config");
+            p.load(new FileInputStream( System.getProperty("user.dir") + "/rg.config"));
+
+            players_team = Integer.parseInt(p.getProperty("N_PLAYERS_TEAM"));
+            players_pushing = Integer.parseInt(p.getProperty("N_PLAYERS_PUSHING"));
+            n_trials = Integer.parseInt(p.getProperty("N_TRIALS"));
+            n_games = Integer.parseInt(p.getProperty("N_GAMES"));
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
 
         Coach coach_team1 = new Coach(1, 1,
                 (IPlaygroundCoach) playground,
