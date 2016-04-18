@@ -44,7 +44,6 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
      */
     public synchronized void announceNewGame() {
 
-        Referee ref = (Referee) Thread.currentThread();
 
     }
 
