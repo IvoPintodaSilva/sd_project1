@@ -250,7 +250,6 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
      */
     public synchronized void informReferee() {
 
-        Coach c = (Coach) Thread.currentThread();
         this.n_coaches_informed_referee += 1;
 
         /*  wake up referee when both coaches have informed them  */
