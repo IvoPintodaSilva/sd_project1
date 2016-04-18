@@ -28,10 +28,10 @@ public class RopeGame {
         MContestantsBench bench = new MContestantsBench();
         MGeneralInfoRepo repo = new MGeneralInfoRepo();
 
-        int players_team;
-        int players_pushing;
-        int n_trials;
-        int n_games;
+        int players_team=0;
+        int players_pushing=0;
+        int n_trials=0;
+        int n_games=0;
 
         try {
             Properties p = new Properties();
@@ -53,38 +53,60 @@ public class RopeGame {
                 (IPlaygroundCoach) playground,
                 (IRefereeSiteCoach) refereeSite,
                 (IContestantsBenchCoach) bench,
-                (IRepoCoach) repo);
+                (IRepoCoach) repo,
+                players_team,
+                players_pushing,
+                n_trials,
+                n_games
+        );
         Coach coach_team2 = new Coach(2, 2,
                 (IPlaygroundCoach) playground,
                 (IRefereeSiteCoach) refereeSite,
                 (IContestantsBenchCoach) bench,
-                (IRepoCoach) repo);
+                (IRepoCoach) repo,
+                players_team,
+                players_pushing,
+                n_trials,
+                n_games
+        );
 
         Referee ref = new Referee(
                 (IPlaygroundReferee) playground,
                 (IRefereeSiteReferee) refereeSite,
                 (IContestantsBenchReferee) bench,
-                (IRepoReferee) repo);
+                (IRepoReferee) repo,
+                players_team,
+                players_pushing,
+                n_trials,
+                n_games);
 
 
         Random rn = new Random();
-        Contestant[] contestants_team1 = new Contestant[5];
-        for(int i = 0; i < 5; i++){
+        Contestant[] contestants_team1 = new Contestant[players_team];
+        for(int i = 0; i < players_team; i++){
             contestants_team1[i] = new Contestant(i, 1, rn.nextInt(20 - 10 + 1) + 10,
                     (IPlaygroundContestant) playground,
                     (IRefereeSiteContestant) refereeSite,
                     (IContestantsBenchContestant) bench,
-                    (IRepoContestant) repo);
+                    (IRepoContestant) repo,
+                    players_team,
+                    players_pushing,
+                    n_trials,
+                    n_games);
             contestants_team1[i].start();
         }
 
-        Contestant[] contestants_team2 = new Contestant[5];
-        for(int i = 0; i < 5; i++){
+        Contestant[] contestants_team2 = new Contestant[players_team];
+        for(int i = 0; i < players_team; i++){
             contestants_team2[i] = new Contestant(i, 2, rn.nextInt(20 - 10 + 1) + 10,
                     (IPlaygroundContestant) playground,
                     (IRefereeSiteContestant) refereeSite,
                     (IContestantsBenchContestant) bench,
-                    (IRepoContestant) repo);
+                    (IRepoContestant) repo,
+                    players_team,
+                    players_pushing,
+                    n_trials,
+                    n_games);
             contestants_team2[i].start();
         }
 
