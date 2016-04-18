@@ -26,7 +26,7 @@ public class Coach extends Thread {
      */
     private int id;//represents the id of the coach
     private int team_id;//represents the id of the team
-    private int team_selected_contestants[] = {0, 1, 2};//each coach has 3 selected contestants to play
+    private int team_selected_contestants[];//each coach has 3 selected contestants to play
     private IContestantsBenchCoach contestants_bench;//represents the bench shared memory
     private IRefereeSiteCoach referee_site;//represents the referee site shared memory
     private IPlaygroundCoach playground;//represents the playground shared memory
@@ -74,7 +74,13 @@ public class Coach extends Thread {
         while (match_not_over){//this value can change when coach is in the begining of his cycle(WRC) by callContestants
             switch (state){
                 case WAIT_FOR_REFEREE_COMMAND:
-                    match_not_over = this.contestants_bench.callContestants(this.team_id,this.team_selected_contestants);
+                    if (team_selected_contestants == null){
+                        team_selected_contestants = new int[n_players_pushing];
+                        for(int i = 0; i < n_players_pushing; i++){
+                            team_selected_contestants[i] = i;
+                        }
+                    }
+                    match_not_over = this.contestants_bench.callContestants(this.team_id,this.team_selected_contestants, n_players);
                     state = CoachState.ASSEMBLE_TEAM;//change state
                     repo.coachLog(this.team_id, state);//update central info repository
                     break;

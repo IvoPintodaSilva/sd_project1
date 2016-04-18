@@ -84,7 +84,7 @@ public class Contestant extends Thread {
 
                 case SEAT_AT_THE_BENCH:
                     repo.updtRopeCenter(Integer.MAX_VALUE);//update central info repository the MAX_VALUE hides the log value
-                    unpack = contestants_bench.followCoachAdvice(this.id,this.strength,this.team_id);
+                    unpack = contestants_bench.followCoachAdvice(this.id,this.strength,this.team_id, this.n_players, this.n_players_pushing);
                     match_not_over = unpack[0];
                     if(unpack[1])
                     {

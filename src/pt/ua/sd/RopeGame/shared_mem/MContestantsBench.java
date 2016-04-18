@@ -7,6 +7,9 @@ import pt.ua.sd.RopeGame.interfaces.IContestantsBenchCoach;
 import pt.ua.sd.RopeGame.interfaces.IContestantsBenchContestant;
 import pt.ua.sd.RopeGame.interfaces.IContestantsBenchReferee;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 
 /**
  * Contestant Bench shared memory<br>
@@ -37,12 +40,16 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     private int n_coaches_trial_decided = 0;//nr of coaches that were already informed that trial was decided
 
     /*new selection of the playing team*/
-    private boolean new_team1_selected[] = {true, true, true, true, true};
-    private boolean new_team2_selected[] = {true, true, true, true, true};
+    //private boolean new_team1_selected[] = {true, true, true, true, true};
+    //private boolean new_team2_selected[] = {true, true, true, true, true};
+    private boolean new_team1_selected[];
+    private boolean new_team2_selected[];
 
     /* arrays of selected contestants to play the trial*/
-    private static int team1_selected_contestants[] = {0, 1, 2};
-    private static int team2_selected_contestants[] = {0, 1, 2};
+    //private static int team1_selected_contestants[] = {0, 1, 2};
+    //private static int team2_selected_contestants[] = {0, 1, 2};
+    private static int team1_selected_contestants[];
+    private static int team2_selected_contestants[];
 
     private int n_ready_contestants_started;//nr of contestants that started trial and are ready
     private boolean followed_coach_advice;//flag for follow coach advice, true when the advce is followed
@@ -73,11 +80,21 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
      * Coach sleeps while the trial was not called or the mach is not started yet and then
      * calls the contestants to play
      */
-    public synchronized boolean callContestants(int team_id,int[] selected_contestants)
+    public synchronized boolean callContestants(int team_id,int[] selected_contestants, int n_players)
     {
+        /*  if arrays are not initilialized  */
+        if (new_team1_selected == null){
+            new_team1_selected = new boolean[n_players];
+            Arrays.fill(new_team1_selected, true);
+        }
+        if (new_team2_selected == null){
+            new_team2_selected = new boolean[n_players];
+            Arrays.fill(new_team1_selected, true);
+
+        }
 
         /*  to know when to increment contestants strength  */
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < n_players; i++){
             if(team_id == 1){
                 this.new_team1_selected[i] = true;
             }else if(team_id == 2){
@@ -109,7 +126,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         }
 
         if(team_id == 1){
-            team1_selected_contestants =selected_contestants;
+            team1_selected_contestants = selected_contestants;
         }else if(team_id == 2){
             team2_selected_contestants = selected_contestants;
         }
@@ -123,11 +140,37 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
      * are playing the trial are waken up. The other ones gain one strength point.
      * @return  true if player is playing and false if he's going to sit down
      */
-    public synchronized boolean[] followCoachAdvice(int contestant_id,int strength, int team_id)
+    public synchronized boolean[] followCoachAdvice(int contestant_id,int strength, int team_id, int n_players, int n_players_pushing)
     {
         boolean[] ret =new boolean[2];
         ret[1]=false;//not increment by default
         ret[0]=false;//return false by default
+
+        /*  if arrays are not initilialized  */
+        if (new_team1_selected == null){
+            new_team1_selected = new boolean[n_players];
+            Arrays.fill(new_team1_selected, true);
+        }
+        if (new_team2_selected == null){
+            new_team2_selected = new boolean[n_players];
+            Arrays.fill(new_team1_selected, true);
+        }
+
+
+        if (team1_selected_contestants == null){
+            team1_selected_contestants = new int[n_players_pushing];
+            for(int i = 0; i < n_players_pushing; i++){
+                team1_selected_contestants[i] = i;
+            }
+        }
+
+        if (team2_selected_contestants == null){
+            team2_selected_contestants = new int[n_players_pushing];
+            for(int i = 0; i < n_players_pushing; i++){
+                team2_selected_contestants[i] = i;
+            }
+        }
+
 
         if(team_id == 1){
             this.team1_strength[contestant_id] = strength;
