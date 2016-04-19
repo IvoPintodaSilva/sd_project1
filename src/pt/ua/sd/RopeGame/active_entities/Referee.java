@@ -107,7 +107,7 @@ public class Referee extends Thread {
                 case WAIT_FOR_TRIAL_CONCLUSION:
                     TrialStat unpack;
                     GameStat game_result=null;
-                    unpack = this.playground.assertTrialDecision();
+                    unpack = this.playground.assertTrialDecision(n_players_pushing);
                     has_next_trial = unpack.isHas_next_trial();
                     repo.updtRopeCenter(unpack.getCenter_rope());//update rope center in central info repository
                     switch (unpack.getWonType()){

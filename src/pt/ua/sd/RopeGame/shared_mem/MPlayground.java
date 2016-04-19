@@ -10,6 +10,8 @@ import pt.ua.sd.RopeGame.interfaces.IPlaygroundContestant;
 import pt.ua.sd.RopeGame.interfaces.IPlaygroundReferee;
 import pt.ua.sd.RopeGame.structures.TrialStat;
 
+import java.util.Arrays;
+
 import static java.lang.Thread.sleep;
 
 /**
@@ -20,12 +22,14 @@ import static java.lang.Thread.sleep;
 
 public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, IPlaygroundCoach {
 
-    private int n_contestant_pulls_team1[] = {0,0,0,0,0};
-    private int n_contestant_pulls_team2[] = {0,0,0,0,0};
+    //private int n_contestant_pulls_team1[] = {0,0,0,0,0};
+    //private int n_contestant_pulls_team2[] = {0,0,0,0,0};
+    private int n_contestant_pulls_team1[];
+    private int n_contestant_pulls_team2[];
     private int ready_to_push;
     private boolean push_at_all_force = false;
     private int finished_pushing;
-    private static int center_rope= 0;
+    private static int center_rope = 0;
     private int n_trials_on_game = 0;
     private int n_contestants_done_awake = 0;
     private int n_coaches_reviewed_notes = 0;
@@ -38,7 +42,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     /**
      * Have contestants wait for the trial decision to change their state into SEAT_AT_THE_BENCH
      */
-    public synchronized void seatDown()
+    public synchronized void seatDown(int n_players_pushing)
     {
 
         while (!this.trial_decided_contestants){
@@ -50,14 +54,11 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
         }
 
         this.n_contestants_done_awake += 1;
-        if(this.n_contestants_done_awake >= 6){
+        if(this.n_contestants_done_awake >= n_players_pushing * 2){
             /*  reset conditions for next trial  */
             this.n_contestants_done_awake = 0;
             this.trial_decided_contestants = false;
         }
-
-
-
 
     }
 
@@ -65,12 +66,22 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     /**
      * Contestants wait until they are all in position to pull the rope and, only then, will they start pulling
      */
-    public synchronized void pullTheRope(int team_id, int strenght, int contestant_id) {
+    public synchronized void pullTheRope(int team_id, int strenght, int contestant_id, int n_players_pushing, int n_players) {
         this.ready_to_push += 1;
+
+        if(n_contestant_pulls_team1 == null){
+            n_contestant_pulls_team1 = new int[n_players];
+            Arrays.fill(n_contestant_pulls_team1, 0);
+        }
+
+        if(n_contestant_pulls_team2 == null){
+            n_contestant_pulls_team2 = new int[n_players];
+            Arrays.fill(n_contestant_pulls_team2, 0);
+        }
 
         /*  sleep only if the 6 players have not yet arrived and the push flag is not true  */
         /*  the flag is only set to false by the last player to finish pushing  */
-        if (this.ready_to_push >= 6 && !this.push_at_all_force){
+        if (this.ready_to_push >= n_players_pushing * 2 && !this.push_at_all_force){
             this.ready_to_push = 0;
             this.push_at_all_force = true;
             center_rope=0;//reset center of rope
@@ -96,7 +107,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             this.n_contestant_pulls_team1[contestant_id] = 0;
             /*  the last player to finish pushing in the trial, resets the push_at_all_force flag  */
             this.finished_pushing += 1;
-            if(this.finished_pushing >= 6){
+            if(this.finished_pushing >= n_players_pushing * 2){
                 this.finished_pushing = 0;
                 this.push_at_all_force = false;
             }
@@ -113,7 +124,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             this.n_contestant_pulls_team2[contestant_id] = 0;
             /*  the last player to finish pushing in the trial, resets the push_at_all_force flag  */
             this.finished_pushing += 1;
-            if(this.finished_pushing >= 6){
+            if(this.finished_pushing >= n_players_pushing * 2){
                 this.finished_pushing = 0;
                 this.push_at_all_force = false;
             }
@@ -128,7 +139,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
      * The referee waits until the contestants are done pulling the rope and the asserts the trial winner
      * @return trial_stats
      */
-    public synchronized TrialStat assertTrialDecision() {
+    public synchronized TrialStat assertTrialDecision(int n_players_pushing) {
 
         boolean decision = false;
         WonType decision_type = WonType.NONE;
@@ -175,7 +186,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
         notifyAll();
 
         /*  return has_next_trial  */
-        if(this.n_trials_on_game >= 6){
+        if(this.n_trials_on_game >= n_players_pushing * 2){
             /*  set number of trials to 0 for next game  */
             this.n_trials_on_game = 0;
             decision = false;
@@ -193,7 +204,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
      * @param selected_contestants selected contestants in current trial
      * @return selected_contestant_for_next_trial
      */
-    public synchronized int[] reviewNotes(int[] selected_contestants) {
+    public synchronized int[] reviewNotes(int[] selected_contestants, int n_players, int n_players_pushing) {
 
         while (!this.trial_decided_coach){
             try {
@@ -205,23 +216,13 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
 
         /*  substitutions implemented  */
         /*  only one player is substituted from each team at each trial  */
-        if(selected_contestants[0] == 0){
-            selected_contestants[0] = 4;
-        }
-        else{
-            selected_contestants[0] -= 1;
-        }
-        if(selected_contestants[1] == 0){
-            selected_contestants[1] = 4;
-        }
-        else{
-            selected_contestants[1] -= 1;
-        }
-        if(selected_contestants[2] == 0){
-            selected_contestants[2] = 4;
-        }
-        else{
-            selected_contestants[2] -= 1;
+        for (int i = 0; i < n_players_pushing; i++){
+            if(selected_contestants[i] == 0){
+                selected_contestants[i] = n_players - 1;
+            }
+            else{
+                selected_contestants[i] -= 1;
+            }
         }
 
         if(this.n_coaches_reviewed_notes >= 2){
@@ -236,11 +237,11 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
     /**
      * Contestants are done pulling the rope
      */
-    public synchronized void iAmDone(){
+    public synchronized void iAmDone(int n_players_pushing){
         this.n_contestants_done += 1;
 
         /*  last contestant done wakes up referee  */
-        if(this.n_contestants_done >= 6) {
+        if(this.n_contestants_done >= n_players_pushing * 2) {
             this.n_contestants_done = 0;
             this.contestants_are_done = true;
             notifyAll();

@@ -102,11 +102,11 @@ public class Contestant extends Thread {
                     repo.contestantLog(this.id, this.team_id, this.strength, state);//update central info repository
                     break;
                 case DO_YOUR_BEST:
-                    playground.pullTheRope(this.team_id,this.strength,this.id);
+                    playground.pullTheRope(this.team_id, this.strength, this.id, n_players_pushing, n_players);
                     repo.contestantLog(this.id, this.team_id, this.strength, state);//update central info repository
-                    playground.iAmDone();
+                    playground.iAmDone(n_players_pushing);
                     decrementStrength();//depois de am done decrementar a forca
-                    playground.seatDown();
+                    playground.seatDown(n_players_pushing);
                     state = ContestantState.START;//change state
                     break;
                 default:

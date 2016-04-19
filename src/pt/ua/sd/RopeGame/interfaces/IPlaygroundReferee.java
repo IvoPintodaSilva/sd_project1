@@ -7,6 +7,6 @@ import pt.ua.sd.RopeGame.structures.TrialStat;
  */
 public interface IPlaygroundReferee {
 
-    TrialStat assertTrialDecision();
+    TrialStat assertTrialDecision(int n_players_pushing);
 
 }

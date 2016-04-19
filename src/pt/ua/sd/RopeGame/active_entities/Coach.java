@@ -90,7 +90,7 @@ public class Coach extends Thread {
                     repo.coachLog(this.team_id, state);//update central info repository
                     break;
                 case WATCH_TRIAL:
-                    this.team_selected_contestants = this.playground.reviewNotes(this.team_selected_contestants);
+                    this.team_selected_contestants = this.playground.reviewNotes(this.team_selected_contestants, n_players, n_players_pushing);
                     state = CoachState.WAIT_FOR_REFEREE_COMMAND;
                     repo.coachLog(this.team_id, state);//update central info repository
                     break;
