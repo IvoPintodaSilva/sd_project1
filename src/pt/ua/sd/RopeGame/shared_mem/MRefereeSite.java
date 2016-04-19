@@ -16,13 +16,6 @@ import pt.ua.sd.RopeGame.structures.GameStat;
  */
 public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRefereeSiteContestant{
 
-    /**
-     *
-     * @return the number of games
-     */
-    public int getN_games() {
-        return n_games;
-    }
 
     /**
      *
@@ -35,7 +28,7 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
     /**
      * Internal Data
      */
-    private static int n_games=3;
+    //private static int n_games=3;
     private static int n_games_played=0;
 
 
@@ -51,7 +44,7 @@ public class MRefereeSite implements IRefereeSiteCoach, IRefereeSiteReferee, IRe
      * The number of played games is increased and the game winner is decided
      * @return GameStat data with the info of the winner
      */
-    public synchronized GameStat declareGameWinner(int score_T1, int score_T2, int knock_out) {
+    public synchronized GameStat declareGameWinner(int score_T1, int score_T2, int knock_out, int n_games) {
         n_games_played +=1;//increase number of games played
 
         if(knock_out== 1 )

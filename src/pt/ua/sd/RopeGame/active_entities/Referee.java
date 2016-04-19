@@ -148,7 +148,7 @@ public class Referee extends Thread {
                     /*  if not, the referee needs to declare a game winner  */
                     else{
 
-                        game_result=this.referee_site.declareGameWinner(score_T1,score_T2,knock_out);
+                        game_result=this.referee_site.declareGameWinner(score_T1, score_T2, knock_out, n_games);
                         if(game_result.getWinnerTeam() == 1)
                         {
                             gamesWon_T1 +=1;//increase nr of games won by team 1
@@ -168,7 +168,7 @@ public class Referee extends Thread {
                     break;
                 case END_OF_A_GAME:
 
-                    if(this.referee_site.getN_games() > this.referee_site.getN_games_played()){//if less than 3 games played
+                    if(n_games > this.referee_site.getN_games_played()){//if less than 3 games played
                         this.referee_site.announceNewGame();//new game announced
                         repo.updGame_nr();//updte the nr of games in central info repo
                         state = state.START_OF_A_GAME;
