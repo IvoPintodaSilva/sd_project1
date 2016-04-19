@@ -74,7 +74,7 @@ public class Referee extends Thread {
         int gamesWon_T2=0;//score of games for team 2
 
         RefState state = RefState.START_OF_THE_MATCH;
-        Boolean has_next_trial = true;
+        Boolean has_next_trial;
         Boolean MATCH_ENDED = false;//flag for end the life cycle
         repo.refereeLog(state, trial_number);//update refereee state in central info repository
 
@@ -138,7 +138,7 @@ public class Referee extends Thread {
 
                     repo.refereeLog(state, trial_number);//update the referee state in central info repo
                     /*  if the trial decision says that there is a next trial, the referee has to call it  */
-                    if (has_next_trial == true) {
+                    if (has_next_trial) {
                         this.repo.updtRopeCenter(Integer.MAX_VALUE);//MAX_VALUE hides/resets the rope center in the log
                         this.contestants_bench.callTrial();//new trial
                         /*  when new trial is called, increment trial number  */
@@ -171,13 +171,13 @@ public class Referee extends Thread {
                     if(n_games > this.referee_site.getN_games_played()){//if less than 3 games played
                         this.referee_site.announceNewGame();//new game announced
                         repo.updGame_nr();//updte the nr of games in central info repo
-                        state = state.START_OF_A_GAME;
+                        state = RefState.START_OF_A_GAME;
                         repo.refereeLog(state, trial_number);//update the referee state in central info repo
                         repo.Addheader(false);//add header with the nr of games in central info repo
                         trial_number = 0;//reset nr of trials played
                         break;
                     }
-                    state = state.END_OF_A_MATCH;
+                    state = RefState.END_OF_A_MATCH;
                     int match_winner = this.contestants_bench.declareMatchWinner(gamesWon_T1,gamesWon_T2);//declaring the match winner
                     repo.refereeLog(state, trial_number);//update the referee state in central info repo
                     repo.printMatchResult(match_winner,gamesWon_T1,gamesWon_T2);//update the centrla info repo with the winner of the match

@@ -23,10 +23,7 @@ import java.util.Random;
 public class RopeGame {
     public static void main(String[] args) {
 
-        MRefereeSite refereeSite = new MRefereeSite();
-        MPlayground playground = new MPlayground();
-        MContestantsBench bench = new MContestantsBench();
-        MGeneralInfoRepo repo = new MGeneralInfoRepo();
+
 
         int players_team=0;
         int players_pushing=0;
@@ -49,21 +46,26 @@ public class RopeGame {
             System.exit(0);
         }
 
+        MRefereeSite refereeSite = new MRefereeSite();
+        MPlayground playground = new MPlayground();
+        MContestantsBench bench = new MContestantsBench();
+        MGeneralInfoRepo repo = new MGeneralInfoRepo(players_team, players_pushing, n_trials, n_games);
+
         Coach coach_team1 = new Coach(1, 1,
-                (IPlaygroundCoach) playground,
-                (IRefereeSiteCoach) refereeSite,
-                (IContestantsBenchCoach) bench,
-                (IRepoCoach) repo,
+                playground,
+                refereeSite,
+                bench,
+                repo,
                 players_team,
                 players_pushing,
                 n_trials,
                 n_games
         );
         Coach coach_team2 = new Coach(2, 2,
-                (IPlaygroundCoach) playground,
-                (IRefereeSiteCoach) refereeSite,
-                (IContestantsBenchCoach) bench,
-                (IRepoCoach) repo,
+                playground,
+                refereeSite,
+                bench,
+                repo,
                 players_team,
                 players_pushing,
                 n_trials,
@@ -71,10 +73,10 @@ public class RopeGame {
         );
 
         Referee ref = new Referee(
-                (IPlaygroundReferee) playground,
-                (IRefereeSiteReferee) refereeSite,
-                (IContestantsBenchReferee) bench,
-                (IRepoReferee) repo,
+                playground,
+                refereeSite,
+                bench,
+                repo,
                 players_team,
                 players_pushing,
                 n_trials,
@@ -85,10 +87,10 @@ public class RopeGame {
         Contestant[] contestants_team1 = new Contestant[players_team];
         for(int i = 0; i < players_team; i++){
             contestants_team1[i] = new Contestant(i, 1, rn.nextInt(20 - 10 + 1) + 10,
-                    (IPlaygroundContestant) playground,
-                    (IRefereeSiteContestant) refereeSite,
-                    (IContestantsBenchContestant) bench,
-                    (IRepoContestant) repo,
+                    playground,
+                    refereeSite,
+                    bench,
+                    repo,
                     players_team,
                     players_pushing,
                     n_trials,
@@ -99,10 +101,10 @@ public class RopeGame {
         Contestant[] contestants_team2 = new Contestant[players_team];
         for(int i = 0; i < players_team; i++){
             contestants_team2[i] = new Contestant(i, 2, rn.nextInt(20 - 10 + 1) + 10,
-                    (IPlaygroundContestant) playground,
-                    (IRefereeSiteContestant) refereeSite,
-                    (IContestantsBenchContestant) bench,
-                    (IRepoContestant) repo,
+                    playground,
+                    refereeSite,
+                    bench,
+                    repo,
                     players_team,
                     players_pushing,
                     n_trials,
