@@ -97,7 +97,7 @@ public class Contestant extends Thread {
                     repo.contestantLog(this.id, this.team_id, this.strength, state);//update central info repository
                     break;
                 case STAND_IN_POSITION:
-                    contestants_bench.getReady();
+                    contestants_bench.getReady(n_players_pushing);
                     state = ContestantState.DO_YOUR_BEST;//change state
                     repo.contestantLog(this.id, this.team_id, this.strength, state);//update central info repository
                     break;

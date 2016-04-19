@@ -54,8 +54,10 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
     private int n_ready_contestants_started;//nr of contestants that started trial and are ready
     private boolean followed_coach_advice;//flag for follow coach advice, true when the advce is followed
     /*team strenght*/
-    private int[] team1_strength = {0, 0, 0, 0, 0};
-    private int[] team2_strength = {0, 0, 0, 0, 0};
+    //private int[] team1_strength = {0, 0, 0, 0, 0};
+    //private int[] team2_strength = {0, 0, 0, 0, 0};
+    private int[] team1_strength;
+    private int[] team2_strength;
 
     private boolean match_ended = false;//flag for match ended, true if ended
 
@@ -176,9 +178,21 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
         if(team_id == 1){
+
+            if (team1_strength == null){
+                team1_strength = new int[n_players];
+                Arrays.fill(team1_strength, 0);
+            }
+
             this.team1_strength[contestant_id] = strength;
         }
         else if(team_id == 2){
+
+            if (team2_strength == null){
+                team2_strength = new int[n_players];
+                Arrays.fill(team2_strength, 0);
+            }
+
             this.team2_strength[contestant_id] = strength;
         }
 
@@ -212,10 +226,8 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                 if( new_team1_selected[contestant_id] ){
                     new_team1_selected[contestant_id] = false;
 
-                    if(((contestant_id != team1_selected_contestants[0]) &&
-                            (contestant_id != team1_selected_contestants[1]) &&
-                            (contestant_id != team1_selected_contestants[2]))){
-                        ret[1]=true;//increment strenght
+                    if(!playing1[contestant_id]){
+                        ret[1] = true; //increment strength
                     }
 
                 }
@@ -264,17 +276,15 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
 
                 if(this.match_ended){
-                    ret[1]=false;//not increment by default
+                    ret[1] = false;//not increment by default
                     return ret;
                 }
 
                 if( new_team2_selected[contestant_id] ){
                     new_team2_selected[contestant_id] = false;
 
-                    if(((contestant_id != team2_selected_contestants[0]) &&
-                            (contestant_id != team2_selected_contestants[1]) &&
-                            (contestant_id != team2_selected_contestants[2]))){
-                        ret[1]=true;
+                    if(!playing2[contestant_id]){
+                        ret[1] = true;
                     }
 
                 }
@@ -386,7 +396,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
      * Contestants sleep until trial is started
      *
      */
-    public synchronized void getReady()
+    public synchronized void getReady(int n_players_pushing)
     {
 
         /*  wait for every contestant to be ready  */
@@ -400,7 +410,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         }
 
         this.n_ready_contestants_started += 1;
-        if(this.n_ready_contestants_started >= 6){
+        if(this.n_ready_contestants_started >= n_players_pushing * 2){
             /*  restore contestants value for next trial  */
             this.n_ready_contestants_started = 0;
             this.trial_started = false;
