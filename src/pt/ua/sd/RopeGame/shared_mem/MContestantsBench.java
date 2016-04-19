@@ -59,6 +59,9 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
     private boolean match_ended = false;//flag for match ended, true if ended
 
+    /*  array to know if the players are playing  */
+    boolean playing1[];
+    boolean playing2[];
 
     /**
      * Referee calls the trial
@@ -181,17 +184,24 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
         if(team_id == 1){
 
-            while (
-                    ((!this.contestants_called) ||
-                    ((contestant_id != team1_selected_contestants[0]) &&
-                            (contestant_id != team1_selected_contestants[1]) &&
-                            (contestant_id != team1_selected_contestants[2])))
+            /*  if array is not created, create it  */
+            if(playing1 == null){
+                playing1 = new boolean[n_players];
+                Arrays.fill(playing1, false);
+            }
 
-                    ||
 
-                            this.match_ended
+            /*  check if player is going to play the next trial  */
+            playing1[contestant_id] = false;
+            for (int j = 0; j < n_players_pushing; j++){
+                if (team1_selected_contestants[j] == contestant_id){
+                    /*  know that contestant is playing  */
+                    playing1[contestant_id] = true;
+                    break;
+                }
+            }
 
-                    ){
+            while ( !this.contestants_called || !playing1[contestant_id] || this.match_ended ){
 
 
                 if(this.match_ended){
@@ -217,17 +227,40 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                     e.printStackTrace();
                 }
 
+                /*  check if player is going to play the next trial  */
+                playing1[contestant_id] = false;
+                for (int j = 0; j < n_players_pushing; j++){
+                    if (team1_selected_contestants[j] == contestant_id){
+                    /*  know that contestant is playing  */
+                        playing1[contestant_id] = true;
+                        break;
+                    }
+                }
+
             }
 
         }else if(team_id == 2){
-            while (
-                    ((!this.contestants_called) ||
-                    ((contestant_id != team2_selected_contestants[0]) &&
-                            (contestant_id != team2_selected_contestants[1]) &&
-                            (contestant_id != team2_selected_contestants[2])))
-                    ||
-                            this.match_ended
-                    ){
+
+
+            /*  if array is not created, create it  */
+            if(playing2 == null){
+                playing2 = new boolean[n_players];
+                Arrays.fill(playing2, false);
+            }
+
+
+            /*  check if player is going to play the next trial  */
+            playing2[contestant_id] = false;
+            for (int j = 0; j < n_players_pushing; j++){
+                if (team2_selected_contestants[j] == contestant_id){
+                    /*  know that contestant is playing  */
+                    playing2[contestant_id] = true;
+                    break;
+                }
+            }
+
+
+            while ( !this.contestants_called || !playing2[contestant_id] || this.match_ended ){
 
 
                 if(this.match_ended){
@@ -253,6 +286,15 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
                 }
 
 
+                /*  check if player is going to play the next trial  */
+                playing2[contestant_id] = false;
+                for (int j = 0; j < n_players_pushing; j++){
+                    if (team2_selected_contestants[j] == contestant_id){
+                    /*  know that contestant is playing  */
+                        playing2[contestant_id] = true;
+                        break;
+                    }
+                }
             }
         }
 
@@ -270,7 +312,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
         }
 
         this.n_contestants_called += 1;
-        if (this.n_contestants_called >= 6){
+        if (this.n_contestants_called >= n_players_pushing * 2){
             this.contestants_called = false; // the last contestant to get here, resets the seatDown flag
             this.n_contestants_called = 0;
         }
@@ -278,7 +320,7 @@ public class MContestantsBench implements IContestantsBenchContestant, IContesta
 
         /*  when all the players have followed the advice, wake up coach  */
         this.advice_followed += 1;
-        if(this.advice_followed >= 6){
+        if(this.advice_followed >= n_players_pushing * 2){
             this.followed_coach_advice = true;
             this.advice_followed = 0;
             notifyAll();
