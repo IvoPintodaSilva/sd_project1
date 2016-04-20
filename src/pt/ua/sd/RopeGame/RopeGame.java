@@ -23,8 +23,6 @@ import java.util.Random;
 public class RopeGame {
     public static void main(String[] args) {
 
-
-
         int players_team=0;
         int players_pushing=0;
         int n_trials=0;
