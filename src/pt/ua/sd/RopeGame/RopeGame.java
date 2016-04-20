@@ -29,6 +29,7 @@ public class RopeGame {
         int players_pushing=0;
         int n_trials=0;
         int n_games=0;
+        int knockDif=0;
 
         try {
             Properties p = new Properties();
@@ -39,7 +40,7 @@ public class RopeGame {
             players_pushing = Integer.parseInt(p.getProperty("N_PLAYERS_PUSHING"));
             n_trials = Integer.parseInt(p.getProperty("N_TRIALS"));
             n_games = Integer.parseInt(p.getProperty("N_GAMES"));
-
+            knockDif = Integer.parseInt(p.getProperty("KNOCKOUT_DIF"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,7 +50,7 @@ public class RopeGame {
         MRefereeSite refereeSite = new MRefereeSite();
         MPlayground playground = new MPlayground();
         MContestantsBench bench = new MContestantsBench();
-        MGeneralInfoRepo repo = new MGeneralInfoRepo(players_team, players_pushing, n_trials, n_games);
+        MGeneralInfoRepo repo = new MGeneralInfoRepo(players_team, players_pushing, n_trials, n_games, knockDif);
 
         Coach coach_team1 = new Coach(1, 1,
                 playground,
@@ -59,7 +60,8 @@ public class RopeGame {
                 players_team,
                 players_pushing,
                 n_trials,
-                n_games
+                n_games,
+                knockDif
         );
         Coach coach_team2 = new Coach(2, 2,
                 playground,
@@ -69,7 +71,8 @@ public class RopeGame {
                 players_team,
                 players_pushing,
                 n_trials,
-                n_games
+                n_games,
+                knockDif
         );
 
         Referee ref = new Referee(
@@ -80,7 +83,9 @@ public class RopeGame {
                 players_team,
                 players_pushing,
                 n_trials,
-                n_games);
+                n_games,
+                knockDif
+        );
 
 
         Random rn = new Random();
@@ -94,7 +99,8 @@ public class RopeGame {
                     players_team,
                     players_pushing,
                     n_trials,
-                    n_games);
+                    n_games,
+                    knockDif);
             contestants_team1[i].start();
         }
 
@@ -108,7 +114,8 @@ public class RopeGame {
                     players_team,
                     players_pushing,
                     n_trials,
-                    n_games);
+                    n_games,
+                    knockDif);
             contestants_team2[i].start();
         }
 

@@ -35,6 +35,7 @@ public class Contestant extends Thread {
     private int n_players_pushing;//number of players in each team pushing at any given trial, defined in rg.config
     private int n_trials;//number of trials, defined in rg.config
     private int n_games;//number of games, defined in rg.config
+    private int knockDif;//number of knockout difference needed to win, defined in rg.config
 
 
     /**
@@ -53,7 +54,7 @@ public class Contestant extends Thread {
                       IContestantsBenchContestant contestants_bench,
                       IRepoContestant repo,
                       int n_players, int n_players_pushing,
-                      int n_trials, int n_games){
+                      int n_trials, int n_games, int knockDif){
         this.id = id;
         this.team_id = team_id;
         this.strength = strength;
@@ -65,6 +66,7 @@ public class Contestant extends Thread {
         this.n_players_pushing = n_players_pushing;
         this.n_trials = n_trials;
         this.n_games = n_games;
+        this.knockDif = knockDif;
     }
 
     /**

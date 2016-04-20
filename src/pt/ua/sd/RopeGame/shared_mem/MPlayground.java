@@ -139,7 +139,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
      * The referee waits until the contestants are done pulling the rope and the asserts the trial winner
      * @return trial_stats
      */
-    public synchronized TrialStat assertTrialDecision(int n_players_pushing) {
+    public synchronized TrialStat assertTrialDecision(int n_players_pushing, int knockDif) {
 
         boolean decision = false;
         WonType decision_type = WonType.NONE;
@@ -165,7 +165,7 @@ public class MPlayground implements IPlaygroundContestant, IPlaygroundReferee, I
             winner = 0;//none winner
 
         }
-        else if(center_rope> 4 || center_rope<-4)
+        else if(center_rope> knockDif || center_rope<-knockDif)
         {
             decision_type = WonType.KNOCKOUT;
         }

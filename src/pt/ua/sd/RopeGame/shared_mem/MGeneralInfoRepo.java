@@ -58,16 +58,18 @@ public class MGeneralInfoRepo implements IRepoCoach, IRepoContestant, IRepoRefer
     int players_pushing;
     int n_trials;
     int n_games;
+    int knockDif;
 
     /**
      * Constructor
      */
-    public MGeneralInfoRepo(int players_team, int players_pushing, int n_trials, int n_games)
+    public MGeneralInfoRepo(int players_team, int players_pushing, int n_trials, int n_games, int knockDif)
     {
         this.players_pushing = players_pushing;
         this.players_team = players_team;
         this.n_games = n_games;
         this.n_trials = n_trials;
+        this.knockDif = knockDif;
 
         if(contestants_team1 == null){
             contestants_team1 = new int[players_pushing];

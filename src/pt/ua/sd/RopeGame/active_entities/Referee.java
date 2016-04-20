@@ -35,6 +35,8 @@ public class Referee extends Thread {
     private int n_players_pushing;//number of players in each team pushing at any given trial, defined in rg.config
     private int n_trials;//number of trials, defined in rg.config
     private int n_games;//number of games, defined in rg.config
+    private int knockDif;//number of knockout difference needed to win, defined in rg.config
+
 
 
     /**
@@ -49,7 +51,7 @@ public class Referee extends Thread {
                    IContestantsBenchReferee contestants_bench,
                    IRepoReferee repo,
                    int n_players, int n_players_pushing,
-                   int n_trials, int n_games){
+                   int n_trials, int n_games, int knockDif){
         this.playground = playground;
         this.referee_site = referee_site;
         this.contestants_bench = contestants_bench;
@@ -58,6 +60,7 @@ public class Referee extends Thread {
         this.n_players_pushing = n_players_pushing;
         this.n_trials = n_trials;
         this.n_games = n_games;
+        this.knockDif = knockDif;
     }
 
 
@@ -107,7 +110,7 @@ public class Referee extends Thread {
                 case WAIT_FOR_TRIAL_CONCLUSION:
                     TrialStat unpack;
                     GameStat game_result=null;
-                    unpack = this.playground.assertTrialDecision(n_players_pushing);
+                    unpack = this.playground.assertTrialDecision(n_players_pushing, knockDif);
                     has_next_trial = unpack.isHas_next_trial();
                     repo.updtRopeCenter(unpack.getCenter_rope());//update rope center in central info repository
                     switch (unpack.getWonType()){
